@@ -1,24 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import { Link, Route, Routes } from 'react-router-dom';
+import Edit from './pages/edit';
+import Log from './pages/log';
+import Login from './pages/login';
+import Register from './pages/register';
+import View from './pages/view';
+import {useState, setState} from 'react';
 
 function App() {
+  const [id,setId] = useState({});
+  const [profile, setProfile]= useState({
+    profile: '', //profile picture
+    name: '',
+    email: '',
+    address1 : '',
+    address2 : ''
+  });
+  const [questions, setQuestions] = useState({});
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+        <Route exact path="/" element={<Login />} />
+        <Route exact path="/register" element={<Register />} />
+        <Route exact path="/log"  element={<Log />} />
+        <Route exact path="/edit" element={<Edit />} />
+        <Route exact path="/view" element={<View />} />
+      </Routes>
   );
 }
 

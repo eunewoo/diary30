@@ -36,3 +36,41 @@
     transform: rotate(360deg);
   }
 }
+
+/* Global CSS Variables: https://www.w3schools.com/css/css3_variables.asp */
+/* Reference these in your CSS to get the same color as the mockups */
+:root {
+  --actionBackgroundColor: #f76b8a;
+  --actionTextColor: white;
+  --activeColor: #66bfbf;
+  --standardBackgroundColor: #fcfefe;
+  --alternativeBackgroundColor: #eaf6f6;
+  --standardTextColor: black;
+  --lightColor: lightgray;
+  --moderateColor: darkgray;
+}
+
+body {
+  background-color: var(--alternativeBackgroundColor);
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus  {
+  outline-color: var(--activeColor);
+}
+
+select {
+  border-color: var(--moderateColor);
+}
+
+input[type=text] {
+  border-color: var(--lightColor);
+}
+
+input[type=submit]:hover,
+input[type=button]:hover,
+button:hover {
+  transform: scale(1.1);
+}
