@@ -1,11 +1,11 @@
 import './App.css';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Edit from './pages/edit';
 import Log from './pages/log';
 import Login from './pages/login';
 import Register from './pages/register';
 import View from './pages/view';
-import {useState, setState} from 'react';
+import {useState} from 'react';
 
 function App() {
   const [id,setId] = useState({});

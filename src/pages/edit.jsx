@@ -1,5 +1,9 @@
-function edit() {
+import Topnav from './topnav';
+
+function edit(props) {
     return(
-        <div></div>
+        <div>
+            <Topnav />
+        </div>
     );
 } export default edit;

@@ -1,9 +1,9 @@
 import Topnav from './topnav';
 
-function view(props) {
+function profile() {
     return(
         <div>
             <Topnav />
         </div>
     );
-} export default view;
+} export default profile;

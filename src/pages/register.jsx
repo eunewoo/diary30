@@ -1,4 +1,4 @@
-function register() {
+function register(props) {
     return(
         <div></div>
     );
