@@ -52,3 +52,7 @@ app.get('/api/diary/questions', (req, res) => {
         } 
     })
 });
+
+app.listen(app.get('port'), () => {
+    console.log('Server is on' + app.get('port'));
+})
