@@ -1,4 +1,4 @@
-import Topnav from './topnav';
+import Topnav from './nav';
 
 function edit(props) {
     return(

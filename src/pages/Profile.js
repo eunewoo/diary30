@@ -1,4 +1,4 @@
-import Topnav from './topnav';
+import Topnav from './nav';
 
 function profile() {
     return(
