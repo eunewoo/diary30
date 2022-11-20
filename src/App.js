@@ -5,6 +5,7 @@ import Log from './pages/Log.js';
 import Login from './pages/Login.js';
 import Register from './pages/Register.js';
 import View from './pages/view';
+import Profile from './pages/Profile.js';
 import React, {useState} from 'react';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route exact path="/log"  element={<Log />} />
         <Route exact path="/edit" element={<Edit />} />
         <Route exact path="/view" element={<View />} />
+        <Route exact path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );
