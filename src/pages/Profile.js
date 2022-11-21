@@ -23,7 +23,21 @@ export default function Profile(props) {
         setAddress2(e.target.value);
     }
     const setProfile =(e) => {
-        console.log(img,name,email,address1,address2);
+        //it should fetch and change
+        //but for testing i will use just set function
+        if (/\S+@\S+\.\S+/.test(email)) {
+            props.changeProfile({
+                profile: img,
+                name: name,
+                email: email,
+                address1: address1,
+                address2: address2
+            });
+        }else {
+            alert("Your email is not valid!\nYour profile has not been changed");
+        }
+        //this doesn't show the right information at the first time.
+        console.log(props.profile);
     }
 
     return(
@@ -39,16 +53,16 @@ export default function Profile(props) {
                 </div>
                 <div>
                     <label htmlFor='name'>Name</label>
-                    <input type='text' id='name' onChange={setUsername}></input>
+                    <input type='text' id='name' defaultValue={props.profile.name} onChange={setUsername}></input>
                 </div>
                 <div>
                     <label htmlFor='email' >Email</label>
-                    <input type='email' id='email' onChange={setEmailAddress}></input>
+                    <input type='email' id='email' defaultValue={props.profile.email} onChange={setEmailAddress}></input>
                 </div>
                 <div>
                     <label>Address</label>
-                    <input type="text" id='address1' onChange={setAddress1f}></input>
-                    <input type="text" id='address2' onChange={setAddress2f}></input>
+                    <input type="text" id='address1' defaultValue={props.profile.address1} onChange={setAddress1f}></input>
+                    <input type="text" id='address2' defaultValue={props.profile.address2} onChange={setAddress2f}></input>
                 </div>
                 <button type='button' onClick={setProfile}>Save</button>
                 <button type='button'>Logout</button>

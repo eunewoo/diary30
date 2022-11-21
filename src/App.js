@@ -19,6 +19,10 @@ function App() {
   });
   const [questions, setQuestions] = useState({});
 
+  function ChangeProfile(pf) {
+    setProfile(pf);
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -27,7 +31,7 @@ function App() {
         <Route exact path="/log"  element={<Log />} />
         <Route exact path="/edit" element={<Edit />} />
         <Route exact path="/view" element={<View />} />
-        <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/profile" element={<Profile profile={profile} changeProfile={ChangeProfile}/>} />
       </Routes>
     </BrowserRouter>
   );

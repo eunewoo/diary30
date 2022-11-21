@@ -3,7 +3,7 @@ import Axios from "axios";
 import { useState } from "react";
 import React, { Link } from "react-router-dom";
 
-export default function log(props) {
+export default function Log(props) {
 
     const [logstr, setLogstr] = useState({
         date: [],
