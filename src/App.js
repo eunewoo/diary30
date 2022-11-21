@@ -11,6 +11,7 @@ import React, {useState} from 'react';
 function App() {
   const [id,setId] = useState({});
   const [profile, setProfile]= useState({
+    id: '', // this is the id for db.
     profile: '', //profile picture
     name: '',
     email: '',
