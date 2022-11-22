@@ -1,9 +1,9 @@
-import Topnav from './nav';
+import Topnav from './nav.js';
 import Axios from "axios";
 import { useState } from "react";
 import React, { Link } from "react-router-dom";
 
-export default function log(props) {
+export default function Log(props) {
 
     const [logstr, setLogstr] = useState({
         date: [],
@@ -31,14 +31,16 @@ export default function log(props) {
         }
     }) // compare user_id and get only equaled user_id's data.
 
+    const cum_date = new Date();
+
     const [cumDate, setCumDate] = useState({
-        cum_date : new Date(),
-        cum_year : cumDate.cum_date.getFullYear(),
-        cum_month : cumDate.cum_date.getMonth()+1,
-        cum_day : cumDate.cum_date.getDate(),
+        cum_year : cum_date.getFullYear(),
+        cum_month : cum_date.getMonth()+1,
+        cum_day : cum_date.getDate(),
     })
     const showData = () => {
         var showDate = cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day;
+        console.log(showDate);
         // if we receive id from app.js => 
         return(
             <div>
@@ -64,7 +66,7 @@ export default function log(props) {
                 <nav>
                     <ul>
                         <li>
-                            {showData}
+                            {showData()}
                         </li>
                     </ul>
                 </nav>

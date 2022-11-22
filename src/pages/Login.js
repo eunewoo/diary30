@@ -1,10 +1,13 @@
+import  Axios  from "axios";
 import { useState } from "react";
 import React, { Link } from "react-router-dom";
+import { hashutil } from "./hashutil.mjs";
 
 export default function Login(props) {
 
     const [login_id, setLogin] = useState("");
     const [password, setPassword] = useState("");
+    const [avail, setAvail] = useState(false);
 
     const setId = (e) => {
         setLogin(e.target.value);
@@ -12,8 +15,25 @@ export default function Login(props) {
     const setPwd = (e) => {
         setPassword(e.target.value);
     }
+
+    Axios.get("http://localhost:3305/api/diary/users").then((response) => {
+        for(var i in response.data){
+            if(response.data[i].user_id == login_id){
+                if(response.data[i].password == hashutil(login_id, response.data[i].user_email, password)){
+                    setAvail(true);
+                    break;
+                }
+            }
+        }
+    })
+
     const setLoginId =() => {
-        console.log(login_id, password);
+        if(!avail){
+            alert("Unavail Login!");
+        }else{
+            alert("Login Success!");
+            document.location.href = 'http://localhost:3000/log';
+        }
     }
 
     return(
