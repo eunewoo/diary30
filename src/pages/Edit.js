@@ -31,7 +31,6 @@ export default function Edit(props) {
     
     const setText = (e) => {
         setChange(e.target.value);
-        console.log(e.target.value)
     }
 
     const setSome = () => {
