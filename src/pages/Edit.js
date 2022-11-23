@@ -27,8 +27,11 @@ export default function Edit(props) {
         qs_type : [],
     });
 
+    const [change, setChange] = useState("");
+    
     const setText = (e) => {
-        var temp = e.target.value
+        setChange(e.target.value);
+        console.log(e.target.value)
     }
 
     const setSome = () => {
@@ -65,23 +68,27 @@ export default function Edit(props) {
                     )
             }
         }
-
-        for(var i in temp_question){
+        const someThing = (arr, arr_type, i) => {
             return(
                 <div>
                     <li>
-                        <input 
-                        value = {temp_question[i]} // this is problem I have to solve..
+                        <input
+                        placeholder={arr} // this is problem I have to solve..
                         type = "text"
                         onChange = {setText}
                         />
                     </li>
                     <li>
-                        {typeShow(temp_question_type[i])}
+                        {typeShow(arr_type)}
                     </li>
                 </div>
             )
         }
+        var tempSome = [];
+        for(var i in temp_question){
+            tempSome.push(someThing(temp_question[i], temp_question_type[i], i));
+        }
+        return(tempSome);
     }
 
     return(
