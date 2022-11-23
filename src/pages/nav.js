@@ -8,7 +8,7 @@ function topnav(props) {
                 <Link to="/log">Log Day</Link>
                 <Link to="/edit">Edit Questions</Link>
                 <Link to="/view">View Data</Link>
-                <Link to="/profile">profile</Link>
+                <Link to="/profile"><img></img>profile</Link>
             </div>
         </div>
     );
