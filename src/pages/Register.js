@@ -23,6 +23,14 @@ export default function Register(props) {
         bool ? <Link to = "/"></Link> : alert("Invalid Register!")
     };
 
+    function existUID(e) {
+        //find the same uid on db if it exist alert and change the value to none 
+    }
+
+    function validEmail(e) {
+        //check whether email is in valid form.
+    }
+
     return(
         <div>
             <inner>
@@ -33,7 +41,7 @@ export default function Register(props) {
                             <li>
                                 <div>
                                     Set your ID : {" "}
-                                    <input type = "text" onChange={setText} />
+                                    <input type = "text" onChange={setText} onBlur={existUID} />
                                 </div>
                             </li>
                             <li>
@@ -51,7 +59,7 @@ export default function Register(props) {
                             <li>
                                 <div>
                                     Set your email : {" "}
-                                    <input type = "text" onChange={setText} />
+                                    <input type = "text" onChange={setText} onBlur={validEmail}/>
                                 </div>
                             </li>
                             <li>
