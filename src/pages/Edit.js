@@ -11,7 +11,7 @@ export default function Edit(props) {
     function ChangeReturnee(a, z) {//
         var temp = returnee;
         temp[z] = a;
-        setreturnee(temp);
+        setreturnee([...temp]);
     }
 
     function append(questions, question) {
@@ -72,12 +72,9 @@ export default function Edit(props) {
             for (var i in response.data) {
                 append(questions, response.data[i]);
                 ChangeReturnee(setSome(z),z);
-                console.log(returnee);
                 z++;
             }
-    })})
-    
-
+    })}, []);
     
     return(
         <div>
