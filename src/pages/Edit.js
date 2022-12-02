@@ -1,107 +1,97 @@
 import Topnav from './nav';
-import { useState } from "react";
+import { useState, useEffect, timeout, delay } from "react";
 import React, { Link } from "react-router-dom";
 import Axios from "axios";
 
 export default function Edit(props) {
     
-    const [problems, setProblems] = useState({
-        question : "",
-        question_type : "",
-    })
-    Axios.get("http://localhost:3305/api/diary/logday").then((response) => {
-        var temp = response.data[0].id;
-        var index = 0;
-        for(var i in response.data){
-            if(temp <= response.data[i].id){
-                temp = response.data[i].id
-                index = i;
-                problems.question = ""+response.data[index].question_set;
-                problems.question_type = ""+response.data[index].question_type_set;
-            }
+    const [questions, setQuestions] = useState([]);
+    const [returnee, setreturnee] = useState([]);
+
+    function ChangeReturnee(a, z) {//
+        var temp = returnee;
+        temp[z] = a;
+        setreturnee(temp);
+    }
+
+    function append(questions, question) {
+        var temp = questions;
+        questions.push(question);
+        setQuestions(temp);
+    }
+    function setSome(iterator) {
+        var temp = questions[iterator];
+        console.log(questions[iterator]);
+        if (questions[iterator].question_type == "multiple choice") {
+            return (
+                <>
+                <li>
+                    <div>
+                        <input type="text" defaultValue={questions[iterator].question} />
+                        <select name="options" defaultValue={questions[iterator].question_type}>
+                            <option value="number">number</option>
+                            <option value="boolean">boolean</option>
+                            <option value="multiple choice">multiple choice</option>
+                            <option value="text">text</option>
+                        </select>
+                        <input type="radio" disabled="TRUE" checked="TRUE"></input>
+                        <input type="text"></input>
+                        <input type="radio" disabled="TRUE" checked="TRUE"></input>
+                        <input type="text"></input>
+                        <input type="radio" disabled="TRUE" checked="TRUE"></input>
+                        <input type="text"></input>
+                    </div>
+                    <button>delete</button>
+                </li>
+            </>
+            );
         }
-    }) //by props we should compare id also!
+        return(
+            <>
+                <li>
+                    <div>
+                        <input type="text" defaultValue={questions[iterator].question} />
+                        <select name="options" defaultValue={questions[iterator].question_type}>
+                            <option value="number">number</option>
+                            <option value="boolean">boolean</option>
+                            <option value="multiple choice">multiple choice</option>
+                            <option value="text">text</option>
+                        </select>
+                    </div>
+                    <button>delete</button>
+                </li>
+            </>
+        )
+    }
+    function addDiv() {
 
-    const [inputThing, setInputThing] = useState({
-        qs_arr : [],
-        qs_type : [],
-    });
-
-    const [change, setChange] = useState("");
+    }
+    useEffect(() => {
+        Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
+            var z = 0;
+            for (var i in response.data) {
+                append(questions, response.data[i]);
+                ChangeReturnee(setSome(z),z);
+                console.log(returnee);
+                z++;
+            }
+    })})
     
-    const setText = (e) => {
-        setChange(e.target.value);
-    }
 
-    const setSome = () => {
-        const { question, question_type } = problems;
-        const temp_question = question.split('|');
-        const temp_question_type = question_type.split('|');
-
-        const typeShow = (arr_type) => {
-            switch(arr_type){
-                case "Multiple":
-                    return(
-                        <div>
-                            <div>
-                                {/* class should be dropdown */}
-                            </div>
-                            <li>
-                                Ok day
-                            </li>
-                            <li>
-                                Bad day
-                            </li>
-                            <li>
-                                Great day
-                            </li>
-                        </div>
-                    )
-                default:
-                    return(
-                        <div>
-                            <div> 
-                                {/* class should be dropdown */}
-                            </div>
-                        </div>
-                    )
-            }
-        }
-        const someThing = (arr, arr_type, i) => {
-            return(
-                <div>
-                    <li>
-                        <input
-                        placeholder={arr} // this is problem I have to solve..
-                        type = "text"
-                        onChange = {setText}
-                        />
-                    </li>
-                    <li>
-                        {typeShow(arr_type)}
-                    </li>
-                </div>
-            )
-        }
-        var tempSome = [];
-        for(var i in temp_question){
-            tempSome.push(someThing(temp_question[i], temp_question_type[i], i));
-        }
-        return(tempSome);
-    }
-
+    
     return(
         <div>
             <Topnav />
             <inner>
-                <nav>
-                    <ul>
-                        <li>
-                            {setSome()}
-                        </li>
-                    </ul>
-                </nav>
+                <div>
+                    <p>Edit Question</p>
+                    <button onClick={addDiv}>+</button> 
+                </div>
+                <ul>
+                    {returnee}
+                </ul>
             </inner>
+            <button>Save</button>
         </div>
     );
 }
