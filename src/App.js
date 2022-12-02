@@ -8,15 +8,16 @@ import View from './pages/view';
 import Profile from './pages/Profile.js';
 import React, {useState} from 'react';
 
+
 function App() {
   const [id,setId] = useState({});
   const [profile, setProfile]= useState({
-    id: '', // this is the id for db.
+    user_id: 'abc123', // this is the id for db.
     profile: '', //profile picture
-    name: '',
-    email: '',
-    address1 : '',
-    address2 : ''
+    name: 'JunHyeongPark',
+    email: 'abc123@extemp.com',
+    address1 : '119 songdo moonwha-ro',
+    address2 : 'Incheon, Yeonsu-gu, Korea'
   });
   const [questions, setQuestions] = useState({});
 
@@ -27,7 +28,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route exact path="/" element={<Login />} />
+        <Route exact path="/" element={<Login ChangeProfile={ChangeProfile}/>} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/log"  element={<Log />} />
         <Route exact path="/edit" element={<Edit />} />
