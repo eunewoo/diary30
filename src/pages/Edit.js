@@ -6,39 +6,89 @@ import Axios from "axios";
 export default function Edit(props) {
     
     const [problems, setProblems] = useState({
-        order : [],
-        question : [],
-        question_type : [],
+        question : "",
+        question_type : "",
     })
-    // Axios.get("http://localhost:3305/api/diary/questions").then((response) => {
-    //     for(var i in response.data){
-    //         problems.order[i] = 
-    //     }
-    // })
-    function renderingProblems(pbArray) {
-        var returnee="<>";
-        for (var i = 0; i < pbArray.order.length; i++) {
-            returnee+="<li>";
-            returnee+="<input type=\"text\" defaultValue=\""+pbArray.question[i]+"\"/>"
-            returnee+="<select name=\"type\" id=\"type"+i+"\" selected=\""+pbArray.question_type[i]+"\">"
-            returnee+="<option value=\"boolean\">boolean</option>";
-            returnee+="<option value=\"number\>number</option>";
-            returnee+="<option value=\"text\>text</option>";
-            returnee+="<option value=\"multiple choice\">multiple choice</option>";
-            returnee+="<button></button>"
-            if (pbArray.question_type[i] == "multiple choice") {
-                returnee+="<input type=\"checkbox\" id=\"pb"+i+"choice"+"1"+"\" value=\"0\">";
-                returnee+="<input type=\"checkbox\" id=\"pb"+i+"choice"+"2"+"\" value=\"0\">";
-                returnee+="<input type=\"checkbox\" id=\"pb"+i+"choice"+"3"+"\" value=\"0\">";
+    Axios.get("http://localhost:3305/api/diary/logday").then((response) => {
+        var temp = response.data[0].id;
+        var index = 0;
+        for(var i in response.data){
+            if(temp <= response.data[i].id){
+                temp = response.data[i].id
+                index = i;
+                problems.question = ""+response.data[index].question_set;
+                problems.question_type = ""+response.data[index].question_type_set;
             }
-            returnee+="</li>";
         }
-        returnee+="</>"
+    }) //by props we should compare id also!
 
-        return(returnee);
-    }
+    const [inputThing, setInputThing] = useState({
+        qs_arr : [],
+        qs_type : [],
+    });
+
+    const [change, setChange] = useState("");
     
-    //renderingProblems({order: [0], question:["hello"], question_type:["number"]})
+    const setText = (e) => {
+        setChange(e.target.value);
+    }
+
+    const setSome = () => {
+        const { question, question_type } = problems;
+        const temp_question = question.split('|');
+        const temp_question_type = question_type.split('|');
+
+        const typeShow = (arr_type) => {
+            switch(arr_type){
+                case "Multiple":
+                    return(
+                        <div>
+                            <div>
+                                {/* class should be dropdown */}
+                            </div>
+                            <li>
+                                Ok day
+                            </li>
+                            <li>
+                                Bad day
+                            </li>
+                            <li>
+                                Great day
+                            </li>
+                        </div>
+                    )
+                default:
+                    return(
+                        <div>
+                            <div> 
+                                {/* class should be dropdown */}
+                            </div>
+                        </div>
+                    )
+            }
+        }
+        const someThing = (arr, arr_type, i) => {
+            return(
+                <div>
+                    <li>
+                        <input
+                        placeholder={arr} // this is problem I have to solve..
+                        type = "text"
+                        onChange = {setText}
+                        />
+                    </li>
+                    <li>
+                        {typeShow(arr_type)}
+                    </li>
+                </div>
+            )
+        }
+        var tempSome = [];
+        for(var i in temp_question){
+            tempSome.push(someThing(temp_question[i], temp_question_type[i], i));
+        }
+        return(tempSome);
+    }
 
     return(
         <div>
@@ -46,6 +96,9 @@ export default function Edit(props) {
             <inner>
                 <nav>
                     <ul>
+                        <li>
+                            {setSome()}
+                        </li>
                     </ul>
                 </nav>
             </inner>

@@ -33,6 +33,17 @@ app.get('/api/diary/users', (req, res) => {
     })
 });
 
+//login
+app.get('/api/diary/users/id=:id&pw=:pw', (req, res) => {
+    db.query("SELECT * FROM users Where user_id='"+req.id+"' and password='"+req.pwd+"';", (err, result) => {
+        if(!err){
+            res.json(result);
+        }else{
+            console.log(err);
+        } 
+    })
+});
+
 app.get('/api/diary/logday', (req, res) => {
     db.query("SELECT * FROM logday;", (err, result) => {
         if(!err){

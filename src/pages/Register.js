@@ -1,5 +1,6 @@
 import React, { Link } from "react-router-dom";
 import { useState } from "react";
+import Axios from "axios";
 
 export default function Register(props) {
     
@@ -13,23 +14,61 @@ export default function Register(props) {
         img: "",
     });
 
-    const [bool, setBool] = useState(false);
+    const { user_id, passoword, user_name, user_email, address_f, address_l } = profdata;
 
-    const setText = (e) => {
+    const setTextid = (e) => {
+        const { name, value } = e.target;
 
+        setProfdata({
+            ...profdata,
+            [name]: value,
+        });
     };
+
+    const setImage = (e) => {
+        //post image on db
+    }
 
     const isRegister = () => {
-        bool ? <Link to = "/"></Link> : alert("Invalid Register!")
+        switch(""){
+            case user_id:
+                alert("Put id!");
+                break;
+            case passoword:
+                alert("Put Password!");
+                break;
+            case user_name:
+                alert("Put name!");
+                break;
+            case user_email:
+                alert("Put email!");
+                break;
+            case address_f:
+                alert("Put first address!");
+                break;
+            case address_l:
+                alert("Put last address!");
+                break;
+            default:
+                let temp = 0;
+                Axios.get('http://localhost:3305/api/diary/users').then((response) => {
+                    for(var i in response.data){
+                        if(response.data[i].user_id == user_id){
+                            break;
+                        }else if(i == response.data.length-1 && response.data[i].user_id != user_id){
+                            temp = 1;
+                        }
+                    }
+                    if(temp === 1){
+                        alert("Success Register!");
+                        //post const into db
+                        document.location.href = 'http://localhost:3000';
+                    }else if(temp === 0){
+                        alert("Invalid Register!");
+                    }
+                })
+        }
     };
-
-    function existUID(e) {
-        //find the same uid on db if it exist alert and change the value to none 
-    }
-
-    function validEmail(e) {
-        //check whether email is in valid form.
-    }
 
     return(
         <div>
@@ -41,42 +80,60 @@ export default function Register(props) {
                             <li>
                                 <div>
                                     Set your ID : {" "}
-                                    <input type = "text" onChange={setText} onBlur={existUID} />
+                                    <input name = "user_id"
+                                    value = {user_id}
+                                    type = "text" 
+                                    onChange={setTextid} />
                                 </div>
                             </li>
                             <li>
                                 <div>
                                     Set your password : {" "}
-                                    <input type="password" onChange = {setText} />
+                                    <input name = "passoword"
+                                    value = {passoword}
+                                    type="password" 
+                                    onChange = {setTextid} />
                                 </div>
                             </li>
                             <li>
                                 <div>
                                     Set your name : {" "}
-                                    <input type = "text" onChange={setText} />
+                                    <input name = "user_name"
+                                    value = {user_name}
+                                    type = "text" 
+                                    onChange={setTextid} />
                                 </div>
                             </li>
                             <li>
                                 <div>
                                     Set your email : {" "}
-                                    <input type = "text" onChange={setText} onBlur={validEmail}/>
+                                    <input name = "user_email"
+                                    value = {user_email}
+                                    type = "text" 
+                                    onChange={setTextid} />
                                 </div>
                             </li>
                             <li>
                                 <div>
                                     Set your address : {" "}
                                     <div>
-                                        <input type="text" onChange = {setText} />
+                                        <input name = "address_f"
+                                        value = {address_f}
+                                        type="text" 
+                                        onChange = {setTextid} />
                                     </div>
                                     <div>
-                                        <input type="text" onChange = {setText} />
+                                        <input name = "address_l"
+                                        value = {address_l}
+                                        type="text" 
+                                        onChange = {setTextid} />
                                     </div>
                                 </div>
                             </li>
                             <li>
                                 <div>
                                     Set your profile image : {" "}
-                                    <input type = "file" onChange = {setText} />
+                                    <input type = "file" onChange = {setImage} />
                                 </div>
                             </li>
                         </ul>
