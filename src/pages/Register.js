@@ -41,6 +41,7 @@ export default function Register(props) {
                 alert("Put name!");
                 break;
             case user_email:
+                //Todo: validation for email is required here like having @
                 alert("Put email!");
                 break;
             case address_f:
