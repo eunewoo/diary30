@@ -1,12 +1,13 @@
+import Axios from "axios";
 import { useState } from "react";
 import Topnav from './nav';
 
 export default function Profile(props) {
-    const [img, setImg] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [address1, setAddress1] = useState("");
-    const [address2, setAddress2] = useState("");
+    const [img, setImg] = useState(props.profile.img);
+    const [name, setName] = useState(props.profile.name);
+    const [email, setEmail] = useState(props.profile.email);
+    const [address1, setAddress1] = useState(props.profile.address1);
+    const [address2, setAddress2] = useState(props.profile.address2);
 
     const setProfilePicture =(e) => {
     }
@@ -22,17 +23,39 @@ export default function Profile(props) {
     const setAddress2f =(e) => {
         setAddress2(e.target.value);
     }
-    const setProfile =(e) => {
+    const logout = () => {
+        props.changeProfile({});
+        document.location.href = 'http://localhost:3000/';
+
+    }
+    const saveProfile =(e) => {
         //it should fetch and change
         //but for testing i will use just set function
         if (/\S+@\S+\.\S+/.test(email)) {
-            props.changeProfile({
-                profile: img,
-                name: name,
-                email: email,
-                address1: address1,
-                address2: address2
+            //post method
+            Axios.put('http://localhost:3305/api/diary/users', {
+                    user_id: props.profile.user_id,
+                    profile: img,
+                    name: name,
+                    email: email,
+                    address1: address1,
+                    address2: address2
+                }
+            ).then((response)=>{
+                if (response.status != 200) {
+                    alert("Something went wrong in communicating DB!");
+                } else {
+                    props.changeProfile({
+                        profile: img,
+                        name: name,
+                        email: email,
+                        address1: address1,
+                        address2: address2
+                    });
+                    alert("Your profile has been changed");
+                }
             });
+            
         }else {
             alert("Your email is not valid!\nYour profile has not been changed");
         }
@@ -64,8 +87,8 @@ export default function Profile(props) {
                     <input type="text" id='address1' defaultValue={props.profile.address1} onChange={setAddress1f}></input>
                     <input type="text" id='address2' defaultValue={props.profile.address2} onChange={setAddress2f}></input>
                 </div>
-                <button type='button' onClick={setProfile}>Save</button>
-                <button type='button'>Logout</button>
+                <button type='button' onClick={saveProfile}>Save</button>
+                <button type='button' onClick={logout}>Logout</button>
             </form>
         </>
     );
