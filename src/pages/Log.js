@@ -9,12 +9,6 @@ export default function Log(props) {
         date: [],
         question_set: [],
     })
-    Axios.get("http://localhost:3305/api/diary/logday").then((response) => {
-        for(var i in response.data){
-            logstr.date[i] = response.data[i].date;
-            logstr.question_set[i] = response.data[i].question_set;
-        }
-    })
 
     const [logdata, setLogdata] = useState({
         date: [],
@@ -23,15 +17,7 @@ export default function Log(props) {
         question_value: [],
         question_type: [],
     })
-    Axios.get("http://localhost:3305/api/diary/questions").then((response) => {
-        for(var i in response.data){
-            logdata.date[i] = response.data[i].date;
-            logdata.question_order[i] = response.data[i].question_order;
-            logdata.question[i] = response.data[i].question;
-            logdata.question_value[i] = response.data[i].question_value;
-            logdata.question_type[i] = response.data[i].question_type;
-        }
-    }) // compare user_id and get only equaled user_id's data.
+
 
     const cum_date = new Date();
 

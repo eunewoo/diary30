@@ -12,12 +12,12 @@ import React, {useState} from 'react';
 function App() {
   const [id,setId] = useState({});
   const [profile, setProfile]= useState({
-    user_id: 'abc123', // this is the id for db.
-    profile: '', //profile picture
-    name: 'JunHyeongPark',
-    email: 'abc123@extemp.com',
-    address1 : '119 songdo moonwha-ro',
-    address2 : 'Incheon, Yeonsu-gu, Korea'
+    user_id: "",
+    profile: '',
+    name: "",
+    email: '',
+    address1 : '',
+    address2 : ''
   });
   const [questions, setQuestions] = useState({});
 
