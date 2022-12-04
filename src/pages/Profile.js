@@ -10,6 +10,7 @@ export default function Profile(props) {
     const [address2, setAddress2] = useState(props.profile.address2);
 
     const setProfilePicture =(e) => {
+        //Todo : Eunwoo should do profile pciture stuff
     }
     const setUsername =(e) => {
         setName(e.target.value);
@@ -26,13 +27,11 @@ export default function Profile(props) {
     const logout = () => {
         props.changeProfile({});
         document.location.href = 'http://localhost:3000/';
-
     }
     const saveProfile =(e) => {
         //it should fetch and change
         //but for testing i will use just set function
         if (/\S+@\S+\.\S+/.test(email)) {
-            //post method
             Axios.put('http://localhost:3305/api/diary/users', {
                     user_id: props.profile.user_id,
                     profile: img,
@@ -59,8 +58,6 @@ export default function Profile(props) {
         }else {
             alert("Your email is not valid!\nYour profile has not been changed");
         }
-        //this doesn't show the right information at the first time.
-        console.log(props.profile);
     }
 
     return(
