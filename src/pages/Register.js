@@ -1,6 +1,7 @@
 import React, { Link } from "react-router-dom";
 import { useState } from "react";
 import Axios from "axios";
+import { hashutil } from "./hashutil.mjs";
 
 export default function Register(props) {
     
@@ -51,6 +52,9 @@ export default function Register(props) {
                 alert("Put last address!");
                 break;
             default:
+                if (!/\S+@\S+\.\S+/.test(profdata.user_email)) {
+                    alert("Your email is not in valid form!");
+                } else {
                 let temp = 0;
                 Axios.get('http://localhost:3305/api/diary/users').then((response) => {
                     for(var i in response.data){
@@ -62,12 +66,20 @@ export default function Register(props) {
                     }
                     if(temp === 1){
                         alert("Success Register!");
-                        //post const into db
+                        Axios.post('http://localhost:3305/api/diary/users', {
+                            user_id: profdata.user_id,
+                            password: hashutil(profdata.user_id, profdata.user_email, profdata.password),
+                            profile: profdata.img,
+                            name: profdata.user_name,
+                            email: profdata.user_email,
+                            address1: profdata.address_f,
+                            address2: profdata.address_l
+                        })
                         document.location.href = 'http://localhost:3000';
                     }else if(temp === 0){
                         alert("Invalid Register!");
                     }
-                })
+                })}
         }
     };
 
