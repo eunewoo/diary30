@@ -57,7 +57,7 @@ export default function Login(props) {
                         <ul>
                             <li>
                                 <div>
-                                    Password : {" "}
+                                    Password : {"   "}
                                     <input type= "password" onChange={setPwd} />
                                 </div>
                             </li>

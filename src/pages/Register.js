@@ -7,7 +7,7 @@ export default function Register(props) {
     
     const [profdata, setProfdata] = useState({
         user_id: "",
-        passoword: "",
+        password: "",
         user_name: "",
         user_email: "",
         address_f: "",
@@ -15,7 +15,7 @@ export default function Register(props) {
         img: "",
     });
 
-    const { user_id, passoword, user_name, user_email, address_f, address_l } = profdata;
+    const { user_id, password, user_name, user_email, address_f, address_l } = profdata;
 
     const setTextid = (e) => {
         const { name, value } = e.target;
@@ -35,7 +35,7 @@ export default function Register(props) {
             case user_id:
                 alert("Put id!");
                 break;
-            case passoword:
+            case password:
                 alert("Put Password!");
                 break;
             case user_name:
@@ -68,7 +68,7 @@ export default function Register(props) {
                         alert("Success Register!");
                         Axios.post('http://localhost:3305/api/diary/users', {
                             user_id: profdata.user_id,
-                            password: hashutil(profdata.user_id, profdata.user_email, profdata.password),
+                            password: hashutil(user_id, user_email, password),
                             profile: profdata.img,
                             name: profdata.user_name,
                             email: profdata.user_email,
@@ -102,8 +102,8 @@ export default function Register(props) {
                             <li>
                                 <div>
                                     Set your password : {" "}
-                                    <input name = "passoword"
-                                    value = {passoword}
+                                    <input name = "password"
+                                    defaultValue = {password}
                                     type="password" 
                                     onChange = {setTextid} />
                                 </div>

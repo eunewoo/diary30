@@ -43,7 +43,15 @@ export default function Edit(props) {
 
                 } else if (j.question_type !== i.question) {
                     
+                } else {
+                    duplicate = true;
                 }
+            }
+            if (duplicate === true) {
+                
+            } else if (duplicate === false) {
+                //delete j from db
+                //post i on db
             }
 
         }
@@ -104,7 +112,7 @@ export default function Edit(props) {
                 console.log(e.target.parentElement.childNodes[2]);
                 e.target.parentElement.childNodes[2].remove();
             }
-        } 
+        }
     }
 
     function setSome(iterator) {
