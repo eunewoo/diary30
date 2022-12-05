@@ -13,6 +13,7 @@ function App() {
   const [id,setId] = useState({});
   const [profile, setProfile]= useState({
     user_id: "",
+    password: "",
     profile: '',
     name: "",
     email: '',

@@ -26,6 +26,7 @@ export default function Login(props) {
                 if (response.data[0].password == hashutil(login_id, response.data[0].user_email, password)) {
                     alert("Login Success!");
                     props.ChangeProfile({
+                        password: password,
                         user_id: response.data[0].user_id,
                         profile: response.data[0].img,
                         name: response.data[0].user_name,

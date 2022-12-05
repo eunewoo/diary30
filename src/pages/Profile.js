@@ -1,6 +1,7 @@
 import Axios from "axios";
 import { useState } from "react";
 import Topnav from './nav';
+import { hashutil } from "./hashutil.mjs";
 
 export default function Profile(props) {
     const [img, setImg] = useState(props.profile.img);
@@ -36,6 +37,7 @@ export default function Profile(props) {
                     user_id: props.profile.user_id,
                     profile: img,
                     name: name,
+                    password: hashutil(props.profile.user_id, email, props.profile.password),
                     email: email,
                     address1: address1,
                     address2: address2
