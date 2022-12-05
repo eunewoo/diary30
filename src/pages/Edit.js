@@ -9,6 +9,51 @@ export default function Edit(props) {
     const [returnee, setreturnee] = useState([]);
     const [post, setPost] = useState([]);
 
+    function getData() {
+        var list = document.getElementById("list");
+        var ret = [];
+        
+        for (var i = 0; i < list.childNodes.length; i++) {
+            var temp = {
+                user_id: props.profile.user_id,
+                question: "",
+                question_selection: [],
+                question_type: ""
+            }
+            temp.question = list.childNodes[i].childNodes[0].childNodes[0].value;
+            temp.question_type = list.childNodes[i].childNodes[0].childNodes[1].value;
+            if (list.childNodes[i].childNodes[0].childNodes[1].value === "multiple choice") {
+                temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[3].value);
+                temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[5].value);
+                temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[7].value);
+            }
+            ret.push(temp)
+        }
+        return ret;
+    }
+
+    function detectChange() {
+        var submit = getData();
+        for (var i in submit) {
+            var duplicate = false;
+            for (var j in questions) {
+                if (j.question !== i.question) {
+
+                } else if (j.question_selection !== i.question) {
+
+                } else if (j.question_type !== i.question) {
+                    
+                }
+            }
+
+        }
+        console.log(getData());
+    }
+
+    function postChanges(original, submit) {
+        detectChange();
+    }
+
     function ChangeReturnee(a, z) {//
         var temp = returnee;
         temp[z] = a;
@@ -22,7 +67,22 @@ export default function Edit(props) {
     }
 
     function returnSelection() {
-        return(document.createElement('input'))
+        var returnee = document.createDocumentFragment();
+        var radio = document.createElement('input');
+        radio.type = "radio"
+        radio.disabled = "TRUE"
+        radio.checked = "TRUE"
+        var text = document.createElement('input')
+        text.type = "text";
+
+        returnee.appendChild(radio);
+        returnee.appendChild(text);
+        returnee.appendChild(radio);
+        returnee.appendChild(text);
+        returnee.appendChild(radio);
+        returnee.appendChild(text);
+
+        return returnee;
     }
 
     function addSelection(e) {
@@ -45,8 +105,6 @@ export default function Edit(props) {
                 e.target.parentElement.childNodes[2].remove();
             }
         } 
-        
-        
     }
 
     function setSome(iterator) {
@@ -131,6 +189,7 @@ export default function Edit(props) {
         var list = document.getElementById('list');
         list.appendChild(newDiv());
     }
+    
     useEffect(() => {
         Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
             var z = 0;
@@ -138,7 +197,9 @@ export default function Edit(props) {
                 append(questions, response.data[i]);
                 ChangeReturnee(setSome(z),z);
                 z++;
+                
             }
+            console.log(questions);
     })}, []);
     
     return(
@@ -153,7 +214,7 @@ export default function Edit(props) {
                     {returnee}
                 </ul>
             </inner>
-            <button>Save</button>
+            <button onClick={postChanges}>Save</button>
         </div>
     );
 }

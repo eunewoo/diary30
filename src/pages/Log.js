@@ -18,7 +18,6 @@ export default function Log(props) {
         question_type: [],
     })
 
-
     const cum_date = new Date();
 
     const [cumDate, setCumDate] = useState({
