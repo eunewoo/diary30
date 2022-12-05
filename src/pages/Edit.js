@@ -7,6 +7,7 @@ export default function Edit(props) {
     
     const [questions, setQuestions] = useState([]);
     const [returnee, setreturnee] = useState([]);
+    const [post, setPost] = useState([]);
 
     function ChangeReturnee(a, z) {//
         var temp = returnee;
@@ -19,6 +20,35 @@ export default function Edit(props) {
         questions.push(question);
         setQuestions(temp);
     }
+
+    function returnSelection() {
+        return(document.createElement('input'))
+    }
+
+    function addSelection(e) {
+        console.log(e.target.value);
+        if (e.target.value == "multiple choice"){
+            console.log(e.target.parentElement.childNodes.length);
+            if (e.target.parentElement.childNodes.length == 2) {
+                var div = e.target.parentElement;
+                console.log(div)
+                div.appendChild(returnSelection());
+                div.appendChild(returnSelection());
+                div.appendChild(returnSelection());
+                console.log(e.target.parentElement.childNodes);
+            }    
+        } else if (e.target.parentElement.childNodes.length == 5) {
+            var div = e.target.parentElement;
+            console.log(div)
+            for (var i = 2; i < 5; i++) {
+                console.log(e.target.parentElement.childNodes[2]);
+                e.target.parentElement.childNodes[2].remove();
+            }
+        } 
+        
+        
+    }
+
     function setSome(iterator) {
         var temp = questions[iterator];
         console.log(questions[iterator]);
@@ -28,7 +58,7 @@ export default function Edit(props) {
                 <li>
                     <div>
                         <input type="text" defaultValue={questions[iterator].question} />
-                        <select name="options" defaultValue={questions[iterator].question_type}>
+                        <select name="options" defaultValue={questions[iterator].question_type} onChange={addSelection}>
                             <option value="number">number</option>
                             <option value="boolean">boolean</option>
                             <option value="multiple choice">multiple choice</option>
@@ -51,7 +81,7 @@ export default function Edit(props) {
                 <li>
                     <div>
                         <input type="text" defaultValue={questions[iterator].question} />
-                        <select name="options" defaultValue={questions[iterator].question_type}>
+                        <select name="options" onChange={addSelection} defaultValue={questions[iterator].question_type}>
                             <option value="number">number</option>
                             <option value="boolean">boolean</option>
                             <option value="multiple choice">multiple choice</option>
@@ -70,6 +100,7 @@ export default function Edit(props) {
         c.type = "text";
         var d = document.createElement('select');
         d.name = "options";
+        d.oninput = addSelection;
         var e = document.createElement("option");
         e.value="number";
         e.appendChild(document.createTextNode("number"));
