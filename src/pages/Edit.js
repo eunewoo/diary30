@@ -143,7 +143,7 @@ export default function Edit(props) {
 
     function postChanges(original, submit) {
         detectChange();
-        //alert("Your change has been changed");
+        alert("Your change has been changed");
     }
 
     function ChangeReturnee(a, z) {//

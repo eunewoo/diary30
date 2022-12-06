@@ -5,7 +5,7 @@ function topnav(props) {
         <div>
             <div>
                 <p>Day Logger</p>
-                <Link to="/log2">Log Day</Link>
+                <Link to="/log">Log Day</Link>
                 <Link to="/edit">Edit Questions</Link>
                 <Link to="/view">View Data</Link>
                 <Link to="/profile"><img></img>profile</Link>

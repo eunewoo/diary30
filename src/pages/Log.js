@@ -1,24 +1,13 @@
 import Topnav from './nav.js';
 import Axios from "axios";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import React, { Link } from "react-router-dom";
 
 export default function Log(props) {
 
-    const [logstr, setLogstr] = useState({
-        date: [],
-        question_set: [],
-    })
-
-    const [logdata, setLogdata] = useState({
-        date: [],
-        question_order: [],
-        question: [],
-        question_value: [],
-        question_type: [],
-    })
-
     const cum_date = new Date();
+    const [returnee, setReturnee] = useState([]);
+    const [questions, setQuestions] = useState([]);
 
     const [cumDate, setCumDate] = useState({
         cum_year : cum_date.getFullYear(),
@@ -28,167 +17,290 @@ export default function Log(props) {
 
     const { cum_year, cum_month, cum_day } = cumDate;
 
-    const [inputdata, setInputdata] = useState({
-        number: "",
-        bool: "",
-        text: "",
-        multiple: "",
-    })
-
-    const { number, bool, text, multiple } = inputdata;
-
-    const setText = (e) => {
-        const { name, value } = e.target;
-        setInputdata({
-            ...inputdata,
-            [name]: value,
-        })
-    }
-
-    const presentData = () => {
-        const { date, question_order, question, question_value, question_type } = logdata;
-        var index = [];
-        var index_value = [];
-        var temp = '';
-
-        for(var i in date){
-            temp += date[i]
-            if(temp.substr(0, 10) == cum_year +"-"+ cum_month +"-"+ (cum_day-1)){
-                index[question_order[i]] = question[i];
-                index_value[question_order[i]] = question_type[i];
-            }
-            temp = ''
-        }
-        const questionstype = (arr_type) => {
-            switch(arr_type){
-                case "Number":
-                    console.log("1")
-                    return(
-                        <div>
-                            <input
-                            name = "number"
-                            value = {number} 
-                            type = "text"
-                            onChange = {setText}
-                            />
-                        </div>
-                    )
-                case "Boolean":
-                    return(
-                        <div>
-                            <input 
-                            name = "bool"
-                            value = "true"
-                            type = "checkbox"
-                            onClick = {setText}
-                            />True
-                            <input 
-                            name = "bool"
-                            value = "false"
-                            type = "checkbox"
-                            onClick = {setText}
-                            />False
-                        </div>
-                    )
-                case "Text":
-                    return(
-                        <div>
-                            <input 
-                            name = "text"
-                            value = {text}
-                            type = "text"
-                            onchange = {setText}
-                            />
-                        </div>
-                    )
-                case "Multiple":
-                    return(
-                        <div>
-                            <input 
-                            name = "multiple"
-                            value = "Ok day"
-                            type = "checkbox"
-                            onClick = {setText}
-                            />Ok day
-                            <input 
-                            name = "multiple"
-                            value = "Bad day"
-                            type = "checkbox"
-                            onClick = {setText}
-                            />Bad day
-                            <input 
-                            name = "multiple"
-                            value = "Great day"
-                            type = "checkbox"
-                            onClick = {setText}
-                            />Great day
-                        </div>
-                    )
-            }
-        }
-        for(var i in index){
-            return(
-                <div>
-                    <li>
-                        {index[i]}
-                    </li>
-                    <li>
-                        {questionstype(index_value[i])}
-                    </li>
-                </div>
-            )
-        }
-    }
-
     const clickPre = () => {
-        setCumDate({
-            ...cumDate,
-            cum_day: cum_day-1
-        })
+        var arr = [31,30,31,30,31,30,31,31,30,31,30,31];
+        var temp ={}
+        if (cumDate.cum_month == 1) {
+            if (cumDate.cum_day == 1) {
+                temp = {
+                    ...cumDate,
+                    cum_year: cum_year-1,
+                    cum_month: 12,
+                    cum_day: 31
+                }
+            } else {
+                temp = {
+                    ...cumDate,
+                    cum_day: cum_day-1
+                }
+            }
+        } else {
+            if (cumDate.cum_day == 1) {
+                temp = {
+                    ...cumDate,
+                    cum_month: cum_month-1,
+                    cum_day: arr[cum_month-2]
+                }
+            } else {
+                temp = {
+                    ...cumDate,
+                    cum_day: cum_day-1
+                }
+            }
+        }
+        setCumDate(temp);
+        var list = document.getElementById("list");
+        for (var i = 0; i < list.childNodes.length; i++) {
+            if (list.childNodes[i].childNodes.length === 7) { //if multiple choice
+                list.childNodes[i].childNodes[1].checked = returnMutliple(questions[i], 0, temp)
+                list.childNodes[i].childNodes[3].checked = returnMutliple(questions[i], 1, temp)
+                list.childNodes[i].childNodes[5].checked = returnMutliple(questions[i], 2, temp)
+            }
+            if (list.childNodes[i].childNodes.length === 5) { //if multiple choice
+                list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp)
+                list.childNodes[i].childNodes[3].checked = returnBoolean(questions[i], 1, temp)
+            } 
+            if (list.childNodes[i].childNodes.length === 2) { //if multiple choice
+                if (returnText(questions[i], temp) === undefined) {
+                    list.childNodes[i].childNodes[1].value = ""
+                } else {
+                    list.childNodes[i].childNodes[1].value = returnText(questions[i], temp);
+                }
+            } 
+        }
+        
     }
 
     const clickNext = () => {
-        setCumDate({
-            ...cumDate,
-            cum_day: cum_day+1
-        })
+        var arr = [31,30,31,30,31,30,31,31,30,31,30,31];
+        var temp ={}
+        if (cumDate.cum_month == 12) {
+            if (cumDate.cum_day == arr[cumDate.cum_month-1]) {
+                temp = {
+                    ...cumDate,
+                    cum_year: cum_year+1,
+                    cum_month: 1,
+                    cum_day: 1
+                }
+            } else {
+                temp = {
+                    ...cumDate,
+                    cum_day: cum_day+1
+                }
+            }
+        } else {
+            if (cumDate.cum_day == arr[cumDate.cum_month-1]) {
+                temp = {
+                    ...cumDate,
+                    cum_month: cum_month+1,
+                    cum_day: 1
+                }
+            } else {
+                temp = {
+                    ...cumDate,
+                    cum_day: cum_day+1
+                }
+            }
+
+        }
+        setCumDate(temp);
+        var list = document.getElementById("list");
+        for (var i = 0; i < list.childNodes.length; i++) {
+            if (list.childNodes[i].childNodes.length === 7) { //if multiple choice
+                list.childNodes[i].childNodes[1].checked = returnMutliple(questions[i], 0, temp)
+                list.childNodes[i].childNodes[3].checked = returnMutliple(questions[i], 1, temp)
+                list.childNodes[i].childNodes[5].checked = returnMutliple(questions[i], 2, temp)
+            }
+            if (list.childNodes[i].childNodes.length === 5) { //if boolean
+                list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp)
+                list.childNodes[i].childNodes[3].checked = returnBoolean(questions[i], 1, temp)
+            } 
+            if (list.childNodes[i].childNodes.length === 2) { //if text or number
+                if (returnText(questions[i], temp) === undefined) {
+                    list.childNodes[i].childNodes[1].value = ""
+                } else {
+                    list.childNodes[i].childNodes[1].value = returnText(questions[i], temp);
+                }
+            } 
+        }
     }
 
-    const showData = () => {
-        var showDate = cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day;
-        // if we receive id from app.js => 
-        return(
-            <div>
-                <nav>
-                    <ul>
-                        <li>
-                            <button onClick={clickPre}>previous</button>
-                            <div>
-                                {showDate}
-                            </div>
-                            <button onClick={clickNext}>next</button>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        )
+    function append(questions, question) {
+        var temp = questions;
+        questions.push(question);
+        setQuestions(temp);
     }
+
+    function returnMutliple(x, y, z) {
+        if (z === undefined) {
+            z=cumDate;
+        }
+        for (var i = 0; i < x.question_answers.length; i++) {
+            if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+                if (x.question_answers[i].answer === x.question_selection[y]) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    function returnBoolean(x, y, z) {
+        if (z === undefined) {
+            z=cumDate;
+        }
+        for (var i = 0; i < x.question_answers.length; i++) {
+            if (x.question_answers[i].date === "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+                if (x.question_answers[i].answer === true && y == 0) {
+                    return true;
+                } else if (x.question_answers[i].answer === false && y == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function returnText(x, z) {
+        if (z === undefined) {
+            z=cumDate;
+        }
+        for (var i = 0; i < x.question_answers.length; i++) {
+            if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+                return x.question_answers[i].answer;
+            }
+        }
+    }
+
+    function returnInput(x) {
+        if (x.question_type === "multiple choice") {
+            return(
+            <>
+                <input type="radio" name={x.question} value={x.question_selection[0]} defaultChecked={returnMutliple(x,0)}></input>
+                <label>{x.question_selection[0]}</label>
+                <input type="radio" name={x.question} value={x.question_selection[1]} defaultChecked={returnMutliple(x,1)}></input>
+                <label>{x.question_selection[1]}</label>
+                <input type="radio" name={x.question} value={x.question_selection[2]} defaultChecked={returnMutliple(x,2)}></input>
+                <label>{x.question_selection[2]}</label>
+            </>)
+        } else if (x.question_type === "boolean") {
+            return(
+            <>
+                <input type="radio" name={x.question} value={true}defaultChecked={returnBoolean(x,0)}></input>
+                <label>True</label>
+                <input type="radio" name={x.question} value={false} defaultChecked={returnBoolean(x,1)}></input>
+                <label>False</label>
+            </>)
+        } else if (x.question_type === "number") {
+            return  (<input type="number" defaultValue={returnText(x)}/>);
+        } else {
+            return(
+                <>
+                    <input type="text" defaultValue={returnText(x)}></input>
+                </>)
+        }
+    }
+
+    function getData(x) {
+        if (x < questions.length) {
+            return (
+            <>
+            <div>
+                <p>{questions[x].question}</p>
+                {returnInput(questions[x])}
+                </div>
+                {getData(x+1)}
+                
+            </>);
+        }
+        return(<></>);
+        
+    }
+
+    useEffect(() => {
+        Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
+            var z = 0;
+            for (var i in response.data) {
+                var temp = JSON.parse(response.data[i].question_selection);
+                var temp1 = JSON.parse(response.data[i].question_answers);
+
+                append(questions, {
+                    id: response.data[i].id,
+                    user_id: response.data[i].user_id,
+                    question: response.data[i].question,
+                    question_type: response.data[i].question_type,
+                    question_selection: temp,
+                    question_answers: temp1
+                });
+                //ChangeReturnee(setSome(z),z);
+                z++;
+                
+            }
+            setReturnee(getData(0));
+    })}, []);
+    function changeQuestions(a) {
+        setQuestions(a);
+    }
+    function ChangeReturnee(a) {
+        setReturnee(a)
+    }
+    function submit() {
+        var temp = questions;
+        console.log(temp);
+        var list = document.getElementById("list");
+        for (var i = 0; i < list.childNodes.length; i++) {
+            var temp1 = {
+                date: "" + cumDate.cum_year + "-"+ cumDate.cum_month + "-" + cumDate.cum_day,
+                answer: ""
+            }
+            if (list.childNodes[i].childNodes.length === 7) {
+                if (list.childNodes[i].childNodes[1].checked) {
+                    temp1.answer = list.childNodes[i].childNodes[1].value;
+                } else if (list.childNodes[i].childNodes[3].checked) {
+                    temp1.answer = list.childNodes[i].childNodes[3].value;
+                } else if (list.childNodes[i].childNodes[5].checked) {
+                    temp1.answer = list.childNodes[i].childNodes[5].value;
+                }
+            } else if (list.childNodes[i].childNodes.length === 5) {
+                if (list.childNodes[i].childNodes[1].checked) {
+                    temp1.answer = true;
+                } else if (list.childNodes[i].childNodes[3].checked) {
+                    temp1.answer = false;
+                }
+            } else if (list.childNodes[i].childNodes.length === 2) {
+                temp1.answer = list.childNodes[i].childNodes[1].value;
+            }
+            for (var j = 0; j < temp[i].question_answers.length; j++) {
+                if (temp[i].question_answers[j].date === ""+cumDate.cum_year +"-"+cumDate.cum_month+"-"+cumDate.cum_day) {
+                    temp[i].question_answers[j].answer = temp1.answer
+                } else if (j === temp[i].question_answers.length - 1) {
+                    temp[i].question_answers.push(temp1);
+                }
+            }
+            
+        }
+        
+        for (var i = 0; i < temp.length; i++) {
+            Axios.put('http://localhost:3305/api/diary/questions/', {
+                user_id: props.profile.user_id,
+                question: temp[i].question,
+                question_answers: JSON.stringify(temp[i].question_answers)
+            })
+        
+    }}
 
     return(
-        <div>
+        <>
             <Topnav />
-            <inner>
-                <nav>
-                    <ul>
-                        <li>
-                            {showData()}
-                        </li>
-                        <li>
-                            {presentData()}
-                        </li>
-                    </ul>
-                </nav>
-            </inner>
-        </div>
+            <div>
+                <button onClick={clickPre}>{"<"}</button>
+                <p>{cumDate.cum_year}-{cumDate.cum_month}-{cumDate.cum_day}</p>
+                <button onClick={clickNext}>{">"}</button>
+            </div>
+            <div id="list">
+                {returnee}
+            </div>
+            <button onClick={submit}>Submit</button>
+        </>
     );
 }
