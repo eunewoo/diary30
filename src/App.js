@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Edit from './pages/Edit.js';
 import Log from './pages/Log.js';
+import Log2 from './pages/Log2.js';
 import Login from './pages/Login.js';
 import Register from './pages/Register.js';
 import View from './pages/View.js';
@@ -31,7 +32,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Login ChangeProfile={ChangeProfile}/>} />
         <Route exact path="/register" element={<Register />} />
-        <Route exact path="/log"  element={<Log />} />
+        <Route exact path="/log2"  element={<Log2 profile={profile}/>} />
         <Route exact path="/edit" element={<Edit profile={profile}/>} />
         <Route exact path="/view" element={<View />} />
         <Route exact path="/profile" element={<Profile profile={profile} changeProfile={ChangeProfile}/>} />
