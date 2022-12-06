@@ -50,11 +50,40 @@ export default function Edit(props) {
             if (duplicate === true) {
                 
             } else if (duplicate === false) {
-                //delete j from db
                 //post i on db
+                console.log(props.profile.user_id);
+                Axios.post('http://localhost:3305/api/diary/questions', {
+                    user_id: props.profile.user_id,
+                    question: i.question,
+                    question_type: i.question_type,
+                    question_selection: i.question_selection
+                });
             }
 
         }
+        duplicate = false;
+        for (var i in questions) {
+            var duplicate = false;
+            for (var j in submit) {
+                if (j.question !== i.question) {
+
+                } else if (j.question_selection !== i.question) {
+
+                } else if (j.question_type !== i.question) {
+                    
+                } else {
+                    duplicate = true;
+                }
+            }
+            if (duplicate === true) {
+                
+            } else if (duplicate === false) {
+                //delete j from db
+                Axios.delete('http://localhost:3305/api/diary/questions/user_id="'+props.profile.user_id+'"&question="'+j.question+'";');
+            }
+
+        }
+        
         console.log(getData());
     }
 
@@ -115,6 +144,10 @@ export default function Edit(props) {
         }
     }
 
+    function liDelete(e) {
+        e.target.parentElement.remove();
+    }
+
     function setSome(iterator) {
         var temp = questions[iterator];
         console.log(questions[iterator]);
@@ -137,7 +170,7 @@ export default function Edit(props) {
                         <input type="radio" disabled="TRUE" checked="TRUE"></input>
                         <input type="text"></input>
                     </div>
-                    <button>delete</button>
+                    <button onClick={liDelete}>delete</button>
                 </li>
             </>
             );
@@ -154,7 +187,7 @@ export default function Edit(props) {
                             <option value="text">text</option>
                         </select>
                     </div>
-                    <button>delete</button>
+                    <button onClick={liDelete}>delete</button>
                 </li>
             </>
         )
@@ -179,6 +212,10 @@ export default function Edit(props) {
         var h = document.createElement("option");
         h.value="text";
         h.appendChild(document.createTextNode("text"));
+        var i = document.createElement("button");
+        i.textContent = "delete";
+        i.onclick = liDelete;
+
 
         d.appendChild(e);
         d.appendChild(f);
@@ -189,6 +226,7 @@ export default function Edit(props) {
         b.appendChild(d);
 
         a.appendChild(b);
+        a.appendChild(i);
 
         return(a);
     }
