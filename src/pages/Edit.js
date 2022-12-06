@@ -2,12 +2,13 @@ import Topnav from './nav';
 import { useState, useEffect, timeout, delay } from "react";
 import React, { Link } from "react-router-dom";
 import Axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function Edit(props) {
     
     const [questions, setQuestions] = useState([]);
     const [returnee, setreturnee] = useState([]);
-    const [post, setPost] = useState([]);
+    const navigate = useNavigate();
 
     function getData() {
         var list = document.getElementById("list");
@@ -20,75 +21,114 @@ export default function Edit(props) {
                 question_selection: [],
                 question_type: ""
             }
-            temp.question = list.childNodes[i].childNodes[0].childNodes[0].value;
-            temp.question_type = list.childNodes[i].childNodes[0].childNodes[1].value;
-            if (list.childNodes[i].childNodes[0].childNodes[1].value === "multiple choice") {
-                temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[3].value);
-                temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[5].value);
-                temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[7].value);
+            if (list.childNodes[i].childNodes[0].childNodes[0].value === "") {
+                alert("question cannot be empty!");
+            } else {
+                temp.question = list.childNodes[i].childNodes[0].childNodes[0].value;
+                temp.question_type = list.childNodes[i].childNodes[0].childNodes[1].value;
+                if (list.childNodes[i].childNodes[0].childNodes[1].value === "multiple choice") {
+                    temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[3].value);
+                    temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[5].value);
+                    temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[7].value);
+                }
+                ret.push(temp)
             }
-            ret.push(temp)
+            
         }
         return ret;
+    }
+    
+    function validate() {
+        var data = getData();
     }
 
     function detectChange() {
         var submit = getData();
-        for (var i in submit) {
+        var temp= [];
+        var temp1 = [];
+        //find duplicate whether to post or not
+        for (var i = 0; i < submit.length; i++) {
             var duplicate = false;
-            for (var j in questions) {
-                if (j.question !== i.question) {
-
-                } else if (j.question_selection !== i.question) {
-
-                } else if (j.question_type !== i.question) {
-                    
-                } else {
+            for (var j = 0; j < questions.length; j++) {
+                if (questions[j].question === submit[i].question &&
+                    questions[j].question_selection[0] === submit[i].question_selection[0] &&
+                    questions[j].question_selection[1] === submit[i].question_selection[1] &&
+                    questions[j].question_selection[2] === submit[i].question_selection[2] &&
+                    questions[j].question_type === submit[i].question_type
+                    ) {
                     duplicate = true;
+                    break;
+                }
+                
+            }
+            if (duplicate === false) {
+                temp.push(submit[i]);
+            }
+        }
+        for (var i = 0; i < temp.length; i++) {
+            Axios.post('http://localhost:3305/api/diary/questions', {
+                user_id: temp[i].user_id,
+                question: temp[i].question,
+                question_selection: temp[i].question_selection,
+                question_type: temp[i].question_type
+            });
+            
+        }
+        for (var i = 0; i < questions.length; i++) {
+            var duplicate = false;
+            for (var j = 0; j < submit.length; j++) {
+                if (questions[i].question === submit[j].question &&
+                    questions[i].question_selection[0] === submit[j].question_selection[0] &&
+                    questions[i].question_selection[1] === submit[j].question_selection[1] &&
+                    questions[i].question_selection[2] === submit[j].question_selection[2] &&
+                    questions[i].question_type === submit[j].question_type
+                    ) {
+                    duplicate = true;
+                    break;
                 }
             }
-            if (duplicate === true) {
-                
-            } else if (duplicate === false) {
-                //post i on db
-                console.log(props.profile.user_id);
-                Axios.post('http://localhost:3305/api/diary/questions', {
-                    user_id: props.profile.user_id,
-                    question: i.question,
-                    question_type: i.question_type,
-                    question_selection: i.question_selection
+            if (duplicate === false) {
+                temp1.push(questions[i]);
+            }
+        }
+        for (var i = 0; i < temp1.length; i++) {
+            Axios.delete('http://localhost:3305/api/diary/questions/user_id='+temp1[i].user_id+'&id='+temp1[i].id); 
+        }
+        Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
+            var z = 0;
+            
+            for (var i in response.data) {
+                var temp = JSON.parse(response.data[i].question_selection);
+                changeQuestions([]);
+                changereturnee([]);
+                append(questions, {
+                    id: response.data[i].id,
+                    user_id: response.data[i].user_id,
+                    question: response.data[i].question,
+                    question_type: response.data[i].question_type,
+                    question_selection: temp
                 });
-            }
-
-        }
-        duplicate = false;
-        for (var i in questions) {
-            var duplicate = false;
-            for (var j in submit) {
-                if (j.question !== i.question) {
-
-                } else if (j.question_selection !== i.question) {
-
-                } else if (j.question_type !== i.question) {
-                    
-                } else {
-                    duplicate = true;
-                }
-            }
-            if (duplicate === true) {
+                ChangeReturnee(setSome(z),z);
+                z++;
                 
-            } else if (duplicate === false) {
-                //delete j from db
-                Axios.delete('http://localhost:3305/api/diary/questions/user_id="'+props.profile.user_id+'"&question="'+j.question+'";');
             }
-
-        }
+    })
         
-        console.log(getData());
+    }
+
+    function changeQuestions(a) {
+        setQuestions(a);
+    }
+
+    function changereturnee(a) {
+        setQuestions(a);
     }
 
     function postChanges(original, submit) {
         detectChange();
+        alert("Your change has been changed");
+        navigate("/log");
+
     }
 
     function ChangeReturnee(a, z) {//
@@ -150,7 +190,6 @@ export default function Edit(props) {
 
     function setSome(iterator) {
         var temp = questions[iterator];
-        console.log(questions[iterator]);
         if (questions[iterator].question_type == "multiple choice") {
             return (
                 <>
@@ -164,11 +203,11 @@ export default function Edit(props) {
                             <option value="text">text</option>
                         </select>
                         <input type="radio" disabled="TRUE" checked="TRUE"></input>
-                        <input type="text"></input>
+                        <input type="text" defaultValue={temp.question_selection[0]}></input>
                         <input type="radio" disabled="TRUE" checked="TRUE"></input>
-                        <input type="text"></input>
+                        <input type="text" defaultValue={temp.question_selection[1]}></input>
                         <input type="radio" disabled="TRUE" checked="TRUE"></input>
-                        <input type="text"></input>
+                        <input type="text" defaultValue={temp.question_selection[2]}></input>
                     </div>
                     <button onClick={liDelete}>delete</button>
                 </li>
@@ -239,13 +278,21 @@ export default function Edit(props) {
     useEffect(() => {
         Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
             var z = 0;
+            
             for (var i in response.data) {
-                append(questions, response.data[i]);
+                var temp = JSON.parse(response.data[i].question_selection);
+
+                append(questions, {
+                    id: response.data[i].id,
+                    user_id: response.data[i].user_id,
+                    question: response.data[i].question,
+                    question_type: response.data[i].question_type,
+                    question_selection: temp
+                });
                 ChangeReturnee(setSome(z),z);
                 z++;
                 
             }
-            console.log(questions);
     })}, []);
     
     return(
