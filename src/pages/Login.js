@@ -34,7 +34,7 @@ export default function Login(props) {
                         address1 : response.data[0].address_f,
                         address2 : response.data[0].address_l
                       })
-                      navigate("/log2")
+                      navigate("/log")
                 } else {
                     alert("Unavail Login!");
                 }}})};

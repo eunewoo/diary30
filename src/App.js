@@ -33,7 +33,7 @@ function App() {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/log"  element={<Log profile={profile}/>} />
         <Route exact path="/edit" element={<Edit profile={profile}/>} />
-        <Route exact path="/view" element={<View />} />
+        <Route exact path="/view" element={<View profile={profile}/>} />
         <Route exact path="/profile" element={<Profile profile={profile} changeProfile={ChangeProfile}/>} />
       </Routes>
     </BrowserRouter>
