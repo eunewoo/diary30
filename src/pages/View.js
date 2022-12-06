@@ -11,12 +11,12 @@ export default function View(props) {
         question: [],
         question_value: [],
     }) //if match id then get Axios.
-
+    var datas = [];
+    var charts= [];
     const { date, question, question_value } = userdata;
     function toggleSwitch() {
-        var a = document.getElementById("myChart");
+        var a = document.getElementById("chart");
         var b = document.getElementById("table");
-        console.log(a.style.display === "block");
         if (a.style.display === "block") {
             a.style.display = "none"
             b.style.display = "block"
@@ -246,6 +246,7 @@ export default function View(props) {
             for (var i in response.data) {
                 var temp = JSON.parse(response.data[i].question_selection);
                 var temp1 = JSON.parse(response.data[i].question_answers);
+                var temp2 = [];
                 append(questions, {
                     id: response.data[i].id,
                     user_id: response.data[i].user_id,
@@ -255,26 +256,95 @@ export default function View(props) {
                     question_answers: temp1
                 });
                 z++;
-            }
-            var temp = []
-            
-            for (var i = 0; i < JSON.parse(response.data[1].question_answers).length; i++) {
-                temp.push({x: JSON.parse(response.data[1].question_answers)[i].date, y: JSON.parse(response.data[1].question_answers)[i].answer})
-            }
-            console.log(response.data[1].question);
-            const chart = new Chart("myChart", {
-                type: 'line',
-                data: {
-                    datasets: [{
-                        label: response.data[1].question,
-                        data: temp
-                      }]
-                },
-                options:  {
+                if (response.data[i].question_type === "number") {
+                    for (var j = 0; j < temp1.length; j++) {
+                        temp2.push({x: temp1[j].date, y: temp1[j].answer});
+                    }
+                    var canvas = document.createElement("canvas");
+                    canvas.id = "chart" + i;
+                    document.getElementById('chart').appendChild(canvas)
+                    var chart = new Chart("chart" + i, {
+                        type: 'line',
+                        data: {
+                          datasets: [{
+                            label: response.data[i].question,
+                            data: temp2,
+                    }]},
+                    options: {
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: response.data[i].question
+                            }
+                        }
+                    }})
+                    charts.push(chart);
+                } else if (response.data[i].question_type == "multiple choice") {
+                    var x = [0,0,0];
+                    for (var j = 0; j < temp1.length; j++) {
+                        if (temp[0] === temp1[j].answer) {
+                            x[0]++;
+                        }else if (temp[1] === temp1[j].answer) {
+                            x[1]++;
+                        }else if (temp[2] === temp1[j].answer) {
+                            x[2]++;
+                        }
+                    }
+                    var canvas = document.createElement("canvas");
+                    canvas.id = "chart" + i;
+                    document.getElementById('chart').appendChild(canvas)
+                    var chart = new Chart("chart" + i, {
+                        type: 'pie',
+                        data: {
+                            labels: [temp[0], temp[1], temp[2]],
+                            datasets: [{
+                                data: x,
+                            }]},
+                        options: {
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: response.data[i].question
+                                    }
+                                }
+                            }
+                        })
+                          charts.push(chart);
+                } else if (response.data[i].question_type === "boolean") {
+                    var x = [0, 0];
+                    for (var j = 0; j < temp1.length; j++) {
+                        if (temp1[j].answer === true) {
+                            x[0]++;
+                        } else if (temp1[j].answer === false) {
+                            x[1]++;
+                        }
+                    }
+                    var canvas = document.createElement("canvas");
+                    canvas.id = "chart" + i;
+                    document.getElementById('chart').appendChild(canvas)
+                    var chart = new Chart("chart" + i, {
+                        type: 'pie',
+                        data: {
+                            labels: ['true', 'false'],
+                            datasets: [{
+                                
+                              data: x,
+                            }]},
+                            options: {
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: response.data[i].question
+                                    }
+                                }
+                            }})
+                    charts.push(chart);
+                } else if (response.data[i].question_type === "text") {
+                    charts.push([]);
                 }
-            });
             setReturnee(getData(0));
-    })}, []);
+    }})}, []);
+
 
     
 
@@ -283,7 +353,6 @@ export default function View(props) {
             <Topnav />
             <button onClick={toggleSwitch}>Toggle</button>
             <div style={{display: "block"}} id="chart">
-                <canvas id="myChart" width="50%" height="50%" />
             </div>
             <div style={{display: "none", width: "200px", height: "200px"}} id="table">
             <div>
