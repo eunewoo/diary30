@@ -38,12 +38,43 @@ export default function Edit(props) {
         return ret;
     }
     
+    function remove(arr, index) {
+        var a = arr.slice(0,index);
+        var b = arr.slice(index, -1);
+        var ret = [];
+        for (var i = 0; i < a.length; i++) {
+            ret.push(a[i])
+        }
+        for (var i = 0; i < b.length; i++) {
+            ret.push(b[i])
+        }
+        console.log(ret);
+        return ret;
+    }
     function validate() {
         var data = getData();
+        
+        for (var i = 0; i < data.length; i++) {
+            for (var j = 0; j < data.length; j++) {
+                if (i !== j) {
+                    if (data[i].question === data[j].question &&
+                        data[i].question_type === data[j].question_type &&
+                        data[i].question_selection[0] === data[j].question_selection[0] &&
+                        data[i].question_selection[1] === data[j].question_selection[1] &&
+                        data[i].question_selection[2] === data[j].question_selection[2]) {
+                            data = remove(data, i);
+                            alert("Question cannot be duplicate. Duplicate answers are not submitted");
+                            i = 0;
+                            j = 0;
+                        }
+                }
+            }
+        }
+        return data;
     }
 
     function detectChange() {
-        var submit = getData();
+        var submit = validate();
         var temp= [];
         var temp1 = [];
         //find duplicate whether to post or not
@@ -65,15 +96,7 @@ export default function Edit(props) {
                 temp.push(submit[i]);
             }
         }
-        for (var i = 0; i < temp.length; i++) {
-            Axios.post('http://localhost:3305/api/diary/questions', {
-                user_id: temp[i].user_id,
-                question: temp[i].question,
-                question_selection: temp[i].question_selection,
-                question_type: temp[i].question_type
-            });
-            
-        }
+
         for (var i = 0; i < questions.length; i++) {
             var duplicate = false;
             for (var j = 0; j < submit.length; j++) {
@@ -91,28 +114,22 @@ export default function Edit(props) {
                 temp1.push(questions[i]);
             }
         }
-        for (var i = 0; i < temp1.length; i++) {
-            Axios.delete('http://localhost:3305/api/diary/questions/user_id='+temp1[i].user_id+'&id='+temp1[i].id); 
+
+        for (var i = 0; i < temp.length; i++) {
+            Axios.post('http://localhost:3305/api/diary/questions', {
+                user_id: temp[i].user_id,
+                question: temp[i].question,
+                question_selection: JSON.stringify(temp[i].question_selection),
+                question_type: temp[i].question_type
+            }).then(() => {console.log("post ended")}); 
         }
-        Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
-            var z = 0;
-            
-            for (var i in response.data) {
-                var temp = JSON.parse(response.data[i].question_selection);
-                changeQuestions([]);
-                changereturnee([]);
-                append(questions, {
-                    id: response.data[i].id,
-                    user_id: response.data[i].user_id,
-                    question: response.data[i].question,
-                    question_type: response.data[i].question_type,
-                    question_selection: temp
-                });
-                ChangeReturnee(setSome(z),z);
-                z++;
-                
-            }
-    })
+        
+        for (var i = 0; i < temp1.length; i++) {
+            Axios.delete('http://localhost:3305/api/diary/questions/user_id='+temp1[i].user_id+'&id='+temp1[i].id).then((response) => {
+                console.log("del ended");
+            }); 
+        }
+
         
     }
 
@@ -126,9 +143,7 @@ export default function Edit(props) {
 
     function postChanges(original, submit) {
         detectChange();
-        alert("Your change has been changed");
-        navigate("/log");
-
+        //alert("Your change has been changed");
     }
 
     function ChangeReturnee(a, z) {//
