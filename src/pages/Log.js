@@ -289,8 +289,10 @@ export default function Log(props) {
                 question: temp[i].question,
                 question_answers: JSON.stringify(temp[i].question_answers)
             })
+        }
+        alert("Your submission is correctly submitted on the db");
         
-    }}
+}
 
     return(
         <>

@@ -62,9 +62,8 @@ export default function Edit(props) {
                         data[i].question_selection[0] === data[j].question_selection[0] &&
                         data[i].question_selection[1] === data[j].question_selection[1] &&
                         data[i].question_selection[2] === data[j].question_selection[2]) {
-                            data = remove(data, i);
+                            data = remove(data, j);
                             alert("Question cannot be duplicate. Duplicate answers are not submitted");
-                            i = 0;
                             j = 0;
                         }
                 }
@@ -129,6 +128,21 @@ export default function Edit(props) {
                 console.log("del ended");
             }); 
         }
+
+        Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
+            var z = 0;
+            for (var i in response.data) {
+                var temp = JSON.parse(response.data[i].question_selection);
+                var temp1 = JSON.parse(response.data[i].question_answers);
+
+                append(questions, {
+                    id: response.data[i].id,
+                    user_id: response.data[i].user_id,
+                    question: response.data[i].question,
+                    question_type: response.data[i].question_type,
+                    question_selection: temp,
+                    question_answers: temp1
+                })}});
 
         
     }
