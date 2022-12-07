@@ -14,6 +14,15 @@ export default function View(props) {
     var datas = [];
     var charts= [];
     const { date, question, question_value } = userdata;
+
+      function download(content, fileName, contentType) {
+        const a = document.createElement("a");
+        const file = new Blob([content], { type: contentType });
+        a.href = URL.createObjectURL(file);
+        a.download = fileName;
+        a.click();
+      }
+
     function toggleSwitch() {
         var a = document.getElementById("chart");
         var b = document.getElementById("table");
@@ -35,6 +44,9 @@ export default function View(props) {
         cum_month : cum_date.getMonth()+1,
         cum_day : cum_date.getDate(),
     })
+    function onDownload(){
+        download(JSON.stringify(questions), "yourfile.json", "text/plain");
+    }
 
     
 
@@ -199,27 +211,27 @@ export default function View(props) {
         if (x.question_type === "multiple choice") {
             return(
             <>
-                <input type="radio" name={x.question} value={x.question_selection[0]} defaultChecked={returnMutliple(x,0)}></input>
+                <input type="radio" name={x.question} value={x.question_selection[0]}  disabled={true} defaultChecked={returnMutliple(x,0)}></input>
                 <label>{x.question_selection[0]}</label>
-                <input type="radio" name={x.question} value={x.question_selection[1]} defaultChecked={returnMutliple(x,1)}></input>
+                <input type="radio" name={x.question} value={x.question_selection[1]} disabled={true} defaultChecked={returnMutliple(x,1)}></input>
                 <label>{x.question_selection[1]}</label>
-                <input type="radio" name={x.question} value={x.question_selection[2]} defaultChecked={returnMutliple(x,2)}></input>
+                <input type="radio" name={x.question} value={x.question_selection[2]} disabled={true} defaultChecked={returnMutliple(x,2)}></input>
                 <label>{x.question_selection[2]}</label>
             </>)
         } else if (x.question_type === "boolean") {
             return(
             <>
-                <input type="radio" name={x.question} value={true}defaultChecked={returnBoolean(x,0)}></input>
+                <input type="radio" name={x.question} value={true} disabled={true} defaultChecked={returnBoolean(x,0)}></input>
                 <label>True</label>
-                <input type="radio" name={x.question} value={false} defaultChecked={returnBoolean(x,1)}></input>
+                <input type="radio" name={x.question} value={false} disabled={true} defaultChecked={returnBoolean(x,1)}></input>
                 <label>False</label>
             </>)
         } else if (x.question_type === "number") {
-            return  (<input type="number" defaultValue={returnText(x)}/>);
+            return  (<input type="number" value={returnText(x)}/>);
         } else {
             return(
                 <>
-                    <input type="text" defaultValue={returnText(x)}></input>
+                    <input type="text" value={returnText(x)}></input>
                 </>)
         }
     }
@@ -340,6 +352,28 @@ export default function View(props) {
                             }})
                     charts.push(chart);
                 } else if (response.data[i].question_type === "text") {
+                    console.log(temp1);
+                    for (var j = 1; j < temp1.length; j++) {
+                        var oned = new Date(temp1[j-1].date);
+                        var tned = new Date(temp1[j].date);
+                        if (oned.valueOf() > tned.valueOf()) {
+                            var tmp = temp1[j-1];
+                            temp1[j-1] = temp1[j];
+                            temp1[j] = tmp;
+                            j = 1;
+                        }
+                    }
+                    console.log(temp1);
+                    var canvas = document.createElement("div");
+                    var title = document.createElement("div")
+                    title.appendChild(document.createTextNode(response.data[i].question));
+                    canvas.appendChild(title)
+                    for (var j = 0; j < temp1.length; j++) {
+                        var q = document.createElement("div");
+                        q.append(document.createTextNode(temp1[j].answer));
+                        canvas.appendChild(q);
+                    }
+                    document.getElementById('chart').appendChild(canvas)
                     charts.push([]);
                 }
             setReturnee(getData(0));
@@ -351,6 +385,7 @@ export default function View(props) {
     return(
         <div>
             <Topnav />
+            <button onClick={onDownload}>Download</button>
             <button onClick={toggleSwitch}>Toggle</button>
             <div style={{display: "block"}} id="chart">
             </div>
