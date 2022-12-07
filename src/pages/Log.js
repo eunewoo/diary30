@@ -277,6 +277,9 @@ export default function Log(props) {
                     temp[i].question_answers.push(temp1);
                 }
             }
+            if (temp[i].question_answers.length == 0) {
+                temp[i].question_answers.push(temp1);
+            }
             
         }
         
