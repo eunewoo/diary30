@@ -13,7 +13,32 @@ export default function Profile(props) {
 
 
     const setImage = (e) => {
-        //post image on
+        const img = e.target.files[0];
+
+         const formData = new FormData();
+         formData.append('file', img);
+
+         const config = {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+        };
+ 
+         Axios.post("http://localhost:3305/img/", formData, config).then((res) => {
+             console.log('s3url', res.data.location);
+ 
+            //  setProfdata({
+            //      ...profdata,
+            //      img: res.data.location
+            //  });
+            setImg(res.data.location);
+ 
+         })
+
+    }
+
+    const removeImage = () => {
+        setImg("");
     }
 
     const setUsername =(e) => {
@@ -100,7 +125,7 @@ export default function Profile(props) {
                                 </div>
                                 </div>
 
-                                <button id="profileImageRemover" type='button'>Remove image</button>
+                                <button id="profileImageRemover" type='button' onClick = {removeImage}>Remove image</button>
                         </div>
                     </div>
                     <div id="profileContent">
