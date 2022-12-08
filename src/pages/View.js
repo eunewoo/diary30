@@ -372,7 +372,7 @@ export default function View(props) {
                     canvas.appendChild(title)
                     for (var j = 0; j < temp1.length; j++) {
                         var q = document.createElement("div");
-                        q.append(document.createTextNode(temp1[j].answer));
+                        q.append(document.createTextNode(temp1[j].date+ " - " + temp1[j].answer));
                         canvas.appendChild(q);
                     }
                     document.getElementById('chart').appendChild(canvas)
