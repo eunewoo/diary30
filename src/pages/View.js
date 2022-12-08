@@ -352,6 +352,7 @@ export default function View(props) {
                             }})
                     charts.push(chart);
                 } else if (response.data[i].question_type === "text") {
+                    //여기에요
                     console.log(temp1);
                     for (var j = 1; j < temp1.length; j++) {
                         var oned = new Date(temp1[j-1].date);
@@ -364,13 +365,16 @@ export default function View(props) {
                         }
                     }
                     console.log(temp1);
+                    //이게 컨테이너
                     var canvas = document.createElement("div");
-                    var title = document.createElement("div")
+                    //이게 질문 나오는 곳
+                    var title = document.createElement("div");
                     title.appendChild(document.createTextNode(response.data[i].question));
                     canvas.appendChild(title)
                     for (var j = 0; j < temp1.length; j++) {
+                        //이게 답장 나오는 곳
                         var q = document.createElement("div");
-                        q.append(document.createTextNode(temp1[j].answer));
+                        q.append(document.createTextNode("" + temp1[j].date +" - "+ temp1[j].answer));
                         canvas.appendChild(q);
                     }
                     document.getElementById('chart').appendChild(canvas)
