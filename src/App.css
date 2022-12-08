@@ -452,7 +452,7 @@ button:hover {
 
 #profileFormWrapper > #profileContent > #profileUserInfo > #profileImageSelector {
   margin-right: 20px;
-  width: 140px;
+  width: 170px;
   height: 40px;
   border-radius: 10px;
   background-color: rgb(87, 178, 178);
@@ -821,6 +821,21 @@ button:hover {
   background-color: rgba(0, 0, 0, 0);
   border: 0px;
   cursor: pointer;
+}
+
+#textWrapper{
+  margin-bottom: 10px;
+  list-style: none;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+#textTitle{
+  font-size: 24px;
+  font-weight: bold;
 }
 
 /* Responsibility */
