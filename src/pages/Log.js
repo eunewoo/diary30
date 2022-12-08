@@ -293,17 +293,21 @@ export default function Log(props) {
     }}
 
     return(
-        <>
-            <Topnav />
-            <div>
-                <button onClick={clickPre}>{"<"}</button>
+        <div id="pageWrapper">
+            <Topnav selected="log" />
+            <div id="logWrapper">
+                <button onClick={clickPre}>
+                    <span className="material-icons md-18">arrow_back_ios</span>
+                </button>
                 <p>{cumDate.cum_year}-{cumDate.cum_month}-{cumDate.cum_day}</p>
-                <button onClick={clickNext}>{">"}</button>
+                <button onClick={clickNext}>
+                    <span className="material-icons md-18">arrow_forward_ios</span>
+                </button>
             </div>
             <div id="list">
                 {returnee}
             </div>
-            <button onClick={submit}>Submit</button>
-        </>
+            <button onClick={submit} id="submit">Submit</button>
+        </div>
     );
 }

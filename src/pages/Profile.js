@@ -12,6 +12,7 @@ export default function Profile(props) {
 
     const setProfilePicture =(e) => {
         //Todo : Eunwoo should do profile pciture stuff
+        
     }
     const setUsername =(e) => {
         setName(e.target.value);
@@ -65,30 +66,36 @@ export default function Profile(props) {
     return(
         <>
             <Topnav />
-            <form>
-                <p>Edit Profile</p>
-                <div>
-                    <p>Profile Photo</p>
-                    <img></img>
-                    <button type='button'>Choose new image</button>
-                    <button type='button'>Remove image</button>
+            <div id="profileWrapper">
+            <form id="profileFormWrapper">
+                    <p>Edit Profile</p>
+                    <div id="profileContent">
+                        <p id="profileContentTitle">Profile Photo</p>
+                        <div id="profileUserInfo">
+                                <img src="/logo192.png" alt="profile"/>
+                                <button id="profileImageSelector" type='button'>Choose new image</button>
+                                <button id="profileImageRemover" type='button'>Remove image</button>
+                        </div>
+                    </div>
+                    <div id="profileContent">
+                        <label id="profileContentTitle" htmlFor='name'>Name</label>
+                        <input type='text' id='name' defaultValue={props.profile.name} onChange={setUsername}></input>
+                    </div>
+                    <div id="profileContent">
+                        <label id="profileContentTitle" htmlFor='email' >Email</label>
+                        <input type='email' id='email' defaultValue={props.profile.email} onChange={setEmailAddress}></input>
+                    </div>
+                    <div id="profileContent">
+                        <label id="profileContentTitle">Address</label>
+                        <input type="text" id='address1' defaultValue={props.profile.address1} onChange={setAddress1f}></input>
+                        <input type="text" id='address2' defaultValue={props.profile.address2} onChange={setAddress2f}></input>
+                    </div>
+                    <div id="profileButtonWrapper">
+                        <button id="profileSubmit" type='button' onClick={saveProfile}>Save</button>
+                        <button id="profileLogout" type='button' onClick={logout}>Logout</button>
+                    </div>
+                </form>
                 </div>
-                <div>
-                    <label htmlFor='name'>Name</label>
-                    <input type='text' id='name' defaultValue={props.profile.name} onChange={setUsername}></input>
-                </div>
-                <div>
-                    <label htmlFor='email' >Email</label>
-                    <input type='email' id='email' defaultValue={props.profile.email} onChange={setEmailAddress}></input>
-                </div>
-                <div>
-                    <label>Address</label>
-                    <input type="text" id='address1' defaultValue={props.profile.address1} onChange={setAddress1f}></input>
-                    <input type="text" id='address2' defaultValue={props.profile.address2} onChange={setAddress2f}></input>
-                </div>
-                <button type='button' onClick={saveProfile}>Save</button>
-                <button type='button' onClick={logout}>Logout</button>
-            </form>
         </>
     );
 }
