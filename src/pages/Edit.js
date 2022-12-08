@@ -216,7 +216,7 @@ export default function Edit(props) {
     }
 
     function liDelete(e) {
-        e.target.parentElement.remove();
+        e.target.parentElement.parentElement.remove();
     }
 
     function setSome(iterator) {
@@ -287,9 +287,12 @@ export default function Edit(props) {
         h.value="text";
         h.appendChild(document.createTextNode("text"));
         var i = document.createElement("button");
-        i.textContent = "delete";
+        i.id = "deleteButton";
         i.onclick = liDelete;
-
+        var k = document.createElement("span");
+        k.className = "material-symbols-outlined";
+        k.appendChild(document.createTextNode("delete"));
+        i.appendChild(k);
 
         d.appendChild(e);
         d.appendChild(f);
