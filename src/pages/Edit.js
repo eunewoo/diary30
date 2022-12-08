@@ -142,7 +142,9 @@ export default function Edit(props) {
                     question_type: response.data[i].question_type,
                     question_selection: temp,
                     question_answers: temp1
-                })}});
+                })}
+                alert("Your change has been changed")
+            });
 
         
     }
@@ -157,7 +159,6 @@ export default function Edit(props) {
 
     function postChanges(original, submit) {
         detectChange();
-        alert("Your change has been changed");
     }
 
     function ChangeReturnee(a, z) {//

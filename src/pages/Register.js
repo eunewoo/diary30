@@ -62,7 +62,6 @@ export default function Register(props) {
                 alert("Put name!");
                 break;
             case user_email:
-                //Todo: validation for email is required here like having @
                 alert("Put email!");
                 break;
             case address_f:
@@ -72,11 +71,17 @@ export default function Register(props) {
                 alert("Put last address!");
                 break;
             default:
+                let temp1 = 0;
                 if (!/\S+@\S+\.\S+/.test(profdata.user_email)) {
                     alert("Your email is not in valid form!");
+                    temp1 = 1;
+                } if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(profdata.password)) {
+                    alert("Your password is not in valid form!");
+                    temp1 = 1;
                 } else {
                 let temp = 0;
-                Axios.get('http://localhost:3305/api/diary/users').then((response) => {
+                if (temp1 === 0) {
+                    Axios.get('http://localhost:3305/api/diary/users').then((response) => {
                     for(var i in response.data){
                         if(response.data[i].user_id == user_id){
                             break;
@@ -89,7 +94,6 @@ export default function Register(props) {
                         Axios.post('http://localhost:3305/api/diary/users', {
                             user_id: profdata.user_id,
                             password: hashutil(user_id, user_email, password),
-                            //profile: profdata.img,
                             name: profdata.user_name,
                             email: profdata.user_email,
                             address1: profdata.address_f,
@@ -100,7 +104,9 @@ export default function Register(props) {
                     }else if(temp === 0){
                         alert("Invalid Register!");
                     }
-                })}
+                })
+                }
+                }
         }
     };
 
