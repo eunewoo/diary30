@@ -50,6 +50,7 @@ export default function Profile(props) {
                     alert("Something went wrong in communicating DB!");
                 } else {
                     props.changeProfile({
+                        ...props.profile,
                         profile: img,
                         name: name,
                         email: email,
