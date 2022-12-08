@@ -370,7 +370,7 @@ export default function View(props) {
                     canvas.appendChild(title)
                     for (var j = 0; j < temp1.length; j++) {
                         var q = document.createElement("div");
-                        q.append(document.createTextNode(temp1[j].date + " - " +temp1[j].answer));
+                        q.append(document.createTextNode(temp1[j].answer));
                         canvas.appendChild(q);
                     }
                     document.getElementById('chart').appendChild(canvas)
@@ -391,9 +391,13 @@ export default function View(props) {
             </div>
             <div style={{display: "none", width: "200px", height: "200px"}} id="table">
             <div>
-                <button onClick={clickPre}>{"<"}</button>
+                <button onClick={clickPre}>
+                    <span className="material-icons md-18">arrow_back_ios</span>
+                </button>
                 <p>{cumDate.cum_year}-{cumDate.cum_month}-{cumDate.cum_day}</p>
-                <button onClick={clickNext}>{">"}</button>
+                <button onClick={clickNext}>
+                    <span className="material-icons md-18">arrow_forward_ios</span>
+                </button>
             </div>
             <div id="list">
                 {returnee}

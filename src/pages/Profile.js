@@ -10,10 +10,12 @@ export default function Profile(props) {
     const [address1, setAddress1] = useState(props.profile.address1);
     const [address2, setAddress2] = useState(props.profile.address2);
 
-    const setProfilePicture =(e) => {
-        //Todo : Eunwoo should do profile pciture stuff
-        
+
+
+    const setImage = (e) => {
+        //post image on
     }
+
     const setUsername =(e) => {
         setName(e.target.value);
     }
@@ -64,16 +66,39 @@ export default function Profile(props) {
     }
 
     return(
-        <>
+        <div id="profileWrapper">
             <Topnav />
-            <div id="profileWrapper">
             <form id="profileFormWrapper">
                     <p>Edit Profile</p>
                     <div id="profileContent">
                         <p id="profileContentTitle">Profile Photo</p>
                         <div id="profileUserInfo">
                                 <img src="/logo192.png" alt="profile"/>
-                                <button id="profileImageSelector" type='button'>Choose new image</button>
+                                <button id="profileImageSelector" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Choose new Image
+                                </button>
+
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Set your profile image : {" "}</p>
+                                        <input type = "file" onChange = {setImage} />
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+
                                 <button id="profileImageRemover" type='button'>Remove image</button>
                         </div>
                     </div>
@@ -95,7 +120,6 @@ export default function Profile(props) {
                         <button id="profileLogout" type='button' onClick={logout}>Logout</button>
                     </div>
                 </form>
-                </div>
-        </>
+        </div>
     );
 }
