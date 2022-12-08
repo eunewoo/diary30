@@ -3,7 +3,13 @@ import { useState } from "react";
 import Axios from "axios";
 import { hashutil } from "./hashutil.mjs";
 
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+    DisplayImageAtom,
+} from "../model/states";
+
 export default function Register(props) {
+    const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
     
     const [profdata, setProfdata] = useState({
         user_id: "",
@@ -40,7 +46,7 @@ export default function Register(props) {
         };
  
          Axios.post("http://localhost:3305/img/", formData, config).then((res) => {
-             console.log('s3url', res.data.location);
+             //console.log('s3url', res.data.location);
  
              setProfdata({
                  ...profdata,
@@ -100,6 +106,7 @@ export default function Register(props) {
                             address2: profdata.address_l,
                             img: profdata.img
                         })
+                        setDisplayImage(() => profdata.img);
                         document.location.href = 'http://localhost:3000';
                     }else if(temp === 0){
                         alert("Invalid Register!");

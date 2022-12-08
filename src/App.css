@@ -664,6 +664,7 @@ button:hover {
   text-decoration: underline;
   color: rgb(85, 135, 209);
   font-weight: bold;
+  font-size: 14px;
 }
 
 /* register page */
@@ -713,6 +714,7 @@ button:hover {
   color: #FFF;
   text-align: right;
   width: 175px;
+  margin: 0px;
   margin-right: 10px;
 }
 
@@ -725,6 +727,11 @@ button:hover {
 
 #registerWrapper > inner > div > nav > ul > li > div > input[type=file]{
   background-color: #aaa;
+}
+
+#registerWrapper > inner > div > nav > ul > li:nth-child(6) > div > input[type=file]{
+  font-size: 12px;
+  height: 24px;
 }
 
 #registerAddress > div > div > input{
@@ -763,17 +770,20 @@ button:hover {
   align-items: center;
 }
 
+/* download */
 #viewWrapper > button:nth-child(2){
   background-color: #f76b8a;
   border: 0px;
   color: #FFF;
   border-radius: 3px;
   display: inline;
-  width: 70px;
+  width: 90px;
   position: absolute;
   top: 100px;
   right: 10px;
 }
+
+/* toggle */
 #viewWrapper > button:nth-child(3){
   background-color: #f76b8a;
   border: 0px;
@@ -783,7 +793,7 @@ button:hover {
   width: 70px;
   position: absolute;
   top: 100px;
-  right: 90px;
+  right: 110px;
 }
 
 #chart{
@@ -839,6 +849,23 @@ button:hover {
 }
 
 /* Responsibility */
+@media (max-width: 980px) {
+  #chart{
+    margin-top: 30px;
+  }
+
+  #viewWrapper > button:nth-child(2){
+    left: 50%;
+    top: 90px;
+    transform: translateX(-120px);
+  }
+  #viewWrapper > button:nth-child(3){
+    left: 50%;
+    top: 90px;
+    transform: translateX(30px);
+  }
+}
+
 @media (max-width: 600px) {
   #navWrapper #navTitle{
     display: none;
@@ -846,16 +873,5 @@ button:hover {
 
   #navWrapper > div{
     margin-left: 20px;
-  }
-
-  #viewWrapper > button:nth-child(2){
-    position: relative;
-    left: -40px;
-    top: 7px;
-  }
-  #viewWrapper > button:nth-child(3){
-    position: relative;
-    left: 40px;
-    top: -10.5px;
   }
 }

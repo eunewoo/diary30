@@ -1,6 +1,17 @@
 import { Link } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from "recoil";
+import { useRef } from "react"
+import {
+    DisplayImageAtom,
+} from "../model/states";
 
-function topnav({selected}) {
+
+
+
+export default function Topnav({selected}) {
+    const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
+    const imageKeyRef = useRef("imageKeyRef");
+
     return(
         <div>
             <div id="navWrapper">
@@ -10,8 +21,8 @@ function topnav({selected}) {
                     <Link to="/edit" id={selected === 'edit' ? "selected" : ""}>Edit Questions</Link>
                     <Link to="/view" id={selected === 'view' ? "selected" : ""}>View Data</Link>
                 </div>
-                <Link id="navProfile" to="/profile"><img src="/logo192.png" alt="mockup profile"/></Link>
+                <Link id="navProfile" to="/profile"><img key={imageKeyRef} src={displayImage} alt="profile"/></Link>
             </div>
         </div>
     );
-} export default topnav;
+};

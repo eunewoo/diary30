@@ -8,6 +8,8 @@ import View from './pages/View.js';
 import Profile from './pages/Profile.js';
 import React, {useState} from 'react';
 
+import { RecoilRoot } from "recoil";
+
 
 function App() {
   const [id,setId] = useState({});
@@ -27,16 +29,18 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Login ChangeProfile={ChangeProfile}/>} />
-        <Route exact path="/register" element={<Register />} />
-        <Route exact path="/log"  element={<Log profile={profile}/>} />
-        <Route exact path="/edit" element={<Edit profile={profile}/>} />
-        <Route exact path="/view" element={<View profile={profile}/>} />
-        <Route exact path="/profile" element={<Profile profile={profile} changeProfile={ChangeProfile}/>} />
-      </Routes>
-    </BrowserRouter>
+    <RecoilRoot>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Login ChangeProfile={ChangeProfile}/>} />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/log"  element={<Log profile={profile}/>} />
+          <Route exact path="/edit" element={<Edit profile={profile}/>} />
+          <Route exact path="/view" element={<View profile={profile}/>} />
+          <Route exact path="/profile" element={<Profile profile={profile} changeProfile={ChangeProfile}/>} />
+        </Routes>
+      </BrowserRouter>
+    </RecoilRoot>
   );
 }
 

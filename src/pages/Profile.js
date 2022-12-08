@@ -2,6 +2,13 @@ import Axios from "axios";
 import { useState } from "react";
 import Topnav from './nav';
 import { hashutil } from "./hashutil.mjs";
+import { useRef } from "react"
+
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+    DisplayImageAtom,
+} from "../model/states";
+
 
 export default function Profile(props) {
     const [img, setImg] = useState(props.profile.img);
@@ -10,7 +17,8 @@ export default function Profile(props) {
     const [address1, setAddress1] = useState(props.profile.address1);
     const [address2, setAddress2] = useState(props.profile.address2);
 
-
+    const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
+    const imageKeyRef = useRef("imageKeyRef");
 
     const setImage = (e) => {
         const img = e.target.files[0];
@@ -25,7 +33,7 @@ export default function Profile(props) {
         };
  
          Axios.post("http://localhost:3305/img/", formData, config).then((res) => {
-             console.log('s3url', res.data.location);
+             //console.log('s3url', res.data.location);
  
             //  setProfdata({
             //      ...profdata,
@@ -82,6 +90,7 @@ export default function Profile(props) {
                         address1: address1,
                         address2: address2
                     });
+                    setDisplayImage(() => img);
                     alert("Your profile has been changed");
                 }
             });
@@ -99,7 +108,7 @@ export default function Profile(props) {
                     <div id="profileContent">
                         <p id="profileContentTitle">Profile Photo</p>
                         <div id="profileUserInfo">
-                                <img src="/logo192.png" alt="profile"/>
+                                <img key={imageKeyRef} src={displayImage} alt="profile"/>
                                 <button id="profileImageSelector" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                     Choose new Image
                                 </button>

@@ -4,7 +4,13 @@ import React, { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { hashutil } from "./hashutil.mjs";
 
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+    DisplayImageAtom,
+} from "../model/states";
+
 export default function Login(props) {
+    const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
 
     const [login_id, setLogin] = useState("");
     const [password, setPassword] = useState("");
@@ -34,6 +40,7 @@ export default function Login(props) {
                         address1 : response.data[0].address_f,
                         address2 : response.data[0].address_l
                       })
+                      setDisplayImage(() => response.data[0].img);
                       navigate("/log")
                 } else {
                     alert("Unavail Login!");
