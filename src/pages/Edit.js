@@ -175,6 +175,7 @@ export default function Edit(props) {
     function returnSelection() {
         var returnee = document.createDocumentFragment();
         var radio = document.createElement('input');
+        radio.id = "multipleRadio"
         radio.type = "radio"
         radio.disabled = "TRUE"
         radio.checked = "TRUE"
@@ -238,7 +239,9 @@ export default function Edit(props) {
                         <input type="radio" disabled="TRUE" checked="TRUE"></input>
                         <input type="text" defaultValue={temp.question_selection[2]}></input>
                     </div>
-                    <button onClick={liDelete}>delete</button>
+                    <button id="deleteButton" onClick={liDelete}>
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
                 </li>
             </>
             );
@@ -255,7 +258,9 @@ export default function Edit(props) {
                             <option value="text">text</option>
                         </select>
                     </div>
-                    <button onClick={liDelete}>delete</button>
+                    <button id="deleteButton" onClick={liDelete}>
+                        <span class="material-symbols-outlined">delete</span>
+                    </button>
                 </li>
             </>
         )
@@ -324,19 +329,21 @@ export default function Edit(props) {
             }
     })}, []);
     
-    return(
-        <div>
-            <Topnav />
-            <inner>
-                <div>
-                    <p>Edit Question</p>
-                    <button onClick={addDiv}>+</button> 
+     return(
+        <div id="editWrapper">
+            <Topnav selected="edit" />
+            <inner id="editInner">
+                <div id="editSubTitle">
+                    <p className="titleText">Edit Question</p>
+                    <button onClick={addDiv}>
+                    <span className="material-symbols-outlined bold">add_circle</span>
+                    </button> 
                 </div>
                 <ul id="list">
                     {returnee}
                 </ul>
             </inner>
-            <button onClick={postChanges}>Save</button>
+            <button onClick={postChanges} id="editSubmit">Save</button>
         </div>
     );
 }

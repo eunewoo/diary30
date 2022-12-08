@@ -383,8 +383,8 @@ export default function View(props) {
     
 
     return(
-        <div>
-            <Topnav />
+        <div id="viewWrapper">
+            <Topnav selected="view" />
             <button onClick={onDownload}>Download</button>
             <button onClick={toggleSwitch}>Toggle</button>
             <div style={{display: "block"}} id="chart">

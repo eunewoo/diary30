@@ -15,7 +15,7 @@ export default function Register(props) {
         img: "",
     });
 
-    const { user_id, password, user_name, user_email, address_f, address_l } = profdata;
+    const { user_id, password, user_name, user_email, address_f, address_l, img} = profdata;
 
     const setTextid = (e) => {
         const { name, value } = e.target;
@@ -28,6 +28,26 @@ export default function Register(props) {
 
     const setImage = (e) => {
         //post image on db
+         const img = e.target.files[0];
+
+         const formData = new FormData();
+         formData.append('file', img);
+
+         const config = {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+        };
+ 
+         Axios.post("http://localhost:3305/img/", formData, config).then((res) => {
+             console.log('s3url', res.data.location);
+ 
+             setProfdata({
+                 ...profdata,
+                 img: res.data.location
+             });
+ 
+         })
     }
 
     const isRegister = () => {
@@ -69,11 +89,12 @@ export default function Register(props) {
                         Axios.post('http://localhost:3305/api/diary/users', {
                             user_id: profdata.user_id,
                             password: hashutil(user_id, user_email, password),
-                            profile: profdata.img,
+                            //profile: profdata.img,
                             name: profdata.user_name,
                             email: profdata.user_email,
                             address1: profdata.address_f,
-                            address2: profdata.address_l
+                            address2: profdata.address_l,
+                            img: profdata.img
                         })
                         document.location.href = 'http://localhost:3000';
                     }else if(temp === 0){
@@ -84,7 +105,7 @@ export default function Register(props) {
     };
 
     return(
-        <div>
+        <div id="registerWrapper">
             <inner>
                 <p>Register</p>
                 <div>
@@ -92,7 +113,7 @@ export default function Register(props) {
                         <ul>
                             <li>
                                 <div>
-                                    Set your ID : {" "}
+                                    <p>Set your ID : {" "}</p>
                                     <input name = "user_id"
                                     value = {user_id}
                                     type = "text" 
@@ -101,7 +122,7 @@ export default function Register(props) {
                             </li>
                             <li>
                                 <div>
-                                    Set your password : {" "}
+                                    <p>Set your password : {" "}</p>
                                     <input name = "password"
                                     defaultValue = {password}
                                     type="password" 
@@ -110,7 +131,7 @@ export default function Register(props) {
                             </li>
                             <li>
                                 <div>
-                                    Set your name : {" "}
+                                    <p>Set your name : {" "}</p>
                                     <input name = "user_name"
                                     value = {user_name}
                                     type = "text" 
@@ -119,16 +140,16 @@ export default function Register(props) {
                             </li>
                             <li>
                                 <div>
-                                    Set your email : {" "}
+                                    <p>Set your email : {" "}</p>
                                     <input name = "user_email"
                                     value = {user_email}
                                     type = "text" 
                                     onChange={setTextid} />
                                 </div>
                             </li>
-                            <li>
+                            <li id="registerAddress">
                                 <div>
-                                    Set your address : {" "}
+                                    <p>Set your address : {" "}</p>
                                     <div>
                                         <input name = "address_f"
                                         value = {address_f}
@@ -145,13 +166,13 @@ export default function Register(props) {
                             </li>
                             <li>
                                 <div>
-                                    Set your profile image : {" "}
+                                    <p>Set your profile image : {" "}</p>
                                     <input type = "file" onChange = {setImage} />
                                 </div>
                             </li>
                         </ul>
-                        <div>
-                            <button onClick = {isRegister}>
+                        <div id="registerButtonWrapper">
+                            <button id="registerButton" onClick = {isRegister}>
                                 Register
                             </button>
                         </div>

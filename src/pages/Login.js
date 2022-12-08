@@ -40,7 +40,7 @@ export default function Login(props) {
                 }}})};
 
     return(
-        <div>
+        <div id="loginWrapper">
             <inner>
                 <p>Login</p>
                 <div>
@@ -48,8 +48,7 @@ export default function Login(props) {
                         <ul>
                             <li>
                                 <div>
-                                    ID : {" "}
-                                    <input type="text" onChange={setId} />
+                                    <input id="inputId" placeholder="DIARY ID" type="text" onChange={setId} autoComplete="off" />
                                 </div>
                                 <br/>
                             </li>
@@ -57,16 +56,22 @@ export default function Login(props) {
                         <ul>
                             <li>
                                 <div>
-                                    Password : {"   "}
-                                    <input type= "password" onChange={setPwd} />
+                                    <input id="inputPw" placeholder="PASSWORD" type="password" onChange={setPwd} autoComplete="off" />
                                 </div>
                             </li>
                         </ul>
                         <div>
                             <button onClick={setLoginId}>
                                 Login
+                                <span class="material-symbols-outlined">
+                                    login
+                                </span>
                             </button>
-                            <Link to="/register"><button>Register</button></Link>
+                            <Link to="/register">
+                                <button id="registerButton">
+                                    Don't have an account? Registe here ↗️
+                                </button>
+                            </Link>
                         </div>
                     </nav>
                 </div>
