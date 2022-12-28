@@ -15,7 +15,7 @@ export default function Topnav({selected}) {
     return(
         <div>
             <div id="navWrapper">
-                <p id="navTitle">Day Logger</p>
+                <p id="navTitle">Diary 30</p>
                 <div id="linksWrapper">
                     <Link to="/log" id={selected === 'log' ? "selected" : ""}>Log Day</Link>
                     <Link to="/edit" id={selected === 'edit' ? "selected" : ""}>Edit Questions</Link>
