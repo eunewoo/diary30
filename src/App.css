@@ -504,7 +504,7 @@ button:hover {
   justify-content: center;
   align-items: center;
 
-  background-image: url("../public/diary_background.avif");
+  background-image: url("../public/bround.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -519,6 +519,7 @@ button:hover {
   justify-content: center;
 
   background-color: rgba(0,0,0, 0.7);
+  opacity: 0.7;
   border-radius: 10px;
 }
 
