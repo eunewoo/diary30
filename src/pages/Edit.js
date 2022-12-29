@@ -10,6 +10,7 @@ export default function Edit(props) {
     const [returnee, setreturnee] = useState([]);
     const navigate = useNavigate();
 
+    //organize question in temp and push into ret array
     function getData() {
         var list = document.getElementById("list");
         var ret = [];
@@ -38,6 +39,7 @@ export default function Edit(props) {
         return ret;
     }
     
+    //remove index element in arr
     function remove(arr, index) {
         var a = arr.slice(0,index);
         var b = arr.slice(index, -1);
@@ -51,6 +53,8 @@ export default function Edit(props) {
         console.log(ret);
         return ret;
     }
+
+    //validate same type of question
     function validate() {
         var data = getData();
         
@@ -72,6 +76,7 @@ export default function Edit(props) {
         return data;
     }
 
+    
     function detectChange() {
         var submit = validate();
         var temp= [];
