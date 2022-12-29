@@ -17,6 +17,7 @@ export default function Log(props) {
 
     const { cum_year, cum_month, cum_day } = cumDate;
 
+    //going to previous day
     const clickPre = () => {
         var arr = [31,30,31,30,31,30,31,31,30,31,30,31];
         var temp ={}
@@ -50,17 +51,19 @@ export default function Log(props) {
         }
         setCumDate(temp);
         var list = document.getElementById("list");
+
+        //put input data into list
         for (var i = 0; i < list.childNodes.length; i++) {
             if (list.childNodes[i].childNodes.length === 7) { //if multiple choice
                 list.childNodes[i].childNodes[1].checked = returnMutliple(questions[i], 0, temp)
                 list.childNodes[i].childNodes[3].checked = returnMutliple(questions[i], 1, temp)
                 list.childNodes[i].childNodes[5].checked = returnMutliple(questions[i], 2, temp)
             }
-            if (list.childNodes[i].childNodes.length === 5) { //if multiple choice
+            if (list.childNodes[i].childNodes.length === 5) { //if boolean choice
                 list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp)
                 list.childNodes[i].childNodes[3].checked = returnBoolean(questions[i], 1, temp)
             } 
-            if (list.childNodes[i].childNodes.length === 2) { //if multiple choice
+            if (list.childNodes[i].childNodes.length === 2) { //if text choice
                 if (returnText(questions[i], temp) === undefined) {
                     list.childNodes[i].childNodes[1].value = ""
                 } else {
@@ -71,6 +74,7 @@ export default function Log(props) {
         
     }
 
+    //going to next day 
     const clickNext = () => {
         var arr = [31,30,31,30,31,30,31,31,30,31,30,31];
         var temp ={}
@@ -172,6 +176,7 @@ export default function Log(props) {
         }
     }
 
+    //return page
     function returnInput(x) {
         if (x.question_type === "multiple choice") {
             return(
