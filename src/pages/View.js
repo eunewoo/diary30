@@ -15,13 +15,14 @@ export default function View(props) {
     var charts= [];
     const { date, question, question_value } = userdata;
 
-      function download(content, fileName, contentType) {
+    //download file into json file
+    function download(content, fileName, contentType) {
         const a = document.createElement("a");
         const file = new Blob([content], { type: contentType });
         a.href = URL.createObjectURL(file);
         a.download = fileName;
         a.click();
-      }
+    }
 
     function toggleSwitch() {
         var a = document.getElementById("chart");

@@ -54,7 +54,7 @@ export default function Edit(props) {
         return ret;
     }
 
-    //validate same type of question
+    //validate same type of question and remove the duplicate question set
     function validate() {
         var data = getData();
         
@@ -75,13 +75,15 @@ export default function Edit(props) {
         }
         return data;
     }
-
-    
+ 
+    //
     function detectChange() {
+        //filter duplicate questions
         var submit = validate();
         var temp= [];
         var temp1 = [];
         //find duplicate whether to post or not
+        //why check duplicate once again???
         for (var i = 0; i < submit.length; i++) {
             var duplicate = false;
             for (var j = 0; j < questions.length; j++) {
