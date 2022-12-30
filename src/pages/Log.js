@@ -135,6 +135,7 @@ export default function Log(props) {
         setQuestions(temp);
     }
 
+    //return multiple boolean of specific date
     function returnMutliple(x, y, z) {
         if (z === undefined) {
             z=cumDate;
@@ -149,6 +150,7 @@ export default function Log(props) {
         return false;
     }
     
+    //return boolean of specific date
     function returnBoolean(x, y, z) {
         if (z === undefined) {
             z=cumDate;
@@ -165,6 +167,7 @@ export default function Log(props) {
         return false;
     }
 
+    //return text of specific date
     function returnText(x, z) {
         if (z === undefined) {
             z=cumDate;
@@ -176,7 +179,7 @@ export default function Log(props) {
         }
     }
 
-    //return page
+    //change question data into visual form
     function returnInput(x) {
         if (x.question_type === "multiple choice") {
             return(
@@ -206,9 +209,10 @@ export default function Log(props) {
         }
     }
 
+    //bring data of all questions using loop 
     function getData(x) {
         if (x < questions.length) {
-            return (
+            return ( 
             <>
             <div>
                 <p>{questions[x].question}</p>
@@ -222,6 +226,7 @@ export default function Log(props) {
         
     }
 
+    //bring question set from mysql db and put into returnee
     useEffect(() => {
         Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
             var z = 0;
@@ -249,6 +254,8 @@ export default function Log(props) {
     function ChangeReturnee(a) {
         setReturnee(a)
     }
+
+    //put answers in temp and send to db
     function submit() {
         var temp = questions;
         console.log(temp);
@@ -297,7 +304,7 @@ export default function Log(props) {
         }
         alert("Your submission is correctly submitted on the db");
         
-}
+    }
 
     return(
         <div id="pageWrapper">

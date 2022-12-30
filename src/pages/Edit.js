@@ -101,6 +101,7 @@ export default function Edit(props) {
             }
         }
 
+        //delete part
         for (var i = 0; i < questions.length; i++) {
             var duplicate = false;
             for (var j = 0; j < submit.length; j++) {
@@ -224,6 +225,7 @@ export default function Edit(props) {
         e.target.parentElement.parentElement.remove();
     }
 
+    //adding question
     function setSome(iterator) {
         var temp = questions[iterator];
         if (questions[iterator].question_type == "multiple choice") {
@@ -271,6 +273,8 @@ export default function Edit(props) {
             </>
         )
     }
+
+    //question form when add new one
     function newDiv() {
         var a = document.createElement('li');
         var b = document.createElement('div');
