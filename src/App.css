@@ -531,10 +531,12 @@ button:hover {
 }
 
 #loginWrapper > inner > div > nav > div > button{
-  background-color: transparent;
-  border-radius: 5px;
-  border: 1px #FFF solid;
-  color: #FFF;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  border: 1px rgb(255, 255, 255) solid;
+  color: rgb(15, 229, 97);
+  margin-top: 5px;
+  margin-left: 10px;
   display: flex;
   align-items: center;
 }
@@ -663,9 +665,9 @@ button:hover {
   background-color: rgba(0,0,0, 0);
   border: 0px;
   text-decoration: underline;
-  color: rgb(85, 135, 209);
+  color: #9B9B9B;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 /* register page */
@@ -675,14 +677,15 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url("../public/diary_background.avif");
-  background-size: cover;
+  /* background-image: url("../public/diary_background.avif");
+  background-size: cover; */
 }
 
 #registerWrapper > inner {
   background-color: rgba(0,0,0, 0.7);
   border-radius: 20px;
   padding: 10px;
+  opacity: 0.7;
 }
 
 #registerWrapper > inner > p{
@@ -750,9 +753,10 @@ button:hover {
 }
 
 #registerButtonWrapper > button{
-  margin-left: 10px;
-  width: 80px;
-  height: 40px;
+  margin: 10px;
+  width: 100px;
+  height: 35px;
+  font-size: 15px;
   border-radius: 10px;
   background-color: rgb(230, 81, 119);
   border: none;
@@ -760,6 +764,8 @@ button:hover {
   cursor: pointer;
   transition: all 0.2s ease 0s;
   text-decoration: none;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* View Data page */
@@ -875,4 +881,10 @@ button:hover {
   #navWrapper > div{
     margin-left: 20px;
   }
+}
+
+/* login and register page */
+#loginWrapper, #registerWrapper{
+  background-image: url("../public/bround.png");
+  background-size: cover
 }
