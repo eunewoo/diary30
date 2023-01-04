@@ -539,7 +539,7 @@ button:hover {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
   border: 1px rgb(255, 255, 255) solid;
-  color: rgb(230, 81, 119);
+  color: green;
   margin-top: 5px;
   margin-left: 10px;
   display: flex;
