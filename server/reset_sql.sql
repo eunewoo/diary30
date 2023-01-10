@@ -18,6 +18,25 @@ CREATE TABLE IF NOT EXISTS users(
     img VARCHAR(256)
 );
 
+--mongodb
+db.droptDatabase()
+
+use diary;
+
+db.users.drop()
+db.questions.drop()
+
+db.createCollection("user", {
+    [{user_id}, {password}, {user_name}, {user_email}, {address_f}, {address_l}, {img}]
+})
+
+db.user.insertMany([{user_id: "abc123"}, {password: "ae03ab3e6fce8f5255680d9dc2c351a325daa86e94eb35bd6c19b15c0a19720"}, {user_name: "JunHyeongPark"}, 
+{user_email: "abc123@extemp.com"}, {address_f: "119 songdo moonwha-ro"}, {address_l: "Incheon, Yeonsu-gu, Korea"}, {img: ""} ])
+
+
+
+
+
 INSERT INTO users (user_id, password, user_name, user_email, address_f, address_l, img)
 VALUES ("abc123", "ae03ab3e6fce8f5255680d9dc2c351a325daa86e94eb35bd6c19b15c0a19720", "JunHyeongPark", 
 "abc123@extemp.com", "119 songdo moonwha-ro", "Incheon, Yeonsu-gu, Korea", "");

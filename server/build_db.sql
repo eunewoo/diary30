@@ -19,7 +19,7 @@ VALUES ("abc123", "4119f341f23c55ebf02d7bd735946d6a8cf03f390ff6a9c7c1ce6641a5469
 
 -- ID: abc123 , pwd: 112980317 password is crypted in SHA256 in crypto-js SHA256
 
-
+-- logday table not used
 CREATE TABLE IF NOT EXISTS logday(
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(256),
