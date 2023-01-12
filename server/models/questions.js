@@ -21,4 +21,4 @@ questionsSchema
     });
 
 //Export model
-module.exports = mongoose.model('questions', BookSchema);
+module.exports = mongoose.model('questions', questionsSchema);
