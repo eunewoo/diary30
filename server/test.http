@@ -1,0 +1,34 @@
+GET http://localhost:3000/api/users
+
+###
+POST http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    //"_id": "",
+    "user_id": "eunewoo3",
+    "password": "undefined6b115c393d2c543157778a1f74eb2b446632c44fd0a54542cd000b105d7165",
+    "user_name": "King_eunwoo",
+    "user_email": "ewchoi98@naver.com",
+    "address_f": "서울시 송파구 문정로83",
+    "address_l": "122동 602호",
+    "img": "undefined"
+}
+
+###
+PUT http://localhost:3000/api/users
+Content-Type: application/json
+
+{
+    //"id": "63bf8013da04d529e5360207",
+    "user_id": "eunewoo2",
+    "password": "undefined6b115c393d2c543157778a1f74eb2b446632c44fd0a54542cd000b105d7165",
+    "user_name": "queen_eunwoo",
+    "user_email": "ewchoi98@naver.com",
+    "address_f": "서울시 송파구 문정로83",
+    "address_l": "122동 602호",
+    "img": "undefined"
+}
+
+###
+GET http://localhost:3000/api/questions

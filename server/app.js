@@ -67,7 +67,7 @@ app.post('/img', upload.single('file'), async (req, res) => {
 });
 
 //Set up mongoose connection
-var mongoDB = 'mongodb+srv://eunewoo:mongoconquer98@cluster0.kciyq16.mongodb.net/local_library?retryWrites=true&w=majority'; // insert your database URL here
+var mongoDB = 'mongodb://eunewoo:mongoconquer98@ac-0vyijen-shard-00-00.kciyq16.mongodb.net:27017,ac-0vyijen-shard-00-01.kciyq16.mongodb.net:27017,ac-0vyijen-shard-00-02.kciyq16.mongodb.net:27017/?ssl=true&replicaSet=atlas-9pxc0l-shard-0&authSource=admin&retryWrites=true&w=majority'; // insert your database URL here
 mongoose.set('strictQuery', true);
 mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
 var db = mongoose.connection;
@@ -84,9 +84,9 @@ app.get('/api/users', async function (req,res) {
 });
 
 //get a user id from db
-app.get('/api/users/user_id=:user_id', async function (req,res) {
-    let id = req.params.id;
-    const user = await users.findById(id);
+app.get('/api/users/:user_id', async function (req,res) {
+    let idInstance = req.params.user_id;
+    const user = await users.find({user_id : idInstance});
     if( user ) {
         res.json(user);
     } else {
@@ -115,6 +115,34 @@ app.post('/api/users', async function (req,res) {
         res.send(error.message);
     }
 })
+
+//not work, error occur
+//put 요청주소에 특정 아이디를 않넣어서 그런
+//위에 post 는 잘 돌아감
+
+app.put('/api/users', async function (req,res) {
+    console.log("Put with body: " + JSON.stringify(req.body));
+
+    try {
+        const newUser = new users({
+            user_id: req.body.user_id,
+            password: req.body.password,
+            user_name: req.body.user_name,
+            user_email: req.body.user_email,
+            address_f: req.body.address_f,
+            adress_i: req.body.address_i,
+            img: req.body.img
+        })
+        await newUser.save();
+        res.json(newUser);
+    } catch (error) {
+        console.log("Error on Post: " + error.message)
+        res.status(400);
+        res.send(error.message);
+    }
+});
+
+
 
 // //update the specific profile by id of db
 // app.put('/api/diary/users', (req, res) => {
@@ -157,6 +185,22 @@ app.post('/api/questions', async function (req,res) {
         res.send(error.message);
     }
 })
+
+//get questions by user_id
+app.get('/api/questions/:user_id', async function (req,res) {
+    let idInstance = req.params.user_id;
+    const question = await questions.find({user_id : idInstance});
+    if( question ) {
+        res.json(question);
+    } else {
+        res.send("No questions with id: " + id);
+    }
+});
+
+
+
+
+
 
 // //delete 
 // app.delete('/api/diary/questions/user_id=:user_id&id=:id', (req,res) => {
