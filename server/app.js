@@ -124,6 +124,7 @@ app.put('/api/users', async function (req,res) {
     console.log("Put with body: " + JSON.stringify(req.body));
 
     try {
+        const userId = req.body.user_id
         const newUser = new users({
             user_id: req.body.user_id,
             password: req.body.password,
@@ -133,7 +134,7 @@ app.put('/api/users', async function (req,res) {
             adress_i: req.body.address_i,
             img: req.body.img
         })
-        await newUser.save();
+        await users.findByIdAndUpdate({user_id : userId}, newUser, {runValidators: true});
         res.json(newUser);
     } catch (error) {
         console.log("Error on Post: " + error.message)
@@ -159,26 +160,29 @@ app.post('/api/questions', async function (req,res) {
     console.log("Posted with body: " + JSON.stringify(req.body));
 
     try {
-        if (req.body.question_type === "multiple choice") { 
+        if (req.body.question_type === 'multiple choice') { 
             const newQuestion = new questions({
                 user_id: req.body.user_id,
                 question: req.body.question,
                 question_selection: req.body.question_selection,
                 question_type: req.body.question_type,
-                question_answers: [],
             })
+            await newQuestion.save();
+            //await questions.updateOne({user_id: req.body.user_id}, {$set : {question_answers: []}})
+            res.json(newQuestion);
         }
         else {
             const newQuestion = new questions({
                 user_id: req.body.user_id,
                 question: req.body.question,
-                question_selection: [],
+                //question_selection: JSON.stringify([]),
                 question_type: req.body.question_type,
-                question_answers: [],
+                //question_answers: JSON.stringify([]),
             })
+            await newQuestion.save();
+            //await questions.updateOne({user_id: req.body.user_id}, {$set : {question_selection: []}})
+            res.json(newQuestion);
         }
-        await newQuestion.save();
-        res.json(newQuestion);
     } catch (error) {
         console.log("Error on Post: " + error.message)
         res.status(400);

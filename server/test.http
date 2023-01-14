@@ -6,13 +6,13 @@ Content-Type: application/json
 
 {
     //"_id": "",
-    "user_id": "eunewoo3",
-    "password": "undefined6b115c393d2c543157778a1f74eb2b446632c44fd0a54542cd000b105d7165",
+    "user_id": "eunewoo4",
+    "password": "6b115c393d2c543157778a1f74eb2b446632c44fd0a54542cd000b105d7165",
     "user_name": "King_eunwoo",
     "user_email": "ewchoi98@naver.com",
     "address_f": "서울시 송파구 문정로83",
     "address_l": "122동 602호",
-    "img": "undefined"
+    "img": ""
 }
 
 ###
@@ -32,3 +32,14 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/api/questions
+
+###
+POST http://localhost:3000/api/questions
+Content-Type: application/json
+
+{
+  "user_id": "63be8eeff07a096309001556",
+  "question": "Do you satisfy your day?",
+  "question_selection": ["Perfect", "SoSo", "Nah"],
+  "question_type": "multiple choice3"
+}

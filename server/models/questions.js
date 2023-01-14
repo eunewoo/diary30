@@ -6,10 +6,9 @@ var questionsSchema = new Schema(
     {
         user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true},
         question: {type: String},
-        question_order: {type: Number},
-        question: {type: String},
-        question_value: {type: String},
+        question_selection: {type: Array},
         question_type: {type: String},
+        question_answers: {type: Array},
     }
 )
 
