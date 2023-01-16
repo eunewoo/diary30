@@ -73,27 +73,29 @@ mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-// Using an async function to be able to use the "await" functionality below, which makes
-// the find command run synchronously.
+// have to put lock method to prevent user data later, maybe set middleware
+// did not set error handling yet
 app.get('/api/users', async function (req,res) {
     const usersInstance = await users.find({});
-    // An example using select to only retrieve specific fields when finding authors. Remember, you want to avoid
-    // returning unnecessary information.
-    // const authors = await Author.find({}).select("family_name date_of_birth");
     res.json(usersInstance);
 });
 
 //get a user id from db
 app.get('/api/users/:user_id', async function (req,res) {
+  
     let idInstance = req.params.user_id;
     const user = await users.find({user_id : idInstance});
-    if( user ) {
+
+    if (user == undefined) {
+        res.send("No user with id: " + idInstance);
+        console.log("No user with id: " + idInstance);
+    }
+    else {
         res.json(user);
-    } else {
-        res.send("No user with id: " + id);
     }
 });
 
+//
 app.post('/api/users', async function (req,res) {
     console.log("Posted with body: " + JSON.stringify(req.body));
 
@@ -116,16 +118,12 @@ app.post('/api/users', async function (req,res) {
     }
 })
 
-//not work, error occur
-//put 요청주소에 특정 아이디를 않넣어서 그런
-//위에 post 는 잘 돌아감
-
 app.put('/api/users', async function (req,res) {
     console.log("Put with body: " + JSON.stringify(req.body));
 
     try {
         const userId = req.body.user_id
-        const newUser = new users({
+        const newUser = {
             user_id: req.body.user_id,
             password: req.body.password,
             user_name: req.body.user_name,
@@ -133,8 +131,8 @@ app.put('/api/users', async function (req,res) {
             address_f: req.body.address_f,
             adress_i: req.body.address_i,
             img: req.body.img
-        })
-        await users.findByIdAndUpdate({user_id : userId}, newUser, {runValidators: true});
+        }
+        await users.updateOne({user_id : userId}, newUser);
         res.json(newUser);
     } catch (error) {
         console.log("Error on Post: " + error.message)
@@ -201,12 +199,14 @@ app.get('/api/questions/:user_id', async function (req,res) {
     }
 });
 
+// router.delete('/authors/:id', isAgent, wrapAsync(async function (req, res) {
+//     const id = req.params.id;
+//     const result = await Author.findByIdAndDelete(id);
+//     console.log("Deleted successfully: " + result);
+//     res.json(result);
+// }));
 
-
-
-
-
-// //delete 
+//delete 
 // app.delete('/api/diary/questions/user_id=:user_id&id=:id', (req,res) => {
 //     db.query("Delete from questions where user_id =\"" + req.params.user_id + "\" and id=\"" + req.params.id +"\";", (err, result) => {
 //         if (!err) {
@@ -216,16 +216,29 @@ app.get('/api/questions/:user_id', async function (req,res) {
 //             console.log(err);
 //         }})});
 
-// app.put('/api/diary/questions/', (req,res) => {
-//     db.query("update questions set question_answers = '"+ req.body.question_answers + "' where  question = '"+ req.body.question+"' and user_id = '" + req.body.user_id+ "';", (err, result) => {
-//         if (!err) {
-//             console.log("update questions set question_answers = '"+ req.body.question_answers + "' where  question = '"+ req.body.question+"' and user_id = '" + req.body.user_id+ "';");
-//             res.json(result);
-//         } else {
-//             console.log(err);
-//         }
-//     });
-// })
+app.put('/api/questions', async function (req,res) {
+    console.log("Put with body: " + JSON.stringify(req.body));
+
+    try {
+        const userId = req.body.user_id
+        const userQuestion = req.body.question
+        const newQuestion = {
+            user_id: req.body.user_id,
+            question: req.body.question,
+            question_selection: req.body.question_selection,
+            question_type: req.body.question_type,
+            question_answers: req.body.question_answers,
+        }
+        await questions.updateOne({user_id : userId, question: userQuestion}, newQuestion);
+        res.json(newQuestion);
+    } catch (error) {
+        console.log("Error on Post: " + error.message);
+        res.status(400);
+        res.send(error.message);
+    }
+});
+
+
 
 port = process.env.PORT || 3000;
 app.listen(port, () => { console.log('server started!')});

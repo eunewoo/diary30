@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 
 var questionsSchema = new Schema(
     {
-        user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true},
+        //user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true},
+        user_id: {type: String},
         question: {type: String},
         question_selection: {type: Array},
         question_type: {type: String},
