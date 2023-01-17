@@ -25,10 +25,16 @@ export default function Login(props) {
     }
 
     const setLoginId = () => {
-        Axios.get("http://localhost:3305/api/diary/users/user_id="+login_id+"").then((response) => {
+        Axios.get("http://localhost:3305/api/users/"+login_id+"").then((response) => {
             if(response.data.length === 0) {
                 alert("Your id is not found on DB");
             } else {
+                console.log('login_id', login_id);
+                console.log('db password', response.data[0].password);
+                //console.log('db email', response.data[0].user_email);
+                //console.log('hashutil',  hashutil(login_id, response.data[0].user_email, password));
+                console.log('hashutil',  hashutil(login_id, response.data[0].user_email, password));
+
                 if (response.data[0].password == hashutil(login_id, response.data[0].user_email, password)) {
                     alert("Login Success!");
                     props.ChangeProfile({

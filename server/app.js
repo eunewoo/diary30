@@ -4,8 +4,20 @@ const users = require('./models/users');
 const questions = require('./models/questions');
 
 const app = express();
-const bodyParser = require('body-parser');
+
+var bodyParser = require('body-parser');
+var urlencodedParser = bodyParser.urlencoded({ extended: false })  
+const PORT = process.env.PORT || 3306;
+const cors = require("cors");
+const corsOptions = {
+    origin:"http://localhost:3000"
+};
+
+app.set('port', process.env.PORT || 3305);
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 //AWS image upload part
 const multer = require('multer');
@@ -106,7 +118,7 @@ app.post('/api/users', async function (req,res) {
             user_name: req.body.user_name,
             user_email: req.body.user_email,
             address_f: req.body.address_f,
-            adress_i: req.body.address_i,
+            address_l: req.body.address_l,
             img: req.body.img
         })
         await newUser.save();
@@ -129,7 +141,7 @@ app.put('/api/users', async function (req,res) {
             user_name: req.body.user_name,
             user_email: req.body.user_email,
             address_f: req.body.address_f,
-            adress_i: req.body.address_i,
+            adress_l: req.body.address_l,
             img: req.body.img
         }
         await users.updateOne({user_id : userId}, newUser);
@@ -240,5 +252,5 @@ app.put('/api/questions', async function (req,res) {
 
 
 
-port = process.env.PORT || 3000;
-app.listen(port, () => { console.log('server started!')});
+port = process.env.PORT || 3305;
+app.listen(port, () => { console.log('Server started on port ' + port)});

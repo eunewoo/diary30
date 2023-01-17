@@ -87,31 +87,31 @@ export default function Register(props) {
                 } else {
                 let temp = 0;
                 if (temp1 === 0) {
-                    Axios.get('http://localhost:3305/api/diary/users').then((response) => {
-                    for(var i in response.data){
-                        if(response.data[i].user_id == user_id){
-                            break;
-                        }else if(i == response.data.length-1 && response.data[i].user_id != user_id){
-                            temp = 1;
+                    Axios.get('http://localhost:3305/api/users').then((response) => {
+                        for(var i in response.data){
+                            if(response.data[i].user_id == user_id){
+                                break;
+                            }else if(i == response.data.length-1 && response.data[i].user_id != user_id){
+                                temp = 1;
+                            }
                         }
-                    }
-                    if(temp === 1){
-                        alert("Success Register!");
-                        Axios.post('http://localhost:3305/api/diary/users', {
-                            user_id: profdata.user_id,
-                            password: hashutil(user_id, user_email, password),
-                            name: profdata.user_name,
-                            email: profdata.user_email,
-                            address1: profdata.address_f,
-                            address2: profdata.address_l,
-                            img: profdata.img
-                        })
-                        setDisplayImage(() => profdata.img);
-                        document.location.href = 'http://localhost:3000';
-                    }else if(temp === 0){
-                        alert("Invalid Register!");
-                    }
-                })
+                        if(temp === 1){
+                            alert("Success Register!");
+                            Axios.post('http://localhost:3305/api/users', {
+                                user_id: profdata.user_id,
+                                password: hashutil(user_id, user_email, password),
+                                user_name: profdata.user_name,
+                                user_email: profdata.user_email,
+                                address_f: profdata.address_f,
+                                address_l: profdata.address_l,
+                                img: profdata.img
+                            })
+                            setDisplayImage(() => profdata.img);
+                            document.location.href = 'http://localhost:3000';
+                        }else if(temp === 0){
+                            alert("Invalid Register!");
+                        }
+                    })
                 }
                 }
         }

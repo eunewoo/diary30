@@ -1,15 +1,15 @@
-GET http://localhost:3000/api/users
+GET http://localhost:3305/api/users
 
 ###
 GET http://localhost:3000/api/users/eunewoo7
 
 ###
-POST http://localhost:3000/api/users
+POST http://localhost:3305/api/users
 Content-Type: application/json
 
 {
     //"_id": "",
-    "user_id": "eunewoo5",
+    "user_id": "eunewoo6",
     "password": "6b115c393d2c543157778a1f74eb2b446632c44fd0a54542cd000b105d7165",
     "user_name": "King_eunwoo",
     "user_email": "ewchoi98@naver.com",
