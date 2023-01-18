@@ -34,7 +34,7 @@ export default function Edit(props) {
                 }
                 ret.push(temp)
             }
-            
+        
         }
         return ret;
     }
@@ -123,7 +123,7 @@ export default function Edit(props) {
         }
 
         for (var i = 0; i < temp.length; i++) {
-            Axios.post('http://localhost:3305/api/diary/questions', {
+            Axios.post('http://localhost:3305/api/questions', {
                 user_id: temp[i].user_id,
                 question: temp[i].question,
                 question_selection: JSON.stringify(temp[i].question_selection),
@@ -132,16 +132,19 @@ export default function Edit(props) {
         }
         
         for (var i = 0; i < temp1.length; i++) {
-            Axios.delete('http://localhost:3305/api/diary/questions/user_id='+temp1[i].user_id+'&id='+temp1[i].id).then((response) => {
+            Axios.delete('http://localhost:3305/api/questions/user_id='+temp1[i].user_id+'&id='+temp1[i].question).then((response) => {
                 console.log("del ended");
             }); 
         }
 
-        Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
+        Axios.get("http://localhost:3305/api/questions/"+props.profile.user_id).then((response) => {
+            console.log('detect change get response', response);
             var z = 0;
             for (var i in response.data) {
-                var temp = JSON.parse(response.data[i].question_selection);
-                var temp1 = JSON.parse(response.data[i].question_answers);
+                //var temp = JSON.parse(response.data[i].question_selection);
+                //var temp1 = JSON.parse(response.data[i].question_answers);
+                var temp = response.data[i].question_selection;
+                var temp1 = response.data[i].question_answers;
 
                 append(questions, {
                     id: response.data[i].id,
@@ -230,6 +233,7 @@ export default function Edit(props) {
     //adding question
     function setSome(iterator) {
         var temp = questions[iterator];
+        console.log('setSome', temp);
         if (questions[iterator].question_type == "multiple choice") {
             return (
                 <>
@@ -277,7 +281,7 @@ export default function Edit(props) {
     }
 
     //question form when add new one
-    function newDiv() {
+    function newDiv() {  
         var a = document.createElement('li');
         var b = document.createElement('div');
         var c = document.createElement('input');
@@ -325,14 +329,14 @@ export default function Edit(props) {
     }
     
     useEffect(() => {
-        Axios.get("http://localhost:3305/api/diary/questions/id="+props.profile.user_id).then((response) => {
+        Axios.get("http://localhost:3305/api/questions/"+props.profile.user_id).then((response) => {
             var z = 0;
             
             for (var i in response.data) {
-                var temp = JSON.parse(response.data[i].question_selection);
+                var temp = response.data[i].question_selection;
 
                 append(questions, {
-                    id: response.data[i].id,
+                    //id: response.data[i].id,
                     user_id: response.data[i].user_id,
                     question: response.data[i].question,
                     question_type: response.data[i].question_type,
