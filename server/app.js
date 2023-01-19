@@ -219,14 +219,21 @@ app.get('/api/questions/:user_id', async function (req,res) {
 // }));
 
 //delete 
-// app.delete('/api/diary/questions/user_id=:user_id&id=:id', (req,res) => {
-//     db.query("Delete from questions where user_id =\"" + req.params.user_id + "\" and id=\"" + req.params.id +"\";", (err, result) => {
-//         if (!err) {
-//             console.log("Delete from questions where user_id =\"" + req.params.user_id + "\" and id=\"" + req.params.id +"\";")
-//             res.json(result);
-//         } else {
-//             console.log(err);
-//         }})});
+app.delete('/api/questions/:user_id&:question', async function (req,res) {
+    try {
+        let idInstance = req.params.user_id
+        let questionInstance = req.params.question
+
+        await questions.deleteOne({user_id : idInstance, question: questionInstance});
+        console.log("Delete completed!");
+    } catch (error) {
+        console.log("Error on Delete: " + error.message);
+        res.status(400);
+        res.send(error.message);
+    }
+});
+
+
 
 app.put('/api/questions', async function (req,res) {
     console.log("Put with body: " + JSON.stringify(req.body));

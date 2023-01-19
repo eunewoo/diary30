@@ -132,7 +132,7 @@ export default function Edit(props) {
         }
         
         for (var i = 0; i < temp1.length; i++) {
-            Axios.delete('http://localhost:3305/api/questions/user_id='+temp1[i].user_id+'&id='+temp1[i].question).then((response) => {
+            Axios.delete('http://localhost:3305/api/questions/'+temp1[i].user_id+'&'+temp1[i].question).then((response) => {
                 console.log("del ended");
             }); 
         }

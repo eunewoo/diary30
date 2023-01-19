@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/api/questions/eunewoo
+GET http://localhost:3000/api/questions/eunewoo5
 
 ###
 POST http://localhost:3000/api/questions
@@ -48,13 +48,16 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:3000/api/questions
+PUT http://localhost:3305/api/questions
 Content-Type: application/json
 
 {
   "user_id": "eunewoo",
-  "question": "Do you satisfy your day2?",
+  "question": "Do you satisfy your day3?",
   "question_selection": ["Perfect", "SoSo", "Bad"],
   "question_type": "multiple choice",
   "question_answers": ["put"]
 }
+
+###
+DELETE http://localhost:3305/api/questions/eunewoo&Do you satisfy your day2?
