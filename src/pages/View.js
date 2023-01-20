@@ -254,11 +254,11 @@ export default function View(props) {
     }
 
     useEffect(() => {
-        Axios.get("https://diary30wooserver.web.app/api/diary/questions/id="+props.profile.user_id).then((response) => {
+        Axios.get("https://diary30wooserver.web.app/api/questions/"+props.profile.user_id).then((response) => {
             var z = 0;
             for (var i in response.data) {
-                var temp = JSON.parse(response.data[i].question_selection);
-                var temp1 = JSON.parse(response.data[i].question_answers);
+                var temp = response.data[i].question_selection;
+                var temp1 = response.data[i].question_answers;
                 var temp2 = [];
                 append(questions, {
                     id: response.data[i].id,

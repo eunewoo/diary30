@@ -28,9 +28,9 @@ export default function Edit(props) {
                 temp.question = list.childNodes[i].childNodes[0].childNodes[0].value;
                 temp.question_type = list.childNodes[i].childNodes[0].childNodes[1].value;
                 if (list.childNodes[i].childNodes[0].childNodes[1].value === "multiple choice") {
-                    temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[3].value);
-                    temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[5].value);
-                    temp.question_selection.push(list.childNodes[i].childNodes[0].childNodes[7].value);
+                    temp.question_selection.push([list.childNodes[i].childNodes[0].childNodes[3].value]);
+                    temp.question_selection.push([list.childNodes[i].childNodes[0].childNodes[5].value]);
+                    temp.question_selection.push([list.childNodes[i].childNodes[0].childNodes[7].value]);
                 }
                 ret.push(temp)
             }
@@ -126,7 +126,7 @@ export default function Edit(props) {
             Axios.post('https://diary30wooserver.web.app/api/questions', {
                 user_id: temp[i].user_id,
                 question: temp[i].question,
-                question_selection: JSON.stringify(temp[i].question_selection),
+                question_selection: temp[i].question_selection,
                 question_type: temp[i].question_type
             }).then(() => {console.log("post ended")}); 
         }
