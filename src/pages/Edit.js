@@ -123,7 +123,7 @@ export default function Edit(props) {
         }
 
         for (var i = 0; i < temp.length; i++) {
-            Axios.post('http://localhost:3305/api/questions', {
+            Axios.post('https://diary30wooserver.web.app/api/questions', {
                 user_id: temp[i].user_id,
                 question: temp[i].question,
                 question_selection: JSON.stringify(temp[i].question_selection),
@@ -132,12 +132,15 @@ export default function Edit(props) {
         }
         
         for (var i = 0; i < temp1.length; i++) {
-            Axios.delete('http://localhost:3305/api/questions/'+temp1[i].user_id+'&'+temp1[i].question).then((response) => {
+            // ? if 문으로
+            // question 에다 number줘서 보내기 db
+            // 특수기호로 프론트에서 alert로 막기
+            Axios.delete('https://diary30wooserver.web.app/api/questions/'+temp1[i].user_id+'&'+temp1[i].question).then((response) => {
                 console.log("del ended");
             }); 
         }
 
-        Axios.get("http://localhost:3305/api/questions/"+props.profile.user_id).then((response) => {
+        Axios.get("https://diary30wooserver.web.app/api/questions/"+props.profile.user_id).then((response) => {
             console.log('detect change get response', response);
             var z = 0;
             for (var i in response.data) {
@@ -329,7 +332,7 @@ export default function Edit(props) {
     }
     
     useEffect(() => {
-        Axios.get("http://localhost:3305/api/questions/"+props.profile.user_id).then((response) => {
+        Axios.get("https://diary30wooserver.web.app/api/questions/"+props.profile.user_id).then((response) => {
             var z = 0;
             
             for (var i in response.data) {

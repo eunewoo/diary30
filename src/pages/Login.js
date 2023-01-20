@@ -25,7 +25,7 @@ export default function Login(props) {
     }
 
     const setLoginId = () => {
-        Axios.get("http://localhost:3305/api/users/"+login_id+"").then((response) => {
+        Axios.get("https://diary30wooserver.web.app/api/users/"+login_id+"").then((response) => {
             if(response.data.length === 0) {
                 alert("Your id is not found on DB");
             } else {

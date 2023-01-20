@@ -45,7 +45,7 @@ export default function Register(props) {
             },
         };
  
-         Axios.post("http://localhost:3305/img/", formData, config).then((res) => {
+         Axios.post("https://diary30wooserver.web.app/img/", formData, config).then((res) => {
              //console.log('s3url', res.data.location);
  
              setProfdata({
@@ -87,7 +87,7 @@ export default function Register(props) {
                 } else {
                 let temp = 0;
                 if (temp1 === 0) {
-                    Axios.get('http://localhost:3305/api/users').then((response) => {
+                    Axios.get('https://diary30wooserver.web.app/api/users').then((response) => {
                         for(var i in response.data){
                             if(response.data[i].user_id == user_id){
                                 break;
@@ -97,7 +97,7 @@ export default function Register(props) {
                         }
                         if(temp === 1){
                             alert("Success Register!");
-                            Axios.post('http://localhost:3305/api/users', {
+                            Axios.post('https://diary30wooserver.web.app/api/users', {
                                 user_id: profdata.user_id,
                                 password: hashutil(user_id, user_email, password),
                                 user_name: profdata.user_name,

@@ -32,7 +32,7 @@ export default function Profile(props) {
             },
         };
  
-         Axios.post("http://localhost:3305/img/", formData, config).then((res) => {
+         Axios.post("https://diary30wooserver.web.app/img/", formData, config).then((res) => {
              //console.log('s3url', res.data.location);
  
             //  setProfdata({
@@ -69,7 +69,7 @@ export default function Profile(props) {
         //it should fetch and change
         //but for testing i will use just set function
         if (/\S+@\S+\.\S+/.test(email)) {
-            Axios.put('http://localhost:3305/api/diary/users', {
+            Axios.put('https://diary30wooserver.web.app/api/diary/users', {
                     user_id: props.profile.user_id,
                     profile: img,
                     name: name,
