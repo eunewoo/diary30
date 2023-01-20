@@ -88,9 +88,9 @@ export default function View(props) {
         var list = document.getElementById("list");
         for (var i = 0; i < list.childNodes.length; i++) {
             if (list.childNodes[i].childNodes.length === 7) { //if multiple choice
-                list.childNodes[i].childNodes[1].checked = returnMutliple(questions[i], 0, temp)
-                list.childNodes[i].childNodes[3].checked = returnMutliple(questions[i], 1, temp)
-                list.childNodes[i].childNodes[5].checked = returnMutliple(questions[i], 2, temp)
+                list.childNodes[i].childNodes[1].checked = returnMultiple(questions[i], 0, temp)
+                list.childNodes[i].childNodes[3].checked = returnMultiple(questions[i], 1, temp)
+                list.childNodes[i].childNodes[5].checked = returnMultiple(questions[i], 2, temp)
             }
             if (list.childNodes[i].childNodes.length === 5) { //if multiple choice
                 list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp)
@@ -143,9 +143,9 @@ export default function View(props) {
         var list = document.getElementById("list");
         for (var i = 0; i < list.childNodes.length; i++) {
             if (list.childNodes[i].childNodes.length === 7) { //if multiple choice
-                list.childNodes[i].childNodes[1].checked = returnMutliple(questions[i], 0, temp)
-                list.childNodes[i].childNodes[3].checked = returnMutliple(questions[i], 1, temp)
-                list.childNodes[i].childNodes[5].checked = returnMutliple(questions[i], 2, temp)
+                list.childNodes[i].childNodes[1].checked = returnMultiple(questions[i], 0, temp)
+                list.childNodes[i].childNodes[3].checked = returnMultiple(questions[i], 1, temp)
+                list.childNodes[i].childNodes[5].checked = returnMultiple(questions[i], 2, temp)
             }
             if (list.childNodes[i].childNodes.length === 5) { //if boolean
                 list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp)
@@ -167,7 +167,7 @@ export default function View(props) {
         setQuestions(temp);
     }
 
-    function returnMutliple(x, y, z) {
+    function returnMultiple(x, y, z) {
         if (z === undefined) {
             z=cumDate;
         }
@@ -212,11 +212,11 @@ export default function View(props) {
         if (x.question_type === "multiple choice") {
             return(
             <>
-                <input type="radio" name={x.question} value={x.question_selection[0]}  disabled={true} defaultChecked={returnMutliple(x,0)}></input>
+                <input type="radio" name={x.question} value={x.question_selection[0]}  disabled={true} defaultChecked={returnMultiple(x,0)}></input>
                 <label>{x.question_selection[0]}</label>
-                <input type="radio" name={x.question} value={x.question_selection[1]} disabled={true} defaultChecked={returnMutliple(x,1)}></input>
+                <input type="radio" name={x.question} value={x.question_selection[1]} disabled={true} defaultChecked={returnMultiple(x,1)}></input>
                 <label>{x.question_selection[1]}</label>
-                <input type="radio" name={x.question} value={x.question_selection[2]} disabled={true} defaultChecked={returnMutliple(x,2)}></input>
+                <input type="radio" name={x.question} value={x.question_selection[2]} disabled={true} defaultChecked={returnMultiple(x,2)}></input>
                 <label>{x.question_selection[2]}</label>
             </>)
         } else if (x.question_type === "boolean") {
