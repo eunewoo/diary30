@@ -123,11 +123,14 @@ export default function Edit(props) {
         }
 
         for (var i = 0; i < temp.length; i++) {
+            console.log('post again', temp);
+            console.log('post again i', i);
             Axios.post('https://diary30wooserver.web.app/api/questions', {
                 user_id: temp[i].user_id,
                 question: temp[i].question,
                 question_selection: temp[i].question_selection,
-                question_type: temp[i].question_type
+                question_type: temp[i].question_type,
+                question_order: i
             }).then(() => {console.log("post ended")}); 
         }
         
@@ -135,7 +138,8 @@ export default function Edit(props) {
             // ? if 문으로
             // question 에다 number줘서 보내기 db
             // 특수기호로 프론트에서 alert로 막기
-            Axios.delete('https://diary30wooserver.web.app/api/questions/'+temp1[i].user_id+'&'+temp1[i].question).then((response) => {
+            console.log('temp1',temp1)
+            Axios.delete('https://diary30wooserver.web.app/api/questions/'+temp1[i].user_id+'&'+temp1[i].question_order).then((response) => {
                 console.log("del ended");
             }); 
         }
@@ -155,7 +159,8 @@ export default function Edit(props) {
                     question: response.data[i].question,
                     question_type: response.data[i].question_type,
                     question_selection: temp,
-                    question_answers: temp1
+                    question_answers: temp1,
+                    question_order: response.data[i].question_order
                 })}
                 alert("Your change has been changed")
             });
@@ -236,7 +241,7 @@ export default function Edit(props) {
     //adding question
     function setSome(iterator) {
         var temp = questions[iterator];
-        console.log('setSome', temp);
+        //console.log('setSome', temp);
         if (questions[iterator].question_type == "multiple choice") {
             return (
                 <>
@@ -343,7 +348,8 @@ export default function Edit(props) {
                     user_id: response.data[i].user_id,
                     question: response.data[i].question,
                     question_type: response.data[i].question_type,
-                    question_selection: temp
+                    question_selection: temp,
+                    question_order: response.data[i].question_order
                 });
                 ChangeReturnee(setSome(z),z);
                 z++;
