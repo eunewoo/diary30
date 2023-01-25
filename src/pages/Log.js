@@ -141,6 +141,11 @@ export default function Log(props) {
             z=cumDate;
         }
         for (var i = 0; i < x.question_answers.length; i++) {
+            console.log('x.question_answers[i].date', x.question_answers[i].date);
+            console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
+            console.log('x.question_answers[i].answer', x.question_answers[i].answer);
+            console.log( x.question_selection[y][0]);
+
             if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
                 if (x.question_answers[i].answer === x.question_selection[y][0]) {
                     return true;
@@ -299,7 +304,8 @@ export default function Log(props) {
             Axios.put('https://diary30wooserver.web.app/api/questions', {
                 user_id: props.profile.user_id,
                 question: temp[i].question,
-                question_answers: JSON.stringify(temp[i].question_answers)
+                //question_answers: JSON.stringify(temp[i].question_answers)
+                question_answers: temp[i].question_answers
             })
         }
         alert("Your submission is correctly submitted on the db");
