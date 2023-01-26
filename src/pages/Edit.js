@@ -123,8 +123,8 @@ export default function Edit(props) {
         }
 
         for (var i = 0; i < temp.length; i++) {
-            console.log('post again', temp);
-            console.log('post again i', i);
+            // console.log('post again', temp);
+            // console.log('post again i', i);
             Axios.post('https://diary30wooserver.web.app/api/questions', {
                 user_id: temp[i].user_id,
                 question: temp[i].question,
@@ -140,8 +140,8 @@ export default function Edit(props) {
             // 특수기호로 프론트에서 alert로 막기
             console.log('temp1',temp1)
             Axios.delete('https://diary30wooserver.web.app/api/questions/'+temp1[i].user_id+'&'+temp1[i].question_order).then((response) => {
-                console.log("del ended");
-            }); 
+                //console.log("del ended");
+            }).then(() => {console.log("del ended")}); 
         }
 
         Axios.get("https://diary30wooserver.web.app/api/questions/"+props.profile.user_id).then((response) => {
@@ -162,8 +162,8 @@ export default function Edit(props) {
                     question_answers: temp1,
                     question_order: response.data[i].question_order
                 })}
-                alert("Your change has been changed")
-            });
+                //alert("Your change has been changed")
+            }).then(() => {alert("Your change has been changed")});
 
         
     }
@@ -336,6 +336,7 @@ export default function Edit(props) {
         list.appendChild(newDiv());
     }
     
+    //work only when page is first loaded
     useEffect(() => {
         Axios.get("https://diary30wooserver.web.app/api/questions/"+props.profile.user_id).then((response) => {
             var z = 0;
