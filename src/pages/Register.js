@@ -45,7 +45,7 @@ export default function Register(props) {
             },
         };
  
-         Axios.post("https://diary30wooserver.web.app/img/", formData, config).then((res) => {
+         Axios.post("https://diary30wooserver.web.app/api/users", formData, config).then((res) => {
              //console.log('s3url', res.data.location);
  
              setProfdata({
@@ -97,6 +97,7 @@ export default function Register(props) {
                         }
                         if(temp === 1){
                             alert("Success Register!");
+                            
                             Axios.post('https://diary30wooserver.web.app/api/users', {
                                 user_id: profdata.user_id,
                                 password: hashutil(user_id, user_email, password),
@@ -105,9 +106,8 @@ export default function Register(props) {
                                 address_f: profdata.address_f,
                                 address_l: profdata.address_l,
                                 img: profdata.img
-                            })
-                            setDisplayImage(() => profdata.img);
-                            document.location.href = 'http://localhost:3000';
+                            }).then(() => {setDisplayImage(() => profdata.img);}).then(() => {document.location.href = 'http://localhost:3000/';}); 
+                            
                         }else if(temp === 0){
                             alert("Invalid Register!");
                         }
