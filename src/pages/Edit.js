@@ -34,7 +34,6 @@ export default function Edit(props) {
                 }
                 ret.push(temp)
             }
-        
         }
         return ret;
     }
@@ -77,7 +76,7 @@ export default function Edit(props) {
     }
  
     //
-    function detectChange() {
+    async function detectChange() {
         //filter duplicate questions
         var submit = validate();
         var temp= [];
@@ -122,22 +121,27 @@ export default function Edit(props) {
             }
         }
 
+
+
         for (var i = 0; i < temp.length; i++) {
             // console.log('post again', temp);
             // console.log('post again i', i);
-            Axios.post('https://diary30wooserver.web.app/api/questions', {
+            console.log('post temp', temp[i].question);
+            await Axios.post('https://diary30wooserver.web.app/api/questions', {
                 user_id: temp[i].user_id,
                 question: temp[i].question,
                 question_selection: temp[i].question_selection,
                 question_type: temp[i].question_type,
                 question_order: i
-            }).then(() => {console.log("post ended")}); 
+            }); 
+            console.log('post end', temp[i].question)
+
+            // var delayInMilliseconds = 500; 
+            // setTimeout(function() {
+            // }, delayInMilliseconds);
         }
         
         for (var i = 0; i < temp1.length; i++) {
-            // ? if 문으로
-            // question 에다 number줘서 보내기 db
-            // 특수기호로 프론트에서 alert로 막기
             console.log('temp1',temp1)
             Axios.delete('https://diary30wooserver.web.app/api/questions/'+temp1[i].user_id+'&'+temp1[i].question_order).then((response) => {
                 //console.log("del ended");
@@ -353,8 +357,7 @@ export default function Edit(props) {
                     question_order: response.data[i].question_order
                 });
                 ChangeReturnee(setSome(z),z);
-                z++;
-                
+                z++;   
             }
     })}, []);
     
