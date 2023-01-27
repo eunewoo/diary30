@@ -75,7 +75,7 @@ export default function Edit(props) {
         return data;
     }
  
-    //
+    //add async,await to run in order
     async function detectChange() {
         //filter duplicate questions
         var submit = validate();
