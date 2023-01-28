@@ -69,14 +69,13 @@ export default function Profile(props) {
         //it should fetch and change
         //but for testing i will use just set function
         if (/\S+@\S+\.\S+/.test(email)) {
-            Axios.put('https://diary30wooserver.web.app/api/diary/users', {
+            Axios.put('https://diary30wooserver.web.app/api/users', {
                     user_id: props.profile.user_id,
-                    profile: img,
-                    name: name,
                     password: hashutil(props.profile.user_id, email, props.profile.password),
-                    email: email,
-                    address1: address1,
-                    address2: address2
+                    user_name: name,
+                    user_email: email,
+                    address_f: address1,
+                    //address2: address2
                 }
             ).then((response)=>{
                 if (response.status != 200) {
@@ -84,7 +83,6 @@ export default function Profile(props) {
                 } else {
                     props.changeProfile({
                         ...props.profile,
-                        profile: img,
                         name: name,
                         email: email,
                         address1: address1,
