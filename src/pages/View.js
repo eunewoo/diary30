@@ -295,11 +295,11 @@ export default function View(props) {
                 } else if (response.data[i].question_type == "multiple choice") {
                     var x = [0,0,0];
                     for (var j = 0; j < temp1.length; j++) {
-                        if (temp[0] === temp1[j].answer) {
+                        if (temp[0] == temp1[j].answer) {
                             x[0]++;
-                        }else if (temp[1] === temp1[j].answer) {
+                        }else if (temp[1] == temp1[j].answer) {
                             x[1]++;
-                        }else if (temp[2] === temp1[j].answer) {
+                        }else if (temp[2] == temp1[j].answer) {
                             x[2]++;
                         }
                     }
