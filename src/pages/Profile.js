@@ -26,13 +26,15 @@ export default function Profile(props) {
          const formData = new FormData();
          formData.append('file', img);
 
+         console.log(formData);
+
          const config = {
             headers: {
                 "Content-Type": "multipart/form-data"
             },
         };
  
-         Axios.post("https://diary30wooserver.web.app/img/", formData, config).then((res) => {
+         Axios.post("https://diary30wooserver.web.app/img", formData, config).then((res) => {
              //console.log('s3url', res.data.location);
  
             //  setProfdata({
@@ -75,6 +77,7 @@ export default function Profile(props) {
                     user_name: name,
                     user_email: email,
                     address_f: address1,
+                    img: img,
                     //address2: address2
                 }
             ).then((response)=>{
@@ -86,7 +89,7 @@ export default function Profile(props) {
                         name: name,
                         email: email,
                         address1: address1,
-                        address2: address2
+                        address2: address2,
                     });
                     setDisplayImage(() => img);
                     alert("Your profile has been changed");

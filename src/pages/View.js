@@ -361,7 +361,7 @@ export default function View(props) {
           question: response.data[i].question,
           question_type: response.data[i].question_type,
           question_selection: temp,
-          question_answers: sortedTemp1,
+          question_answers: temp1,
         });
         z++;
         if (response.data[i].question_type === "number") {
@@ -458,7 +458,6 @@ export default function View(props) {
           });
           charts.push(chart);
         } else if (response.data[i].question_type === "text") {
-          console.log(temp1);
           for (var j = 1; j < temp1.length; j++) {
             var oned = new Date(temp1[j - 1].date);
             var tned = new Date(temp1[j].date);
@@ -469,7 +468,6 @@ export default function View(props) {
               j = 1;
             }
           }
-          console.log(temp1);
           var canvas = document.createElement("div");
           canvas.id = "textWrapper";
           var title = document.createElement("div");
