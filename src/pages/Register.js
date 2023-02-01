@@ -1,5 +1,5 @@
 import React, { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 import { hashutil } from "./hashutil.mjs";
 
@@ -142,6 +142,24 @@ export default function Register(props) {
         }
     }
   };
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      document.getElementById("registerButton").click();
+    }
+  };
+
+  useEffect(() => {
+    const registerForm = document.getElementById("registerWrapper");
+    if (!registerForm) return;
+
+    registerForm.addEventListener("keyup", handleKeyDown);
+    return () => {
+      if (!registerForm) return;
+      registerForm.removeEventListener("keyup", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div id="registerWrapper">
