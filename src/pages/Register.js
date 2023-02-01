@@ -32,6 +32,15 @@ export default function Register(props) {
 
   const setTextid = (e) => {
     const { name, value } = e.target;
+
+    setProfdata({
+      ...profdata,
+      [name]: value,
+    });
+  };
+
+  const setTextid2 = (e) => {
+    const { name, value } = e.target;
     setValue(e.target.value);
 
     setProfdata({
@@ -190,7 +199,7 @@ export default function Register(props) {
                     name="password"
                     defaultValue={password}
                     type="password"
-                    onChange={setTextid}
+                    onChange={setTextid2}
                   />
                 </div>
               </li>
