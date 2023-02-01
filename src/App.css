@@ -1,4 +1,4 @@
-body{
+body {
   margin: 0;
   padding: 0;
   width: 100vw;
@@ -45,7 +45,7 @@ body {
 input:focus,
 select:focus,
 textarea:focus,
-button:focus  {
+button:focus {
   outline-color: var(--activeColor);
 }
 
@@ -53,18 +53,18 @@ select {
   border-color: var(--moderateColor);
 }
 
-input[type=text] {
+input[type="text"] {
   border-color: var(--lightColor);
 }
 
-input[type=submit]:hover,
-input[type=button]:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
 button:hover {
   transform: scale(1.1);
 }
 
 /* Navigation bar */
-#navWrapper{
+#navWrapper {
   width: 100vw;
   height: 80px;
 
@@ -74,7 +74,7 @@ button:hover {
   background-color: #fff;
 }
 
-#navWrapper #navTitle{
+#navWrapper #navTitle {
   font-size: 30px;
   font-weight: bold;
   margin: 0;
@@ -85,30 +85,30 @@ button:hover {
   color: #f76b8a;
   transition: 3s;
 }
-#navWrapper > #linksWrapper{
+#navWrapper > #linksWrapper {
   min-width: 300px;
 }
 
-#navWrapper > div > a{
+#navWrapper > div > a {
   color: #000;
   margin-right: 20px;
   text-decoration: none;
   font-weight: 500;
 }
 
-#navWrapper > div > a#selected{
+#navWrapper > div > a#selected {
   color: rgb(113, 193, 189);
   text-decoration: underline;
 }
 
-#navProfile{
+#navProfile {
   width: 60px;
   height: 60px;
   margin-right: 20px;
   color: black;
 }
 
-#navProfile > img{
+#navProfile > img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -116,7 +116,7 @@ button:hover {
 
 /* General */
 
-#submit{
+#submit {
   transition: all 0.2s ease 0s;
   margin-left: 10px;
   width: 80px;
@@ -129,16 +129,16 @@ button:hover {
 }
 
 /* Log Data Page */
-#pageWrapper{
+#pageWrapper {
   width: 100vw;
-    
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-#logWrapper{
+#logWrapper {
   width: 100%;
   max-width: 600px;
   padding-left: 10px;
@@ -149,7 +149,7 @@ button:hover {
   justify-content: space-between;
 }
 
-#list{
+#list {
   width: 100%;
   max-width: 600px;
   padding-left: 10px;
@@ -161,7 +161,7 @@ button:hover {
   align-items: space-between;
 }
 
-#logWrapper > ul{
+#logWrapper > ul {
   width: 100%;
   list-style: none;
   text-decoration: none;
@@ -169,17 +169,17 @@ button:hover {
   margin: 0;
 }
 
-#logWrapper > ul > li > div > nav > ul{
+#logWrapper > ul > li > div > nav > ul {
   padding: 0;
 }
 
-#logWrapper > ul > li > div > nav > ul > li{
+#logWrapper > ul > li > div > nav > ul > li {
   display: flex;
   justify-content: space-between;
   height: 100%;
 }
 
-#logWrapper > button{
+#logWrapper > button {
   transition: all 0.2s ease 0s;
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0);
@@ -187,16 +187,16 @@ button:hover {
   cursor: pointer;
 }
 
-#logWrapper > button:nth-child(3){
+#logWrapper > button:nth-child(3) {
   text-align: right;
 }
 
-#logWrapper > p{
+#logWrapper > p {
   font-size: 20px;
   font-weight: bold;
 }
 
-#list > div{
+#list > div {
   margin-bottom: 10px;
   list-style: none;
   width: 100%;
@@ -206,38 +206,37 @@ button:hover {
   background-color: #fff;
 }
 
-#list > div > p{
-
+#list > div > p {
   width: 100vw;
   max-width: 600px;
   box-sizing: border-box;
-  
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
-  margin:  0;
+
+  margin: 0;
   margin-bottom: 10px;
 
   font-size: 20px;
   font-weight: bold;
 }
 
-#list > div > input{
+#list > div > input {
   border-radius: 3px;
 }
 
-#list > div:nth-child(8) > input[type=text]{
+#list > div:nth-child(8) > input[type="text"] {
   width: 100%;
 }
 
 /* log data page submit button */
-#pageWrapper > #submit{
+#pageWrapper > #submit {
   margin-bottom: 20px;
 }
 
 /* Edit Page */
-#editWrapper{
+#editWrapper {
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -245,7 +244,7 @@ button:hover {
   justify-content: flex-start;
 }
 
-#editSubTitle{
+#editSubTitle {
   width: 100vw;
   max-width: 600px;
   height: 80px;
@@ -258,24 +257,24 @@ button:hover {
   align-items: center;
 }
 
-#editSubTitle > p{
+#editSubTitle > p {
   font-size: 24px;
   font-weight: bold;
 }
 
-#editSubTitle > button{
+#editSubTitle > button {
   transition: all 0.2s ease 0s;
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0);
   border: 0px;
 }
 
-#editInner > #list{
+#editInner > #list {
   margin-top: 0px;
   padding: 0;
 }
 
-#editInner > #list > li{
+#editInner > #list > li {
   list-style: none;
   width: 100%;
   margin: 10px;
@@ -286,12 +285,12 @@ button:hover {
   background-color: #fff;
 }
 
-#list > li > div{
+#list > li > div {
   display: flex;
   flex-direction: column;
 }
 
-#list > li > div > input[type=text]:nth-child(1){
+#list > li > div > input[type="text"]:nth-child(1) {
   width: 100%;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -300,14 +299,14 @@ button:hover {
   padding-bottom: 3px;
 }
 
-#list > li > div > select{
+#list > li > div > select {
   display: inline;
   width: 120px;
   border-radius: 5px;
   margin-bottom: 10px;
 }
 
-#editSubmit{
+#editSubmit {
   transition: all 0.2s ease 0s;
   margin-left: 10px;
   width: 80px;
@@ -320,13 +319,13 @@ button:hover {
   margin-bottom: 20px;
 }
 
-#actionHandler{
+#actionHandler {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#deleteButton{
+#deleteButton {
   transition: all 0.2s ease 0s;
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0);
@@ -337,13 +336,13 @@ button:hover {
   padding: 0px;
 }
 
-#deleteButton > span:hover{
+#deleteButton > span:hover {
   transform: scale(1.2);
   color: #f76b8a;
   transition: all 0.2s ease 0s;
 }
 
-#list > li > div > input[type=radio]{
+#list > li > div > input[type="radio"] {
   display: inline;
   width: 15px;
   height: 15px;
@@ -351,7 +350,7 @@ button:hover {
   margin-left: 0px;
 }
 
-#list > li > div > input[type=text]:nth-child(4){
+#list > li > div > input[type="text"]:nth-child(4) {
   display: inline;
   margin-top: -30px;
   margin-left: 20px;
@@ -360,11 +359,11 @@ button:hover {
   height: 20px;
   background-color: #fff;
   border: 0px;
-  border-bottom: 1.5px #AAA solid;
+  border-bottom: 1.5px #aaa solid;
   padding-left: 5px;
 }
 
-#list > li > div > input[type=text]:nth-child(6){
+#list > li > div > input[type="text"]:nth-child(6) {
   display: inline;
   margin-top: -30px;
   margin-left: 20px;
@@ -373,11 +372,11 @@ button:hover {
   height: 20px;
   background-color: #fff;
   border: 0px;
-  border-bottom: 1.5px #AAA solid;
+  border-bottom: 1.5px #aaa solid;
   padding-left: 5px;
 }
 
-#list > li > div > input[type=text]:nth-child(8){
+#list > li > div > input[type="text"]:nth-child(8) {
   display: inline;
   margin-top: -30px;
   margin-left: 20px;
@@ -386,19 +385,19 @@ button:hover {
   height: 20px;
   background-color: #fff;
   border: 0px;
-  border-bottom: 1.5px #AAA solid;
+  border-bottom: 1.5px #aaa solid;
   padding-left: 5px;
 }
 
 /* Profile Page */
-#profileWrapper{
+#profileWrapper {
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#profileWrapper > #profileFormWrapper{
+#profileWrapper > #profileFormWrapper {
   width: 100vw;
   max-width: 600px;
   padding-left: 10px;
@@ -409,13 +408,13 @@ button:hover {
   flex-direction: column;
 }
 
-#profileWrapper > #profileFormWrapper > p{
+#profileWrapper > #profileFormWrapper > p {
   font-size: 24px;
   font-weight: bold;
   margin: 10px 5px 10px 15px;
 }
 
-#profileFormWrapper > #profileContent{
+#profileFormWrapper > #profileContent {
   list-style: none;
   width: 100%;
   margin-bottom: 10px;
@@ -425,13 +424,13 @@ button:hover {
   background-color: #fff;
 }
 
-#profileFormWrapper > #profileContent > #profileUserInfo{
+#profileFormWrapper > #profileContent > #profileUserInfo {
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-#profileFormWrapper > #profileContent > input{
+#profileFormWrapper > #profileContent > input {
   display: block;
   width: 100%;
   height: 30px;
@@ -440,7 +439,7 @@ button:hover {
   margin-bottom: 15px;
 }
 
-#profileFormWrapper > #profileContent > #profileContentTitle{
+#profileFormWrapper > #profileContent > #profileContentTitle {
   display: block;
   font-size: 20px;
   font-weight: bold;
@@ -448,14 +447,17 @@ button:hover {
   margin-bottom: 10px;
 }
 
-#profileFormWrapper > #profileContent > #profileUserInfo > img{
+#profileFormWrapper > #profileContent > #profileUserInfo > img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
   margin-right: 20px;
 }
 
-#profileFormWrapper > #profileContent > #profileUserInfo > #profileImageSelector {
+#profileFormWrapper
+  > #profileContent
+  > #profileUserInfo
+  > #profileImageSelector {
   margin-right: 20px;
   width: 170px;
   height: 40px;
@@ -467,8 +469,10 @@ button:hover {
   cursor: pointer;
 }
 
-
-#profileFormWrapper > #profileContent > #profileUserInfo > #profileImageRemover {
+#profileFormWrapper
+  > #profileContent
+  > #profileUserInfo
+  > #profileImageRemover {
   transition: all 0.2s ease 0s;
   text-decoration: underline;
   background-color: rgba(0, 0, 0, 0);
@@ -476,13 +480,13 @@ button:hover {
   cursor: pointer;
 }
 
-#profileFormWrapper > #profileButtonWrapper{
+#profileFormWrapper > #profileButtonWrapper {
   display: flex;
   justify-content: space-between;
   margin: 10px;
 }
 
-#profileFormWrapper > #profileButtonWrapper > #profileSubmit{
+#profileFormWrapper > #profileButtonWrapper > #profileSubmit {
   margin-left: 10px;
   width: 80px;
   height: 40px;
@@ -494,7 +498,7 @@ button:hover {
   transition: all 0.2s ease 0s;
 }
 
-#profileFormWrapper > #profileButtonWrapper > #profileLogout{
+#profileFormWrapper > #profileButtonWrapper > #profileLogout {
   text-decoration: underline;
   background-color: rgba(0, 0, 0, 0);
   border: 0px;
@@ -502,7 +506,7 @@ button:hover {
 }
 
 /* LoginPage */
-#loginWrapper{
+#loginWrapper {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -514,7 +518,7 @@ button:hover {
   background-repeat: no-repeat;
 }
 
-#loginWrapper > inner{
+#loginWrapper > inner {
   width: 400px;
   height: 250px;
   padding: 10px;
@@ -523,19 +527,19 @@ button:hover {
   flex-direction: column;
   justify-content: center;
 
-  background-color: rgba(0,0,0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   opacity: 0.7;
   border-radius: 10px;
 }
 
-#loginWrapper > inner > div > nav > div{
+#loginWrapper > inner > div > nav > div {
   margin-top: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#loginWrapper > inner > div > nav > div > button{
+#loginWrapper > inner > div > nav > div > button {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
   border: 1px rgb(255, 255, 255) solid;
@@ -546,8 +550,8 @@ button:hover {
   align-items: center;
 }
 
-#loginWrapper > inner > p{
-  color: #FFF;
+#loginWrapper > inner > p {
+  color: #fff;
   font-size: 32px;
   font-weight: bold;
   margin: 0px;
@@ -557,13 +561,13 @@ button:hover {
   margin-top: -50px;
 }
 
-#loginWrapper > inner > div > nav{
+#loginWrapper > inner > div > nav {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
-#loginWrapper > inner > div > nav > ul{
+#loginWrapper > inner > div > nav > ul {
   width: 100%;
   height: 33px;
   list-style: none;
@@ -573,7 +577,7 @@ button:hover {
   box-sizing: border-box;
 }
 
-#loginWrapper > inner > div > nav > ul > li{
+#loginWrapper > inner > div > nav > ul > li {
   height: 100%;
 }
 
@@ -585,7 +589,7 @@ button:hover {
   justify-content: center;
 }
 
-#loginWrapper > inner > div > nav > ul > li > div > input{
+#loginWrapper > inner > div > nav > ul > li > div > input {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -594,44 +598,43 @@ button:hover {
   padding-left: 10px;
 }
 
-#loginWrapper > inner > div > nav > ul > li > div > input#inputId{
+#loginWrapper > inner > div > nav > ul > li > div > input#inputId {
   width: 100%;
   height: 33px;
   background: transparent;
   border: 0px;
-  border-bottom: 1px #FFF solid;
-  color: #FFF;
+  border-bottom: 1px #fff solid;
+  color: #fff;
 }
 
-#loginWrapper > inner > div > nav > ul > li > div > input#inputId::placeholder{
-  color: #FFF;
+#loginWrapper > inner > div > nav > ul > li > div > input#inputId::placeholder {
+  color: #fff;
 }
 
-#loginWrapper > inner > div > nav > ul > li > div > input#inputPw{
+#loginWrapper > inner > div > nav > ul > li > div > input#inputPw {
   width: 100%;
   height: 33px;
   background: transparent;
   border: 0px;
-  border-bottom: 1px #FFF solid;
-  color: #FFF;
+  border-bottom: 1px #fff solid;
+  color: #fff;
 }
 
-#loginWrapper > inner > div > nav > ul > li > div > input#inputPw::placeholder{
-  color: #FFF;
+#loginWrapper > inner > div > nav > ul > li > div > input#inputPw::placeholder {
+  color: #fff;
 }
 
-
-#loginWrapper > inner > div > nav > div:nth-child(1){
+#loginWrapper > inner > div > nav > div:nth-child(1) {
   width: 80%;
 }
 
-#loginWrapper > inner > div > nav > div:nth-child(2){
+#loginWrapper > inner > div > nav > div:nth-child(2) {
   width: 20%;
   height: 100%;
   justify-content: space-around;
 }
 
-#loginWrapper > inner > div > nav > div:nth-child(2) > button{
+#loginWrapper > inner > div > nav > div:nth-child(2) > button {
   transition: all 0.2s ease 0s;
   width: 100%;
   height: 100%;
@@ -646,12 +649,12 @@ button:hover {
   align-items: center;
 }
 
-#loginWrapper > inner > div > nav{
+#loginWrapper > inner > div > nav {
   height: 66px;
   display: flex;
 }
 
-#loginWrapper > inner > div > a{
+#loginWrapper > inner > div > a {
   display: block;
   width: 100%;
   margin-top: 10px;
@@ -659,24 +662,24 @@ button:hover {
   transition: all 0.2s ease 0s;
 }
 
-#registerButtonWrapper{
+#registerButtonWrapper {
   width: 100%;
   display: flex;
   justify-content: flex-end;
 }
 
-#registerButton{
+#registerButton {
   transition: all 0.2s ease 0s;
-  background-color: rgba(0,0,0, 0);
+  background-color: rgba(0, 0, 0, 0);
   border: 0px;
   text-decoration: underline;
-  color: #9B9B9B;
+  color: #9b9b9b;
   font-weight: bold;
   font-size: 12px;
 }
 
 /* register page */
-#registerWrapper{
+#registerWrapper {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -687,63 +690,79 @@ button:hover {
 }
 
 #registerWrapper > inner {
-  background-color: rgba(0,0,0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   border-radius: 20px;
   padding: 10px;
   opacity: 0.7;
 }
 
-#registerWrapper > inner > p{
+#registerWrapper > inner > p {
   font-size: 32px;
   font-weight: bold;
   margin: 0;
   margin-bottom: 15px;
-  color: #FFF;
+  color: #fff;
 }
 
-#registerWrapper > inner > div > nav > ul{
+#registerWrapper > inner > div > nav > ul {
   list-style: none;
   margin: 0px;
   padding: 0px;
 }
 
-#registerWrapper > inner > div > nav > ul > li{
+#registerWrapper > inner > div > nav > ul > li {
   margin-bottom: 10px;
 }
 
-#registerWrapper > inner > div > nav > ul > li > div{
+#registerWrapper > inner > div > nav > ul > li > div {
   display: flex;
   width: 100%;
   height: 30px;
-
   align-items: center;
+  position: relative;
 }
 
-#registerWrapper > inner > div > nav > ul > li > div > p{
-  color: #FFF;
+#registerWrapper > inner > div > nav > ul > li > div > p {
+  color: #fff;
   text-align: right;
   width: 175px;
   margin: 0px;
   margin-right: 10px;
 }
 
-#registerWrapper > inner > div > nav > ul > li > div > input{
+#registerWrapper > inner > div > nav > ul > li > div > input {
   border: 0.5px grey solid;
   border-radius: 5px;
   height: 20px;
   width: 200px;
 }
 
-#registerWrapper > inner > div > nav > ul > li > div > input[type=file]{
+#registerWrapper > inner > div > nav > ul > li > div > label {
+  position: absolute;
+  top: 50%;
+  left: 190px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 7.5px;
+}
+
+#registerWrapper > inner > div > nav > ul > li > div > input[type="file"] {
   background-color: #aaa;
 }
 
-#registerWrapper > inner > div > nav > ul > li:nth-child(6) > div > input[type=file]{
+#registerWrapper
+  > inner
+  > div
+  > nav
+  > ul
+  > li:nth-child(6)
+  > div
+  > input[type="file"] {
   font-size: 12px;
   height: 24px;
 }
 
-#registerAddress > div > div > input{
+#registerAddress > div > div > input {
   border: 0.5px grey solid;
   border-radius: 5px;
   height: 20px;
@@ -757,7 +776,7 @@ button:hover {
   justify-content: flex-end;
 }
 
-#registerButtonWrapper > button{
+#registerButtonWrapper > button {
   margin: 10px;
   width: 100px;
   height: 35px;
@@ -774,7 +793,7 @@ button:hover {
 }
 
 /* View Data page */
-#viewWrapper{
+#viewWrapper {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -783,10 +802,10 @@ button:hover {
 }
 
 /* download */
-#viewWrapper > button:nth-child(2){
+#viewWrapper > button:nth-child(2) {
   background-color: #f76b8a;
   border: 0px;
-  color: #FFF;
+  color: #fff;
   border-radius: 3px;
   display: inline;
   width: 90px;
@@ -796,10 +815,10 @@ button:hover {
 }
 
 /* toggle */
-#viewWrapper > button:nth-child(3){
+#viewWrapper > button:nth-child(3) {
   background-color: #f76b8a;
   border: 0px;
-  color: #FFF;
+  color: #fff;
   border-radius: 3px;
   display: inline;
   width: 70px;
@@ -808,12 +827,12 @@ button:hover {
   right: 110px;
 }
 
-#chart{
+#chart {
   width: 100%;
   max-width: 600px;
 }
 
-#chart > canvas{
+#chart > canvas {
   margin-bottom: 10px;
   list-style: none;
   width: 100%;
@@ -823,11 +842,11 @@ button:hover {
   background-color: #fff;
 }
 
-#chart > canvas:nth-child(1){
+#chart > canvas:nth-child(1) {
   margin-top: 20px;
 }
 
-#table{
+#table {
   width: 100% !important;
   max-width: 600px;
 }
@@ -837,7 +856,7 @@ button:hover {
   justify-content: space-between;
 }
 
-#table > div > button{
+#table > div > button {
   transition: all 0.2s ease 0s;
   text-decoration: none;
   background-color: rgba(0, 0, 0, 0);
@@ -845,7 +864,7 @@ button:hover {
   cursor: pointer;
 }
 
-#textWrapper{
+#textWrapper {
   margin-bottom: 10px;
   list-style: none;
   width: 100%;
@@ -855,23 +874,23 @@ button:hover {
   background-color: #fff;
 }
 
-#textTitle{
+#textTitle {
   font-size: 24px;
   font-weight: bold;
 }
 
 /* Responsibility */
 @media (max-width: 980px) {
-  #chart{
+  #chart {
     margin-top: 30px;
   }
 
-  #viewWrapper > button:nth-child(2){
+  #viewWrapper > button:nth-child(2) {
     left: 50%;
     top: 90px;
     transform: translateX(-120px);
   }
-  #viewWrapper > button:nth-child(3){
+  #viewWrapper > button:nth-child(3) {
     left: 50%;
     top: 90px;
     transform: translateX(30px);
@@ -879,17 +898,18 @@ button:hover {
 }
 
 @media (max-width: 600px) {
-  #navWrapper #navTitle{
+  #navWrapper #navTitle {
     display: none;
   }
 
-  #navWrapper > div{
+  #navWrapper > div {
     margin-left: 20px;
   }
 }
 
 /* login and register page */
-#loginWrapper, #registerWrapper{
+#loginWrapper,
+#registerWrapper {
   background-image: url("../public/bround.png");
-  background-size: cover
+  background-size: cover;
 }
