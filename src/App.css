@@ -746,6 +746,17 @@ button:hover {
   font-size: 7.5px;
 }
 
+#registerWrapper
+  > inner
+  > div
+  > nav
+  > ul
+  > li
+  > div
+  > label.input-label.has-value {
+  opacity: 0;
+}
+
 #registerWrapper > inner > div > nav > ul > li > div > input[type="file"] {
   background-color: #aaa;
 }

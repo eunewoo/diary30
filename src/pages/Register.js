@@ -8,6 +8,7 @@ import { DisplayImageAtom } from "../model/states";
 
 export default function Register(props) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
+  const [value, setValue] = useState("");
 
   const [profdata, setProfdata] = useState({
     user_id: "",
@@ -31,6 +32,7 @@ export default function Register(props) {
 
   const setTextid = (e) => {
     const { name, value } = e.target;
+    setValue(e.target.value);
 
     setProfdata({
       ...profdata,
@@ -163,7 +165,7 @@ export default function Register(props) {
               <li>
                 <div>
                   <p>Set your password : </p>
-                  <label>
+                  <label class={`input-label ${value ? "has-value" : ""}`}>
                     At least 8chars, uppercase + lowercase + number{" "}
                   </label>
                   <input
