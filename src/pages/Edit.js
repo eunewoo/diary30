@@ -8,8 +8,9 @@ export default function Edit(props) {
   const [questions, setQuestions] = useState([]);
   const [returnee, setreturnee] = useState([]);
   const navigate = useNavigate();
+  const [orderTop, setorderTop] = useState(-1);
 
-  //organize question in temp and push into ret array
+  //organize question in temp from list and push into ret array
   function getData() {
     var list = document.getElementById("list");
     var ret = [];
@@ -24,6 +25,9 @@ export default function Edit(props) {
       if (list.childNodes[i].childNodes[0].childNodes[0].value === "") {
         alert("question cannot be empty!");
       } else {
+        //console.log('temp.question', list.childNodes[i].childNodes[0].childNodes[0].value);
+        //console.log('temp.question_type', list.childNodes[i].childNodes[0].childNodes[1].value);
+
         temp.question = list.childNodes[i].childNodes[0].childNodes[0].value;
         temp.question_type =
           list.childNodes[i].childNodes[0].childNodes[1].value;
@@ -47,75 +51,120 @@ export default function Edit(props) {
     return ret;
   }
 
-  //remove index element in arr
-  function remove(arr, index) {
-    var a = arr.slice(0, index);
-    var b = arr.slice(index, -1);
-    var ret = [];
-    for (var i = 0; i < a.length; i++) {
-      ret.push(a[i]);
-    }
-    for (var i = 0; i < b.length; i++) {
-      ret.push(b[i]);
-    }
-    console.log(ret);
-    return ret;
-  }
+  // //remove index element in arr
+  // function remove(arr, index) {
+  //     var a = arr.slice(0,index);
+  //     var b = arr.slice(index, -1);
+  //     var ret = [];
+  //     for (var i = 0; i < a.length; i++) {
+  //         ret.push(a[i])
+  //     }
+  //     for (var i = 0; i < b.length; i++) {
+  //         ret.push(b[i])
+  //     }
+  //     console.log(ret);
+  //     return ret;
+  // }
 
-  //validate same type of question and remove the duplicate question set
-  function validate() {
-    var data = getData();
+  // //find duplicate among new questions
+  // //validate same type of question and remove the duplicate question set
+  // function validate() {
+  //     var data = getData();
 
-    for (var i = 0; i < data.length; i++) {
-      for (var j = 0; j < data.length; j++) {
-        if (i !== j) {
-          if (
-            data[i].question === data[j].question &&
-            data[i].question_type === data[j].question_type &&
-            data[i].question_selection[0] === data[j].question_selection[0] &&
-            data[i].question_selection[1] === data[j].question_selection[1] &&
-            data[i].question_selection[2] === data[j].question_selection[2]
-          ) {
-            data = remove(data, j);
-            alert(
-              "Question cannot be duplicate. Duplicate answers are not submitted"
-            );
-            j = 0;
-          }
-        }
-      }
-    }
-    return data;
-  }
+  //     for (var i = 0; i < data.length; i++) {
+  //         for (var j = 0; j < data.length; j++) {
+  //             if (i !== j) {
+  //                 if (data[i].question === data[j].question &&
+  //                     data[i].question_type === data[j].question_type &&
+  //                     data[i].question_selection[0] === data[j].question_selection[0] &&
+  //                     data[i].question_selection[1] === data[j].question_selection[1] &&
+  //                     data[i].question_selection[2] === data[j].question_selection[2]) {
+  //                         data = remove(data, j);
+  //                         alert("Question cannot be duplicate. Duplicate answers are not submitted");
+  //                         j = 0;
+  //                     }
+  //             }
+  //         }
+  //     }
+  //     return data;
+  // }
 
   //add async,await to run in order
   async function detectChange() {
     //filter duplicate questions
-    var submit = validate();
-    var temp = [];
-    var temp1 = [];
-    //find duplicate whether to post or not
+    var submit = getData();
+    var tempAdd = [];
+    var tempDel = [];
+    //find duplicate with past questions
     //why check duplicate once again???
     for (var i = 0; i < submit.length; i++) {
-      var duplicate = false;
+      let duplicate = false;
       for (var j = 0; j < questions.length; j++) {
+        // if (
+        //   questions[j].question === submit[i].question &&
+        //   questions[j].question_selection[0] ===
+        //     submit[i].question_selection[0] &&
+        //   questions[j].question_selection[1] ===
+        //     submit[i].question_selection[1] &&
+        //   questions[j].question_selection[2] ===
+        //     submit[i].question_selection[2] &&
+        //   questions[j].question_type === submit[i].question_type
+        // ) {
+        //   duplicate = true;
+        //   break;
+        // }
+        //multiple choice duplicate check
         if (
-          questions[j].question === submit[i].question &&
-          questions[j].question_selection[0] ===
-            submit[i].question_selection[0] &&
-          questions[j].question_selection[1] ===
-            submit[i].question_selection[1] &&
-          questions[j].question_selection[2] ===
-            submit[i].question_selection[2] &&
-          questions[j].question_type === submit[i].question_type
+          questions[j].question_type == "multiple choice" &&
+          submit[i].question_type == "multiple choice"
         ) {
-          duplicate = true;
-          break;
+          if (
+            questions[j].question == submit[i].question &&
+            questions[j].question_selection[0] ==
+              submit[i].question_selection[0] &&
+            questions[j].question_selection[1] ==
+              submit[i].question_selection[1] &&
+            questions[j].question_selection[2] ==
+              submit[i].question_selection[2]
+          ) {
+            //alert("Duplicated qeustions will not be added!");
+            duplicate = true;
+            break;
+          }
+        } else {
+          if (
+            questions[j].question_type == submit[i].question_type &&
+            questions[j].question == submit[i].question
+          ) {
+            //alert("Duplicated qeustions will not be added!");
+            duplicate = true;
+            break;
+          }
         }
       }
       if (duplicate === false) {
         temp.push(submit[i]);
       }
+    }
+
+    //add filtered new questions to db
+    for (var i = 0; i < tempAdd.length; i++) {
+      // console.log('post again', temp);
+      // console.log('post again i', i);
+      console.log("post temp", tempAdd[i].question);
+      await Axios.post("http://localhost:3305/api/questions", {
+        user_id: tempAdd[i].user_id,
+        question: tempAdd[i].question,
+        question_selection: tempAdd[i].question_selection,
+        question_type: tempAdd[i].question_type,
+        question_order: orderTop + 1,
+      });
+      setorderTop(orderTop + 1);
+      //console.log("post end", temp[i].question);
+
+      // var delayInMilliseconds = 500;
+      // setTimeout(function() {
+      // }, delayInMilliseconds);
     }
 
     //delete part
@@ -137,35 +186,17 @@ export default function Edit(props) {
         }
       }
       if (duplicate === false) {
-        temp1.push(questions[i]);
+        tempDel.push(questions[i]);
       }
     }
 
-    for (var i = 0; i < temp.length; i++) {
-      // console.log('post again', temp);
-      // console.log('post again i', i);
-      console.log("post temp", temp[i].question);
-      await Axios.post("https://diary30wooserver.web.app/api/questions", {
-        user_id: temp[i].user_id,
-        question: temp[i].question,
-        question_selection: temp[i].question_selection,
-        question_type: temp[i].question_type,
-        question_order: i,
-      });
-      console.log("post end", temp[i].question);
-
-      // var delayInMilliseconds = 500;
-      // setTimeout(function() {
-      // }, delayInMilliseconds);
-    }
-
-    for (var i = 0; i < temp1.length; i++) {
-      console.log("temp1", temp1);
+    for (var i = 0; i < tempDel.length; i++) {
+      console.log("tempDel", tempDel);
       Axios.delete(
-        "https://diary30wooserver.web.app/api/questions/" +
-          temp1[i].user_id +
+        "http://localhost:3305/api/questions/" +
+          tempDel[i].user_id +
           "&" +
-          temp1[i].question_order
+          tempDel[i].question_order
       )
         .then((response) => {
           //console.log("del ended");
@@ -175,9 +206,7 @@ export default function Edit(props) {
         });
     }
 
-    Axios.get(
-      "https://diary30wooserver.web.app/api/questions/" + props.profile.user_id
-    )
+    Axios.get("http://localhost:3305/api/questions/" + props.profile.user_id)
       .then((response) => {
         console.log("detect change get response", response);
         var z = 0;
@@ -392,26 +421,31 @@ export default function Edit(props) {
 
   //work only when page is first loaded
   useEffect(() => {
-    Axios.get(
-      "https://diary30wooserver.web.app/api/questions/" + props.profile.user_id
-    ).then((response) => {
-      var z = 0;
+    const fetchData = async () => {
+      await Axios.get(
+        "http://localhost:3305/api/questions/" + props.profile.user_id
+      ).then((response) => {
+        var z = 0;
 
-      for (var i in response.data) {
-        var temp = response.data[i].question_selection;
+        for (var i in response.data) {
+          var temp = response.data[i].question_selection;
 
-        append(questions, {
-          //id: response.data[i].id,
-          user_id: response.data[i].user_id,
-          question: response.data[i].question,
-          question_type: response.data[i].question_type,
-          question_selection: temp,
-          question_order: response.data[i].question_order,
-        });
-        ChangeReturnee(setSome(z), z);
-        z++;
-      }
-    });
+          append(questions, {
+            //id: response.data[i].id,
+            user_id: response.data[i].user_id,
+            question: response.data[i].question,
+            question_type: response.data[i].question_type,
+            question_selection: temp,
+            question_order: response.data[i].question_order,
+          });
+          ChangeReturnee(setSome(z), z);
+          z++;
+        }
+      });
+    };
+
+    //reset 필요
+    fetchData();
   }, []);
 
   return (
