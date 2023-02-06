@@ -5,16 +5,20 @@ import React, { Link } from "react-router-dom";
 import Cum_date_load from "../model/Cum_date_load.js";
 
 export default function Log(props) {
-  const [profile, setProfile] = useState({
-    user_id: "",
-    password: "",
-    profile: "",
-    name: "",
-    email: "",
-    address1: "",
-    address2: "",
-  });
+  const cum_date = new Date();
+  const [returnee, setReturnee] = useState([]);
+  const [questions, setQuestions] = useState([]);
 
+  const [cumDate, setCumDate] = useState({
+    cum_year: cum_date.getFullYear(),
+    cum_month: cum_date.getMonth() + 1,
+    cum_day: cum_date.getDate(),
+  });
+  function append(questions, question) {
+    var temp = questions;
+    questions.push(question);
+    setQuestions(temp);
+  }
   //return multiple boolean of specific date
   function returnMultiple(x, y, z) {
     if (z === undefined) {
@@ -195,7 +199,7 @@ export default function Log(props) {
   return (
     <div id="pageWrapper">
       <Topnav selected="log" />
-      <Cum_date_load profile={profile} />
+      <Cum_date_load />
       <div id="list">{returnee}</div>
       <button onClick={submit} id="submit">
         Submit

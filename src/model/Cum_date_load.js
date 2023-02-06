@@ -1,10 +1,8 @@
-import Axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 export default function Cum_date_load(props) {
   const cum_date = new Date();
-  const [returnee, setReturnee] = useState([]);
+
   const [questions, setQuestions] = useState([]);
 
   const [cumDate, setCumDate] = useState({
@@ -131,12 +129,6 @@ export default function Cum_date_load(props) {
     }
   };
 
-  function append(questions, question) {
-    var temp = questions;
-    questions.push(question);
-    setQuestions(temp);
-  }
-
   //return multiple boolean of specific date
   function returnMultiple(x, y, z) {
     if (z === undefined) {
@@ -183,39 +175,6 @@ export default function Cum_date_load(props) {
       if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
         return x.question_answers[i].answer;
       }
-    }
-  }
-
-  //change question data into visual form
-  function returnInput(x) {
-    if (x.question_type === "multiple choice") {
-      return (
-        <>
-          <input type="radio" name={x.question} value={x.question_selection[0]} defaultChecked={returnMultiple(x, 0)}></input>
-          <label>{x.question_selection[0]}</label>
-          <input type="radio" name={x.question} value={x.question_selection[1]} defaultChecked={returnMultiple(x, 1)}></input>
-          <label>{x.question_selection[1]}</label>
-          <input type="radio" name={x.question} value={x.question_selection[2]} defaultChecked={returnMultiple(x, 2)}></input>
-          <label>{x.question_selection[2]}</label>
-        </>
-      );
-    } else if (x.question_type === "boolean") {
-      return (
-        <>
-          <input type="radio" name={x.question} value={true} defaultChecked={returnBoolean(x, 0)}></input>
-          <label>True</label>
-          <input type="radio" name={x.question} value={false} defaultChecked={returnBoolean(x, 1)}></input>
-          <label>False</label>
-        </>
-      );
-    } else if (x.question_type === "number") {
-      return <input type="number" defaultValue={returnText(x)} />;
-    } else {
-      return (
-        <>
-          <input type="text" defaultValue={returnText(x)}></input>
-        </>
-      );
     }
   }
 
