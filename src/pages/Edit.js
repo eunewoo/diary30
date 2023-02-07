@@ -21,6 +21,7 @@ export default function Edit(props) {
         question: "",
         question_selection: [],
         question_type: "",
+        tag: "",
       };
       if (list.childNodes[i].childNodes[0].childNodes[0].value === "") {
         alert("question cannot be empty!");
@@ -45,6 +46,8 @@ export default function Edit(props) {
             list.childNodes[i].childNodes[0].childNodes[7].value,
           ]);
         }
+        temp.tag = list.childNodes[i].childNodes[2].value
+        console.log('temp tag', temp.tag);
         ret.push(temp);
       }
     }
@@ -98,54 +101,61 @@ export default function Edit(props) {
     //find duplicate with past questions
     //why check duplicate once again???
     for (var i = 0; i < submit.length; i++) {
-      let duplicate = false;
-      for (var j = 0; j < questions.length; j++) {
-        // if (
-        //   questions[j].question === submit[i].question &&
-        //   questions[j].question_selection[0] ===
-        //     submit[i].question_selection[0] &&
-        //   questions[j].question_selection[1] ===
-        //     submit[i].question_selection[1] &&
-        //   questions[j].question_selection[2] ===
-        //     submit[i].question_selection[2] &&
-        //   questions[j].question_type === submit[i].question_type
-        // ) {
-        //   duplicate = true;
-        //   break;
-        // }
-        //multiple choice duplicate check
-        if (
-          questions[j].question_type == "multiple choice" &&
-          submit[i].question_type == "multiple choice"
-        ) {
-          if (
-            questions[j].question == submit[i].question &&
-            questions[j].question_selection[0] ==
-              submit[i].question_selection[0] &&
-            questions[j].question_selection[1] ==
-              submit[i].question_selection[1] &&
-            questions[j].question_selection[2] ==
-              submit[i].question_selection[2]
-          ) {
-            //alert("Duplicated qeustions will not be added!");
-            duplicate = true;
-            break;
-          }
-        } else {
-          if (
-            questions[j].question_type == submit[i].question_type &&
-            questions[j].question == submit[i].question
-          ) {
-            //alert("Duplicated qeustions will not be added!");
-            duplicate = true;
-            break;
-          }
+        if (submit[i].tag == "-1") {
+            tempAdd.push(submit[i]);
         }
-      }
-      if (duplicate === false) {
-        temp.push(submit[i]);
-      }
     }
+
+
+    // for (var i = 0; i < submit.length; i++) {
+    //   let duplicate = false;
+    //   for (var j = 0; j < questions.length; j++) {
+    //     // if (
+    //     //   questions[j].question === submit[i].question &&
+    //     //   questions[j].question_selection[0] ===
+    //     //     submit[i].question_selection[0] &&
+    //     //   questions[j].question_selection[1] ===
+    //     //     submit[i].question_selection[1] &&
+    //     //   questions[j].question_selection[2] ===
+    //     //     submit[i].question_selection[2] &&
+    //     //   questions[j].question_type === submit[i].question_type
+    //     // ) {
+    //     //   duplicate = true;
+    //     //   break;
+    //     // }
+    //     //multiple choice duplicate check
+    //     if (
+    //       questions[j].question_type == "multiple choice" &&
+    //       submit[i].question_type == "multiple choice"
+    //     ) {
+    //       if (
+    //         questions[j].question == submit[i].question &&
+    //         questions[j].question_selection[0] ==
+    //           submit[i].question_selection[0] &&
+    //         questions[j].question_selection[1] ==
+    //           submit[i].question_selection[1] &&
+    //         questions[j].question_selection[2] ==
+    //           submit[i].question_selection[2]
+    //       ) {
+    //         //alert("Duplicated qeustions will not be added!");
+    //         duplicate = true;
+    //         break;
+    //       }
+    //     } else {
+    //       if (
+    //         questions[j].question_type == submit[i].question_type &&
+    //         questions[j].question == submit[i].question
+    //       ) {
+    //         //alert("Duplicated qeustions will not be added!");
+    //         duplicate = true;
+    //         break;
+    //       }
+    //     }
+    //   }
+    //   if (duplicate === false) {
+    //     tempAdd.push(submit[i]);
+    //   }
+    // }
 
     //add filtered new questions to db
     for (var i = 0; i < tempAdd.length; i++) {
@@ -159,7 +169,9 @@ export default function Edit(props) {
         question_type: tempAdd[i].question_type,
         question_order: orderTop + 1,
       });
-      setorderTop(orderTop + 1);
+      var increaseOrder = orderTop + 1
+      setorderTop(increaseOrder);
+      console.log('orderTop', orderTop);
       //console.log("post end", temp[i].question);
 
       // var delayInMilliseconds = 500;
@@ -167,70 +179,70 @@ export default function Edit(props) {
       // }, delayInMilliseconds);
     }
 
-    //delete part
-    for (var i = 0; i < questions.length; i++) {
-      var duplicate = false;
-      for (var j = 0; j < submit.length; j++) {
-        if (
-          questions[i].question === submit[j].question &&
-          questions[i].question_selection[0] ===
-            submit[j].question_selection[0] &&
-          questions[i].question_selection[1] ===
-            submit[j].question_selection[1] &&
-          questions[i].question_selection[2] ===
-            submit[j].question_selection[2] &&
-          questions[i].question_type === submit[j].question_type
-        ) {
-          duplicate = true;
-          break;
-        }
-      }
-      if (duplicate === false) {
-        tempDel.push(questions[i]);
-      }
-    }
+    // //delete part
+    // for (var i = 0; i < questions.length; i++) {
+    //   var duplicate = false;
+    //   for (var j = 0; j < submit.length; j++) {
+    //     if (
+    //       questions[i].question === submit[j].question &&
+    //       questions[i].question_selection[0] ===
+    //         submit[j].question_selection[0] &&
+    //       questions[i].question_selection[1] ===
+    //         submit[j].question_selection[1] &&
+    //       questions[i].question_selection[2] ===
+    //         submit[j].question_selection[2] &&
+    //       questions[i].question_type === submit[j].question_type
+    //     ) {
+    //       duplicate = true;
+    //       break;
+    //     }
+    //   }
+    //   if (duplicate === false) {
+    //     tempDel.push(questions[i]);
+    //   }
+    // }
 
-    for (var i = 0; i < tempDel.length; i++) {
-      console.log("tempDel", tempDel);
-      Axios.delete(
-        "http://localhost:3305/api/questions/" +
-          tempDel[i].user_id +
-          "&" +
-          tempDel[i].question_order
-      )
-        .then((response) => {
-          //console.log("del ended");
-        })
-        .then(() => {
-          console.log("del ended");
-        });
-    }
+    // for (var i = 0; i < tempDel.length; i++) {
+    //   console.log("tempDel", tempDel);
+    //   Axios.delete(
+    //     "http://localhost:3305/api/questions/" +
+    //       tempDel[i].user_id +
+    //       "&" +
+    //       tempDel[i].question_order
+    //   )
+    //     .then((response) => {
+    //       //console.log("del ended");
+    //     })
+    //     .then(() => {
+    //       console.log("del ended");
+    //     });
+    // }
 
-    Axios.get("http://localhost:3305/api/questions/" + props.profile.user_id)
-      .then((response) => {
-        console.log("detect change get response", response);
-        var z = 0;
-        for (var i in response.data) {
-          //var temp = JSON.parse(response.data[i].question_selection);
-          //var temp1 = JSON.parse(response.data[i].question_answers);
-          var temp = response.data[i].question_selection;
-          var temp1 = response.data[i].question_answers;
+    // Axios.get("http://localhost:3305/api/questions/" + props.profile.user_id)
+    //   .then((response) => {
+    //     console.log("detect change get response", response);
+    //     var z = 0;
+    //     for (var i in response.data) {
+    //       //var temp = JSON.parse(response.data[i].question_selection);
+    //       //var temp1 = JSON.parse(response.data[i].question_answers);
+    //       var temp = response.data[i].question_selection;
+    //       var temp1 = response.data[i].question_answers;
 
-          append(questions, {
-            id: response.data[i].id,
-            user_id: response.data[i].user_id,
-            question: response.data[i].question,
-            question_type: response.data[i].question_type,
-            question_selection: temp,
-            question_answers: temp1,
-            question_order: response.data[i].question_order,
-          });
-        }
-        //alert("Your change has been changed")
-      })
-      .then(() => {
-        alert("Your change has been changed");
-      });
+    //       append(questions, {
+    //         id: response.data[i].id,
+    //         user_id: response.data[i].user_id,
+    //         question: response.data[i].question,
+    //         question_type: response.data[i].question_type,
+    //         question_selection: temp,
+    //         question_answers: temp1,
+    //         question_order: response.data[i].question_order,
+    //       });
+    //     }
+    //     //alert("Your change has been changed")
+    //   })
+    //   .then(() => {
+    //     alert("Your change has been changed");
+    //   });
   }
 
   function changeQuestions(a) {
@@ -343,32 +355,36 @@ export default function Edit(props) {
             <button id="deleteButton" onClick={liDelete}>
               <span class="material-symbols-outlined">delete</span>
             </button>
+            <div value ={temp.question_order}></div>
           </li>
         </>
       );
     }
-    return (
-      <>
-        <li>
-          <div>
-            <input type="text" defaultValue={questions[iterator].question} />
-            <select
-              name="options"
-              onChange={addSelection}
-              defaultValue={questions[iterator].question_type}
-            >
-              <option value="number">number</option>
-              <option value="boolean">boolean</option>
-              <option value="multiple choice">multiple choice</option>
-              <option value="text">text</option>
-            </select>
-          </div>
-          <button id="deleteButton" onClick={liDelete}>
-            <span class="material-symbols-outlined">delete</span>
-          </button>
-        </li>
-      </>
-    );
+    else {
+        return (
+        <>
+            <li>
+            <div>
+                <input type="text" defaultValue={questions[iterator].question} />
+                <select
+                name="options"
+                onChange={addSelection}
+                defaultValue={questions[iterator].question_type}
+                >
+                <option value="number">number</option>
+                <option value="boolean">boolean</option>
+                <option value="multiple choice">multiple choice</option>
+                <option value="text">text</option>
+                </select>
+            </div>
+            <button id="deleteButton" onClick={liDelete}>
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+            <div value ={temp.question_order}></div>
+            </li>
+        </>
+        );
+    }
   }
 
   //question form when add new one
@@ -411,6 +427,10 @@ export default function Edit(props) {
     a.appendChild(b);
     a.appendChild(i);
 
+    var j =document.createElement("div");
+    j.value = "-1";
+    a.appendChild(j);
+
     return a;
   }
 
@@ -426,7 +446,7 @@ export default function Edit(props) {
         "http://localhost:3305/api/questions/" + props.profile.user_id
       ).then((response) => {
         var z = 0;
-
+        const orderArray = [];
         for (var i in response.data) {
           var temp = response.data[i].question_selection;
 
@@ -437,10 +457,15 @@ export default function Edit(props) {
             question_type: response.data[i].question_type,
             question_selection: temp,
             question_order: response.data[i].question_order,
+            tag: "oldQ"
           });
           ChangeReturnee(setSome(z), z);
           z++;
+          orderArray.push(response.data[i].question_order);
+          setorderTop(Math.max.apply(null, orderArray));
+          console.log('max', Math.max.apply(null, orderArray));
         }
+        
       });
     };
 
