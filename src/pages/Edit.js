@@ -143,7 +143,7 @@ export default function Edit(props) {
         }
       }
       if (duplicate === false) {
-        temp.push(submit[i]);
+        tempAdd.push(submit[i]);
       }
     }
 

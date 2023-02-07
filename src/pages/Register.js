@@ -20,6 +20,8 @@ export default function Register(props) {
     img: "",
   });
 
+  const [temp2, setTemp2] = useState({});
+  const [tempConfig, setTempConfig] = useState({});
   const {
     user_id,
     password,
@@ -29,6 +31,21 @@ export default function Register(props) {
     address_l,
     img,
   } = profdata;
+
+  const onDrop = async(e) => {
+    const files = e.target.files[0];
+    let formData = new FormData();
+    formData.append("api_key", "276775976593738");
+    formData.append("upload_preset", "h0iblbf5");
+    formData.append("timestamp", (Date.now() / 1000) | 0);
+    formData.append(`file`, files);
+    const config = {
+        header: { "Content-Type": "multipart/form-data" }
+    }
+
+    setTemp2(formData);
+    setTempConfig(config);
+  }
 
   const setTextid = (e) => {
     const { name, value } = e.target;
@@ -49,109 +66,104 @@ export default function Register(props) {
     });
   };
 
-  const setImage = (e) => {
-    //post image on db
-    const img = e.target.files[0];
+  // const setImage = (e) => {
+  //   //post image on db
+  //   const img = e.target.files[0];
 
-    const formData = new FormData();
-    formData.append("file", img);
+  //   const formData = new FormData();
+  //   formData.append("file", img);
 
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
+  //   const config = {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   };
 
-    Axios.post(
-      "https://diary30wooserver.web.app/api/users",
-      formData,
-      config
-    ).then((res) => {
-      //console.log('s3url', res.data.location);
+  //   Axios.post(
+  //     "https://diary30wooserver.web.app/api/users",
+  //     formData,
+  //     config
+  //   ).then((res) => {
+  //     //console.log('s3url', res.data.location);
 
-      setProfdata({
+  //     setProfdata({
+  //       ...profdata,
+  //       img: res.data.location,
+  //     });
+  //   });
+  // };
+
+  function setImg(url) {
+    setProfdata({
         ...profdata,
-        img: res.data.location,
-      });
-    });
-  };
+        img: url
+    })
+  }
 
   const isRegister = () => {
-    switch ("") {
-      case user_id:
-        alert("Put id!");
-        break;
-      case password:
-        alert("Put Password!");
-        break;
-      case user_name:
-        alert("Put name!");
-        break;
-      case user_email:
-        alert("Put email!");
-        break;
-      case address_f:
-        alert("Put first address!");
-        break;
-      case address_l:
-        alert("Put last address!");
-        break;
-      default:
-        let temp1 = 0;
-        if (!/\S+@\S+\.\S+/.test(profdata.user_email)) {
-          alert("Your email is not in valid form!");
-          temp1 = 1;
-        }
-        if (
-          !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(
-            profdata.password
-          )
-        ) {
-          alert("Your password is not in valid form!");
-          temp1 = 1;
-        } else {
-          let temp = 0;
-          if (temp1 === 0) {
-            Axios.get("https://diary30wooserver.web.app/api/users").then(
-              (response) => {
-                for (var i in response.data) {
-                  if (response.data[i].user_id == user_id) {
-                    break;
-                  } else if (
-                    i == response.data.length - 1 &&
-                    response.data[i].user_id != user_id
-                  ) {
-                    temp = 1;
-                  }
-                }
-                if (temp === 1) {
-                  alert("Success Register!");
-
-                  Axios.post("https://diary30wooserver.web.app/api/users", {
-                    user_id: profdata.user_id,
-                    password: hashutil(user_id, user_email, password),
-                    user_name: profdata.user_name,
-                    user_email: profdata.user_email,
-                    address_f: profdata.address_f,
-                    address_l: profdata.address_l,
-                    img: profdata.img,
-                  })
-                    .then(() => {
-                      setDisplayImage(() => profdata.img);
-                    })
-                    .then(() => {
-                      document.location.href = "http://localhost:3000/";
-                    });
-                } else if (temp === 0) {
-                  alert("Invalid Register!");
-                }
-              }
-            );
-          }
-        }
+    switch(""){
+        case user_id:
+            alert("Put id!");
+            break;
+        case password:
+            alert("Put Password!");
+            break;
+        case user_name:
+            alert("Put name!");
+            break;
+        case user_email:
+            alert("Put email!");
+            break;
+        case address_f:
+            alert("Put first address!");
+            break;
+        case address_l:
+            alert("Put last address!");
+            break;
+        default:
+            let temp1 = 0;
+            if (!/\S+@\S+\.\S+/.test(profdata.user_email)) {
+                alert("Your email is not in valid form!");
+                temp1 = 1;
+            } else if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(profdata.password)) {
+                alert("Your password is not in valid form!");
+                temp1 = 1;
+            } else {
+            let temp = 0;
+            if (temp1 === 0) {
+                Axios.get('http://localhost:3305/api/users').then((response) => {
+                    for (var i in response.data) {
+                        if(response.data[i].user_id == user_id){
+                            break;
+                        }else if(i == response.data.length-1 && response.data[i].user_id != user_id){
+                            temp = 1;
+                        }
+                    }
+                    if(temp === 1) {
+                        Axios.post('https://api.cloudinary.com/v1_1/dv2sy5qzq/image/upload', temp2, tempConfig).then((res) => {
+                            Axios.post('http://localhost:3305/api/users', {
+                                user_id: profdata.user_id,
+                                password: hashutil(user_id, user_email, password),
+                                name: profdata.user_name,
+                                email: profdata.user_email,
+                                address1: profdata.address_f,
+                                address2: profdata.address_l,
+                                img: res.data.url
+                            }).then(() => {
+                                alert("Success Register!");
+                                document.location.href = 'http://localhost:3000';
+                            })
+                        })
+                    } else if(temp === 0) {
+                        alert("Invalid Register!");
+                    }
+            })
+            }
+            }
     }
-  };
+};
 
+ 
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -249,7 +261,7 @@ export default function Register(props) {
               <li>
                 <div>
                   <p>Set your profile image : </p>
-                  <input type="file" onChange={setImage} />
+                  <input type="file" onChange={onDrop} />
                 </div>
               </li>
             </ul>
