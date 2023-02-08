@@ -30,6 +30,7 @@ export default function Register(props) {
       [name]: value,
     });
   };
+  //to detect pw field input seperately
   const setTextid2 = (e) => {
     const { name, value } = e.target;
     setValue(e.target.value);
