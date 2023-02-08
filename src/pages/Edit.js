@@ -10,6 +10,8 @@ export default function Edit(props) {
   const navigate = useNavigate();
   const [orderTop, setorderTop] = useState(-1);
 
+  let orderTop1 = - 1
+
   //organize question in temp from list and push into ret array
   function getData() {
     var list = document.getElementById("list");
@@ -21,7 +23,7 @@ export default function Edit(props) {
         question: "",
         question_selection: [],
         question_type: "",
-        tag: "",
+        question_order: -99,
       };
       if (list.childNodes[i].childNodes[0].childNodes[0].value === "") {
         alert("question cannot be empty!");
@@ -46,8 +48,9 @@ export default function Edit(props) {
             list.childNodes[i].childNodes[0].childNodes[7].value,
           ]);
         }
-        temp.tag = list.childNodes[i].childNodes[2].value
-        console.log('temp tag', temp.tag);
+        temp.question_order = list.childNodes[i].childNodes[2].value
+        console.log('temp question', temp.question);
+        console.log('temp order', temp.question_order);
         ret.push(temp);
       }
     }
@@ -101,7 +104,7 @@ export default function Edit(props) {
     //find duplicate with past questions
     //why check duplicate once again???
     for (var i = 0; i < submit.length; i++) {
-        if (submit[i].tag == "-1") {
+        if (submit[i].question_order == "-1") {
             tempAdd.push(submit[i]);
         }
     }
@@ -167,11 +170,10 @@ export default function Edit(props) {
         question: tempAdd[i].question,
         question_selection: tempAdd[i].question_selection,
         question_type: tempAdd[i].question_type,
-        question_order: orderTop + 1,
+        question_order: orderTop1 + 1,
       });
-      var increaseOrder = orderTop + 1
-      setorderTop(increaseOrder);
-      console.log('orderTop', orderTop);
+      orderTop1 = orderTop1 + 1;
+      console.log('orderTop1', orderTop1);
       //console.log("post end", temp[i].question);
 
       // var delayInMilliseconds = 500;
@@ -457,15 +459,15 @@ export default function Edit(props) {
             question_type: response.data[i].question_type,
             question_selection: temp,
             question_order: response.data[i].question_order,
-            tag: "oldQ"
+            //tag: "oldQ"
           });
           ChangeReturnee(setSome(z), z);
           z++;
           orderArray.push(response.data[i].question_order);
-          setorderTop(Math.max.apply(null, orderArray));
-          console.log('max', Math.max.apply(null, orderArray));
         }
-        
+        console.log('get orderArray', orderArray);
+        orderTop1 = Math.max.apply(null, orderArray)
+        console.log('max setorderTop', orderTop1);
       });
     };
 
