@@ -3,17 +3,14 @@ import Axios from "axios";
 import { useState, useEffect } from "react";
 import React, { Link } from "react-router-dom";
 import Cum_date_load from "../model/Cum_date_load.js";
+import { useRecoilState } from "recoil";
+import { cumDateState, questionsState, returneeState } from "../model/states.js";
 
 export default function Log(props) {
-  const cum_date = new Date();
-  const [returnee, setReturnee] = useState([]);
-  const [questions, setQuestions] = useState([]);
+  const [returnee, setReturnee] = useRecoilState(returneeState);
+  const [questions, setQuestions] = useRecoilState(questionsState);
 
-  const [cumDate, setCumDate] = useState({
-    cum_year: cum_date.getFullYear(),
-    cum_month: cum_date.getMonth() + 1,
-    cum_day: cum_date.getDate(),
-  });
+  const [cumDate, setCumDate] = useRecoilState(cumDateState);
   function append(questions, question) {
     var temp = questions;
     questions.push(question);

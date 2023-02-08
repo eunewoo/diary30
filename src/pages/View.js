@@ -4,6 +4,8 @@ import Chart from "chart.js/auto";
 import React, { Link } from "react-router-dom";
 import Axios from "axios";
 import Cum_date_load from "../model/Cum_date_load";
+import { cumDateState, questionsState, returneeState } from "../model/states.js";
+import { useRecoilState } from "recoil";
 
 export default function View(props) {
   const [userdata, setUserdata] = useState({
@@ -36,15 +38,11 @@ export default function View(props) {
     }
   }
 
-  const cum_date = new Date();
-  const [returnee, setReturnee] = useState([]);
-  const [questions, setQuestions] = useState([]);
+  const [returnee, setReturnee] = useRecoilState(returneeState);
+  const [questions, setQuestions] = useRecoilState(questionsState);
 
-  const [cumDate, setCumDate] = useState({
-    cum_year: cum_date.getFullYear(),
-    cum_month: cum_date.getMonth() + 1,
-    cum_day: cum_date.getDate(),
-  });
+  const [cumDate, setCumDate] = useRecoilState(cumDateState);
+
   function onDownload() {
     download(JSON.stringify(questions), "yourfile.json", "text/plain");
   }

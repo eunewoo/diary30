@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { questionsState, cumDateState } from "./states";
+import { useRecoilState } from "recoil";
 
 export default function Cum_date_load(props) {
-  const cum_date = new Date();
-
-  const [questions, setQuestions] = useState([]);
-
-  const [cumDate, setCumDate] = useState({
-    cum_year: cum_date.getFullYear(),
-    cum_month: cum_date.getMonth() + 1,
-    cum_day: cum_date.getDate(),
-  });
+  const [questions, setQuestions] = useRecoilState(questionsState);
+  const [cumDate, setCumDate] = useRecoilState(cumDateState);
 
   const { cum_year, cum_month, cum_day } = cumDate;
 
