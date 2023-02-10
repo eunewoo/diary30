@@ -10,7 +10,7 @@ export default function Cum_date_load(props) {
 
   //going to previous day
   const clickPre = () => {
-    var arr = [31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     var temp = {};
     if (cumDate.cum_month == 1) {
       if (cumDate.cum_day == 1) {
