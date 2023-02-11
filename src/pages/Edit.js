@@ -10,12 +10,13 @@ export default function Edit(props) {
   const navigate = useNavigate();
   const [orderTop, setorderTop] = useState(-1);
 
-  let orderTop1 = - 1
+  const orderArray = [];
 
   //organize question in temp from list and push into ret array
   function getData() {
     var list = document.getElementById("list");
     var ret = [];
+    
 
     for (var i = 0; i < list.childNodes.length; i++) {
       var temp = {
@@ -107,7 +108,16 @@ export default function Edit(props) {
         if (submit[i].question_order == "-1") {
             tempAdd.push(submit[i]);
         }
+        else if (orderArray.includes(submit[i].question_order)) {
+          continue
+        }
+        else {
+          tempDel.push(submit[i]);
+        }
+        
     }
+
+    
 
 
     // for (var i = 0; i < submit.length; i++) {
@@ -164,16 +174,20 @@ export default function Edit(props) {
     for (var i = 0; i < tempAdd.length; i++) {
       // console.log('post again', temp);
       // console.log('post again i', i);
+      //console.log('orderTop1', orderTop1);
       console.log("post temp", tempAdd[i].question);
       await Axios.post("http://localhost:3305/api/questions", {
         user_id: tempAdd[i].user_id,
         question: tempAdd[i].question,
         question_selection: tempAdd[i].question_selection,
         question_type: tempAdd[i].question_type,
-        question_order: orderTop1 + 1,
+        question_order: orderTop + 1,
       });
-      orderTop1 = orderTop1 + 1;
-      console.log('orderTop1', orderTop1);
+      let newOrderTop = orderTop + 1
+      setorderTop(newOrderTop);
+      console.log('new data orderTop', orderTop);
+
+      //console.log('orderTop1', orderTop1);
       //console.log("post end", temp[i].question);
 
       // var delayInMilliseconds = 500;
@@ -203,22 +217,22 @@ export default function Edit(props) {
     //     tempDel.push(questions[i]);
     //   }
     // }
-
-    // for (var i = 0; i < tempDel.length; i++) {
-    //   console.log("tempDel", tempDel);
-    //   Axios.delete(
-    //     "http://localhost:3305/api/questions/" +
-    //       tempDel[i].user_id +
-    //       "&" +
-    //       tempDel[i].question_order
-    //   )
-    //     .then((response) => {
-    //       //console.log("del ended");
-    //     })
-    //     .then(() => {
-    //       console.log("del ended");
-    //     });
-    // }
+    console.log("tempDel", tempDel);
+    for (var i = 0; i < tempDel.length; i++) {
+      
+      Axios.delete(
+        "http://localhost:3305/api/questions/" +
+          tempDel[i].user_id +
+          "&" +
+          tempDel[i].question_order
+      )
+        .then((response) => {
+          console.log("del ended");
+        })
+        .then(() => {
+          console.log("del ended");
+        });
+    }
 
     // Axios.get("http://localhost:3305/api/questions/" + props.profile.user_id)
     //   .then((response) => {
@@ -448,7 +462,7 @@ export default function Edit(props) {
         "http://localhost:3305/api/questions/" + props.profile.user_id
       ).then((response) => {
         var z = 0;
-        const orderArray = [];
+        
         for (var i in response.data) {
           var temp = response.data[i].question_selection;
 
@@ -466,8 +480,12 @@ export default function Edit(props) {
           orderArray.push(response.data[i].question_order);
         }
         console.log('get orderArray', orderArray);
-        orderTop1 = Math.max.apply(null, orderArray)
-        console.log('max setorderTop', orderTop1);
+        // orderTop1 = Math.max.apply(null, orderArray)
+        // console.log('max setorderTop', orderTop1);
+        let newOrderTop = Math.max.apply(null, orderArray);
+        console.log('newOrderTop', newOrderTop);
+        setorderTop(newOrderTop);
+        console.log('useEffect orderTop', orderTop);
       });
     };
 
