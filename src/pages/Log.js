@@ -11,9 +11,11 @@ export default function Log(props) {
   const [questions, setQuestions] = useRecoilState(questionsSelector);
 
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
+
+  const [effectCount, setEffectCount] = useState(0);
   
-  let endpoint1 = 1;
-  let endpoint2 = 0;
+  // let endpoint1 = 0;
+  // let endpoint2 = 0;
 
   //var endPoint = 0
   function append(questions, question) {
@@ -120,18 +122,19 @@ export default function Log(props) {
     return <></>;
   }
 
-  //1
-  // useEffect(() => {
-  //   setQuestions([]);
-  //   console.log('questions in useEffect1', questions);
-  //   endpoint1 = 1
-  // }, []);
+  //useEffect1
+  useEffect(() => {
+    setQuestions((a) => []);
+    console.log('questions in useEffect1', questions);
+    setEffectCount(prevCount => prevCount + 1);
+    console.log('effectCount', effectCount);
+  }, []);
 
-  //2
+  //useEffect 2
   //bring question set from mysql db and put into returnee
   useEffect(() => {
 
-    if (endpoint1 == 1) {
+    if (effectCount == 1) {
       Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
           var z = 0;
           for (var i in response.data) {
@@ -149,20 +152,19 @@ export default function Log(props) {
               //ChangeReturnee(setSome(z),z);
               z++;
           }
-          setReturnee(getData(0))
-          console.log('questions in useEffect', questions);
+          setEffectCount(prevCount => prevCount + 1)
+          console.log('effectCount useEffect2', effectCount);
       });
-      setQuestions([]);
     }
-  }, []);
+  }, [effectCount]);
 
-  // //3
-  // useEffect(() => {
-  //   if (endpoint2 == 1) {
-  //     console.log('useEffect3');
-  //     setReturnee(getData(0))
-  //   }
-  // }, [endpoint2]);
+  //useEffect 3
+  useEffect(() => {
+    if (effectCount == 2) {
+      console.log('useEffect3 run');
+      setReturnee(getData(0))
+    }
+  }, [effectCount]);
 
 
   function changeQuestions(a) {

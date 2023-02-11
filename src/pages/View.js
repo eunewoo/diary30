@@ -49,9 +49,7 @@ export default function View(props) {
   const { cum_year, cum_month, cum_day } = cumDate;
 
   function append(questions, question) {
-    var temp = questions;
-    questions.push(question);
-    setQuestions(temp);
+    setQuestions((questions) => [...questions, question]);
   }
 
   function returnMultiple(x, y, z) {
