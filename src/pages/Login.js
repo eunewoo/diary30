@@ -53,7 +53,7 @@ export default function Login(props) {
             address2: response.data[0].address_l,
           });
           setDisplayImage(() => response.data[0].img);
-          navigate("/log");
+          navigate("/edit");
         } else {
           alert("Unavail Login!");
         }
