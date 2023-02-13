@@ -178,13 +178,6 @@ export default function Log(props) {
     //shallow copied
     var temp = questions;
 
-    // let newQuestions = questions.question_answers;
-
-    // let temp1 = {
-    //   date: "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day,
-    //   answer: "",
-    // };
-
     var list = document.getElementById("list");
     for (var i = 0; i < list.childNodes.length; i++) {
       var temp1 = {
@@ -215,51 +208,29 @@ export default function Log(props) {
 
       console.log("temp1", temp1);
       console.log("temp", temp);
-
+      // edit when user's question_answers submit
       for (var j = 0; j < temp[i].question_answers.length; j++) {
+        //if question_answer already exist
         if (temp[i].question_answers[j].date === "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day) {
-          // temp[i].question_answers[j].answer = temp1.answer;
           var newArray = [...temp];
           var date = newArray[i].question_answers[j].date;
           var answer = temp1.answer;
-          var newFor = [];
-          newFor = [...temp[i].question_answers];
-          newFor.splice(j, 1, { date, answer });
-          // console.log("showmethemoney", newFor);
-          newArray[i] = { ...temp[i], question_answers: newFor };
+          var newAns = [...temp[i].question_answers];
+          newAns.splice(j, 1, { date, answer });
+          newArray[i] = { ...temp[i], question_answers: newAns };
           temp = newArray;
-        } else if (j === temp[i].question_answers.length - 1) {
+        }
+        //if questions exist but question_answer not exist
+        else if (j === temp[i].question_answers.length - 1) {
           var newArray = [...temp];
-          var newFor = [];
-          // console.log("mmmm", temp[0].question_answers);
-          newFor = [...temp[i].question_answers];
-          newFor.push(temp1);
-          // console.log("showme1", newFor);
-          newArray[i] = { ...temp[i], question_answers: newFor };
+          var newAns = [...temp[i].question_answers];
+          newAns.push(temp1);
+          newArray[i] = { ...temp[i], question_answers: newAns };
           temp = newArray;
         }
       }
+      //if user made questions for the first time and qeustion_answer not exist
       if (temp[i].question_answers.length == 0) {
-        //temp[i].question_answers = Object.assign([], temp[i].question_answers);
-        //let temp1 = {date: '2023-2-9', answer: true};
-
-        // let newArray = [].concat(temp[i].question_answers, [temp1]);
-        // temp[i].question_answers = newArray;
-
-        //questions[i].question_answers = [...questions[i].question_answers, temp1]
-        //setQuestions(prev => [...prev, temp1])
-
-        // temp1 = {date: '2023-2-10', answer: '25'}
-        // questions[i].question_answers.push(temp1);
-
-        // setQuestions(prevQuestions => {
-        //   const newQuestions = [...prevQuestions];
-        //   newQuestions[i].question_answers = [...newQuestions[i].question_answers, temp1];
-        //   return newQuestions;
-        // })
-        // newQuestions[i] = [...newQuestions[i], temp1];
-
-        // temp[i].question_answers.push(temp1);
         var newArray = [...temp];
         newArray[i] = { ...temp[i], question_answers: temp1 };
         temp = newArray;
