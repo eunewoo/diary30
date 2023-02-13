@@ -13,6 +13,9 @@ export default function Log(props) {
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
 
   const [effectCount, setEffectCount] = useState(0);
+  //const [effectCount2, setEffectCount2] = useState(0);
+
+  //setEffectCount(prevCount => 0)
   
   // let endpoint1 = 0;
   // let endpoint2 = 0;
@@ -27,10 +30,10 @@ export default function Log(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      console.log("x.question_answers[i].date", x.question_answers[i].date);
-      console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
-      console.log("x.question_answers[i].answer", x.question_answers[i].answer);
-      console.log(x.question_selection[y][0]);
+      // console.log("x.question_answers[i].date", x.question_answers[i].date);
+      // console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
+      // console.log("x.question_answers[i].answer", x.question_answers[i].answer);
+      // console.log(x.question_selection[y][0]);
 
       if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
         if (x.question_answers[i].answer === x.question_selection[y][0]) {
@@ -122,19 +125,16 @@ export default function Log(props) {
     return <></>;
   }
 
-  //useEffect1
-  useEffect(() => {
-    setQuestions((a) => []);
-    console.log('questions in useEffect1', questions);
-    setEffectCount(prevCount => prevCount + 1);
-    console.log('effectCount', effectCount);
-  }, []);
-
   //useEffect 2
   //bring question set from mysql db and put into returnee
   useEffect(() => {
-
-    if (effectCount == 1) {
+    if (effectCount == 0) {
+      setQuestions([]);
+      console.log('questions in useEffect1', questions);
+      setEffectCount(prevCount => prevCount + 1);
+      console.log('effectCount', effectCount);
+    }
+    else if (effectCount == 1) {
       Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
           var z = 0;
           for (var i in response.data) {
@@ -148,6 +148,7 @@ export default function Log(props) {
               question_type: response.data[i].question_type,
               question_selection: temp,
               question_answers: temp1,
+              question_order: response.data[i].question_order,
               });
               //ChangeReturnee(setSome(z),z);
               z++;
@@ -156,11 +157,7 @@ export default function Log(props) {
           console.log('effectCount useEffect2', effectCount);
       });
     }
-  }, [effectCount]);
-
-  //useEffect 3
-  useEffect(() => {
-    if (effectCount == 2) {
+    else if(effectCount == 2) {
       console.log('useEffect3 run');
       setReturnee(getData(0))
     }
@@ -175,17 +172,15 @@ export default function Log(props) {
   }
 
   //put answers in temp and send to db
-  async function submit() {
+  async function submit() { 
 
-    //shallow copied
-    var temp = questions;
+    // console.log('questions in submit', questions);
 
-    // let newQuestions = questions.question_answers;
-    
-    // let temp1 = {
-    //   date: "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day,
-    //   answer: "",
-    // };
+    // var temp = [...questions];
+    let listLength = questions.length + 1
+    let newAnswer = [];
+    let existCase = Array.from({length: listLength}, () => -1);
+    let existAnswer = Array.from({length: listLength}, () => Array.from({length: 1}));
 
     var list = document.getElementById("list");
     for (var i = 0; i < list.childNodes.length; i++) {
@@ -217,16 +212,33 @@ export default function Log(props) {
       }
 
       console.log('temp1', temp1);
-      console.log('temp', temp);
+      //change question_answers
+      for (var j = 0; j < questions[i].question_answers.length; j++) {
+        if (questions[i].question_answers[j].date === "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day) {
+          //make delete method
+          existCase[i] = i
+          //remove only duplicated date part and make them into new array called existAnswer
+          existAnswer[i] = questions[i].question_answers
+          .slice(0, j)
+          .concat(questions[i].question_answers.slice(j + 1))
+          .map(answer => ({ ...answer }));
+        
+          console.log('existAnswer[i]', existAnswer[i]);
+          newAnswer.push(temp1);
+          break
 
-      for (var j = 0; j < temp[i].question_answers.length; j++) {
-        if (temp[i].question_answers[j].date === "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day) {
-          temp[i].question_answers[j].answer = temp1.answer;
-        } else if (j === temp[i].question_answers.length - 1) {
-          temp[i].question_answers.push(temp1);
+          //new question_answers but past data exist
+        } else if (j === questions[i].question_answers.length - 1) {
+          //temp[i].question_answers.push(temp1);
+          // let newArray = [...temp];
+          // newArray[i] = {...temp[i], question_answers: [temp1] };
+          // temp = newArray;
+          // temp[i].question_answers.push(temp1);
+          newAnswer.push(temp1);
         }
       }
-      if (temp[i].question_answers.length == 0) {
+      //empty question_answers
+      if (questions[i].question_answers.length == 0) {
         //temp[i].question_answers = Object.assign([], temp[i].question_answers);
         //let temp1 = {date: '2023-2-9', answer: true};
         
@@ -247,19 +259,55 @@ export default function Log(props) {
         // newQuestions[i] = [...newQuestions[i], temp1];
         
 
-        temp[i].question_answers.push(temp1);
+        //temp[i].question_answers.push(temp1);
+        // let newArray = [...temp];
+        // newArray[i] = {...temp[i], question_answers: [temp1] };
+        // temp = newArray;
+        // temp[i].question_answers.push(temp1);
+        newAnswer.push(temp1);
       }
     }
 
-    for (var i = 0; i < temp.length; i++) {
-      await Axios.put("https://diary30wooserver.web.app/api/questions", {
-        user_id: props.profile.user_id,
-        question: temp[i].question,
-        //question_answers: JSON.stringify(temp[i].question_answers)
-        question_answers: temp[i].question_answers,
-      });
+    for (var i = 0; i < questions.length; i++) {
+
+      if (i == existCase[i]){
+        //delete
+        // await Axios.delete(
+        //   "https://diary30wooserver.web.app/api/questions/" +
+        //     props.profile.user_id +
+        //     "&" +
+        //     questions[i].question_order
+        // )
+        //   .then((response) => {
+        //     //console.log("del ended");
+        //   })
+        //   .then(() => {
+        //     console.log("del ended");
+        //   });
+
+        await Axios.put("https://diary30wooserver.web.app/api/questions", {
+          user_id: props.profile.user_id,
+          question: questions[i].question,
+          //question_answers: JSON.stringify(temp[i].question_answers)
+          //question_answers: temp[i].question_answers,
+          question_selection: questions[i].question_selection,
+          question_type: questions[i].question_type,
+          question_answers: [...existAnswer[i], newAnswer[i]],
+        });
+      }
+      else {
+        await Axios.put("https://diary30wooserver.web.app/api/questions", {
+          user_id: props.profile.user_id,
+          question: questions[i].question,
+          //question_answers: JSON.stringify(temp[i].question_answers)
+          //question_answers: temp[i].question_answers,
+          question_answers: [...questions[i].question_answers, newAnswer[i]]
+        });
+      }
     }
+
     alert("Your submission is correctly submitted on the db");
+    setEffectCount(prev => 0);
   }
 
   return (
