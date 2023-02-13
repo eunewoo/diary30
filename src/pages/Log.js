@@ -13,7 +13,8 @@ export default function Log(props) {
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
 
   const [effectCount, setEffectCount] = useState(0);
-  
+  const [effectCount2, setEffectCount2] = useState(0);
+
   // let endpoint1 = 0;
   // let endpoint2 = 0;
 
@@ -125,35 +126,34 @@ export default function Log(props) {
   //useEffect1
   useEffect(() => {
     setQuestions((a) => []);
-    console.log('questions in useEffect1', questions);
-    setEffectCount(prevCount => prevCount + 1);
-    console.log('effectCount', effectCount);
-  }, []);
+    console.log("questions in useEffect1", questions);
+    setEffectCount((prevCount) => prevCount + 1);
+    console.log("effectCount", effectCount);
+  }, [effectCount2]);
 
   //useEffect 2
   //bring question set from mysql db and put into returnee
   useEffect(() => {
-
     if (effectCount == 1) {
       Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
-          var z = 0;
-          for (var i in response.data) {
-              var temp = response.data[i].question_selection;
-              var temp1 = response.data[i].question_answers;
+        var z = 0;
+        for (var i in response.data) {
+          var temp = response.data[i].question_selection;
+          var temp1 = response.data[i].question_answers;
 
-              append(questions, {
-              id: response.data[i].id,
-              user_id: response.data[i].user_id,
-              question: response.data[i].question,
-              question_type: response.data[i].question_type,
-              question_selection: temp,
-              question_answers: temp1,
-              });
-              //ChangeReturnee(setSome(z),z);
-              z++;
-          }
-          setEffectCount(prevCount => prevCount + 1)
-          console.log('effectCount useEffect2', effectCount);
+          append(questions, {
+            id: response.data[i].id,
+            user_id: response.data[i].user_id,
+            question: response.data[i].question,
+            question_type: response.data[i].question_type,
+            question_selection: temp,
+            question_answers: temp1,
+          });
+          //ChangeReturnee(setSome(z),z);
+          z++;
+        }
+        setEffectCount((prevCount) => prevCount + 1);
+        console.log("effectCount useEffect2", effectCount);
       });
     }
   }, [effectCount]);
@@ -161,11 +161,10 @@ export default function Log(props) {
   //useEffect 3
   useEffect(() => {
     if (effectCount == 2) {
-      console.log('useEffect3 run');
-      setReturnee(getData(0))
+      console.log("useEffect3 run");
+      setReturnee(getData(0));
     }
   }, [effectCount]);
-
 
   function changeQuestions(a) {
     setQuestions(a);
@@ -176,12 +175,11 @@ export default function Log(props) {
 
   //put answers in temp and send to db
   async function submit() {
-
     //shallow copied
     var temp = questions;
 
     // let newQuestions = questions.question_answers;
-    
+
     // let temp1 = {
     //   date: "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day,
     //   answer: "",
@@ -189,8 +187,7 @@ export default function Log(props) {
 
     var list = document.getElementById("list");
     for (var i = 0; i < list.childNodes.length; i++) {
-
-      let temp1 = {
+      var temp1 = {
         date: "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day,
         answer: "",
       };
@@ -216,23 +213,39 @@ export default function Log(props) {
         temp1.answer = list.childNodes[i].childNodes[1].value;
       }
 
-      console.log('temp1', temp1);
-      console.log('temp', temp);
+      console.log("temp1", temp1);
+      console.log("temp", temp);
 
       for (var j = 0; j < temp[i].question_answers.length; j++) {
         if (temp[i].question_answers[j].date === "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day) {
-          temp[i].question_answers[j].answer = temp1.answer;
+          // temp[i].question_answers[j].answer = temp1.answer;
+          var newArray = [...temp];
+          var date = newArray[i].question_answers[j].date;
+          var answer = temp1.answer;
+          var newFor = [];
+          newFor = [...temp[i].question_answers];
+          newFor.splice(j, 1, { date, answer });
+          // console.log("showmethemoney", newFor);
+          newArray[i] = { ...temp[i], question_answers: newFor };
+          temp = newArray;
         } else if (j === temp[i].question_answers.length - 1) {
-          temp[i].question_answers.push(temp1);
+          var newArray = [...temp];
+          var newFor = [];
+          // console.log("mmmm", temp[0].question_answers);
+          newFor = [...temp[i].question_answers];
+          newFor.push(temp1);
+          // console.log("showme1", newFor);
+          newArray[i] = { ...temp[i], question_answers: newFor };
+          temp = newArray;
         }
       }
       if (temp[i].question_answers.length == 0) {
         //temp[i].question_answers = Object.assign([], temp[i].question_answers);
         //let temp1 = {date: '2023-2-9', answer: true};
-        
+
         // let newArray = [].concat(temp[i].question_answers, [temp1]);
         // temp[i].question_answers = newArray;
-        
+
         //questions[i].question_answers = [...questions[i].question_answers, temp1]
         //setQuestions(prev => [...prev, temp1])
 
@@ -245,9 +258,11 @@ export default function Log(props) {
         //   return newQuestions;
         // })
         // newQuestions[i] = [...newQuestions[i], temp1];
-        
 
-        temp[i].question_answers.push(temp1);
+        // temp[i].question_answers.push(temp1);
+        var newArray = [...temp];
+        newArray[i] = { ...temp[i], question_answers: temp1 };
+        temp = newArray;
       }
     }
 
@@ -259,6 +274,8 @@ export default function Log(props) {
         question_answers: temp[i].question_answers,
       });
     }
+    setEffectCount2((prevCount) => prevCount + 1);
+    setEffectCount(0);
     alert("Your submission is correctly submitted on the db");
   }
 
