@@ -22,30 +22,22 @@ export default function Register(props) {
 
   const [temp2, setTemp2] = useState({});
   const [tempConfig, setTempConfig] = useState({});
-  const {
-    user_id,
-    password,
-    user_name,
-    user_email,
-    address_f,
-    address_l,
-    img,
-  } = profdata;
+  const { user_id, password, user_name, user_email, address_f, address_l, img } = profdata;
 
-  const onDrop = async(e) => {
+  const onDrop = async (e) => {
     const files = e.target.files[0];
     let formData = new FormData();
-    formData.append("api_key", "276775976593738");
-    formData.append("upload_preset", "h0iblbf5");
+    formData.append("api_key", "672365852293431");
+    formData.append("upload_preset", "tdc1f5a8");
     formData.append("timestamp", (Date.now() / 1000) | 0);
     formData.append(`file`, files);
     const config = {
-        header: { "Content-Type": "multipart/form-data" }
-    }
+      header: { "Content-Type": "multipart/form-data" },
+    };
 
     setTemp2(formData);
     setTempConfig(config);
-  }
+  };
 
   const setTextid = (e) => {
     const { name, value } = e.target;
@@ -95,75 +87,74 @@ export default function Register(props) {
 
   function setImg(url) {
     setProfdata({
-        ...profdata,
-        img: url
-    })
+      ...profdata,
+      img: url,
+    });
   }
 
   const isRegister = () => {
-    switch(""){
-        case user_id:
-            alert("Put id!");
-            break;
-        case password:
-            alert("Put Password!");
-            break;
-        case user_name:
-            alert("Put name!");
-            break;
-        case user_email:
-            alert("Put email!");
-            break;
-        case address_f:
-            alert("Put first address!");
-            break;
-        case address_l:
-            alert("Put last address!");
-            break;
-        default:
-            let temp1 = 0;
-            if (!/\S+@\S+\.\S+/.test(profdata.user_email)) {
-                alert("Your email is not in valid form!");
-                temp1 = 1;
-            } else if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(profdata.password)) {
-                alert("Your password is not in valid form!");
-                temp1 = 1;
-            } else {
-            let temp = 0;
-            if (temp1 === 0) {
-                Axios.get('http://localhost:3305/api/users').then((response) => {
-                    for (var i in response.data) {
-                        if(response.data[i].user_id == user_id){
-                            break;
-                        }else if(i == response.data.length-1 && response.data[i].user_id != user_id){
-                            temp = 1;
-                        }
-                    }
-                    if(temp === 1) {
-                        Axios.post('https://api.cloudinary.com/v1_1/dv2sy5qzq/image/upload', temp2, tempConfig).then((res) => {
-                            Axios.post('http://localhost:3305/api/users', {
-                                user_id: profdata.user_id,
-                                password: hashutil(user_id, user_email, password),
-                                name: profdata.user_name,
-                                email: profdata.user_email,
-                                address1: profdata.address_f,
-                                address2: profdata.address_l,
-                                img: res.data.url
-                            }).then(() => {
-                                alert("Success Register!");
-                                document.location.href = 'http://localhost:3000';
-                            })
-                        })
-                    } else if(temp === 0) {
-                        alert("Invalid Register!");
-                    }
-            })
-            }
-            }
+    switch ("") {
+      case user_id:
+        alert("Put id!");
+        break;
+      case password:
+        alert("Put Password!");
+        break;
+      case user_name:
+        alert("Put name!");
+        break;
+      case user_email:
+        alert("Put email!");
+        break;
+      case address_f:
+        alert("Put first address!");
+        break;
+      case address_l:
+        alert("Put last address!");
+        break;
+      default:
+        let temp1 = 0;
+        if (!/\S+@\S+\.\S+/.test(profdata.user_email)) {
+          alert("Your email is not in valid form!");
+          temp1 = 1;
+        } else if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(profdata.password)) {
+          alert("Your password is not in valid form!");
+          temp1 = 1;
+        } else {
+          let temp = 0;
+          if (temp1 === 0) {
+            Axios.get("https://diary30wooserver.web.app/api/users").then((response) => {
+              for (var i in response.data) {
+                if (response.data[i].user_id == user_id) {
+                  break;
+                } else if (i == response.data.length - 1 && response.data[i].user_id != user_id) {
+                  temp = 1;
+                }
+              }
+              if (temp === 1) {
+                Axios.post("https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload", temp2, tempConfig).then((res) => {
+                  Axios.post("https://diary30wooserver.web.app/api/users", {
+                    user_id: profdata.user_id,
+                    password: hashutil(user_id, user_email, password),
+                    name: profdata.user_name,
+                    email: profdata.user_email,
+                    address1: profdata.address_f,
+                    address2: profdata.address_l,
+                    img: res.data.url,
+                  }).then(() => {
+                    alert("Success Register!");
+                    document.location.href = "http://localhost:3000";
+                  });
+                });
+              } else if (temp === 0) {
+                alert("Invalid Register!");
+              }
+            });
+          }
+        }
     }
-};
+  };
 
- 
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -192,69 +183,36 @@ export default function Register(props) {
               <li>
                 <div>
                   <p>Set your ID : </p>
-                  <input
-                    id="user_id"
-                    name="user_id"
-                    value={user_id}
-                    type="text"
-                    onChange={setTextid}
-                  />
+                  <input id="user_id" name="user_id" value={user_id} type="text" onChange={setTextid} />
                 </div>
               </li>
               <li>
                 <div>
                   <p>Set your password : </p>
-                  <label class={`input-label ${value ? "has-value" : ""}`}>
-                    At least 8chars, uppercase + lowercase + number{" "}
-                  </label>
-                  <input
-                    name="password"
-                    defaultValue={password}
-                    type="password"
-                    onChange={setTextid2}
-                  />
+                  <label class={`input-label ${value ? "has-value" : ""}`}>At least 8chars, uppercase + lowercase + number </label>
+                  <input name="password" defaultValue={password} type="password" onChange={setTextid2} />
                 </div>
               </li>
               <li>
                 <div>
                   <p>Set your name : </p>
-                  <input
-                    name="user_name"
-                    value={user_name}
-                    type="text"
-                    onChange={setTextid}
-                  />
+                  <input name="user_name" value={user_name} type="text" onChange={setTextid} />
                 </div>
               </li>
               <li>
                 <div>
                   <p>Set your email : </p>
-                  <input
-                    name="user_email"
-                    value={user_email}
-                    type="text"
-                    onChange={setTextid}
-                  />
+                  <input name="user_email" value={user_email} type="text" onChange={setTextid} />
                 </div>
               </li>
               <li id="registerAddress">
                 <div>
                   <p>Set your address : </p>
                   <div>
-                    <input
-                      name="address_f"
-                      value={address_f}
-                      type="text"
-                      onChange={setTextid}
-                    />
+                    <input name="address_f" value={address_f} type="text" onChange={setTextid} />
                   </div>
                   <div>
-                    <input
-                      name="address_l"
-                      value={address_l}
-                      type="text"
-                      onChange={setTextid}
-                    />
+                    <input name="address_l" value={address_l} type="text" onChange={setTextid} />
                   </div>
                 </div>
               </li>
