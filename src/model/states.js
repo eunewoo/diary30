@@ -5,6 +5,7 @@ export const DisplayImageAtom = atom({
   default: "",
 });
 
+// make cloudinary form for Register.js and Profile.js
 export function makeFormData(e) {
   const img = e.target.files[0];
 
