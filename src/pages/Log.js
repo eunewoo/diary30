@@ -2,142 +2,26 @@ import Topnav from "./nav.js";
 import Axios from "axios";
 import { useState, useEffect } from "react";
 import React, { Link } from "react-router-dom";
+import Cum_date_load from "../model/Cum_date_load.js";
+import { useRecoilState } from "recoil";
+import { cumDateState, questionsSelector, questionsState, returneeState } from "../model/states.js";
 
 export default function Log(props) {
-  const cum_date = new Date();
-  const [returnee, setReturnee] = useState([]);
-  const [questions, setQuestions] = useState([]);
+  const [returnee, setReturnee] = useRecoilState(returneeState);
+  const [questions, setQuestions] = useRecoilState(questionsSelector);
 
-  const [cumDate, setCumDate] = useState({
-    cum_year: cum_date.getFullYear(),
-    cum_month: cum_date.getMonth() + 1,
-    cum_day: cum_date.getDate(),
-  });
+  const [cumDate, setCumDate] = useRecoilState(cumDateState);
 
-  const { cum_year, cum_month, cum_day } = cumDate;
+  const [effectCount, setEffectCount] = useState(0);
+  const [effectCount2, setEffectCount2] = useState(0);
 
-  //going to previous day
-  const clickPre = () => {
-    var arr = [31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    var temp = {};
-    if (cumDate.cum_month == 1) {
-      if (cumDate.cum_day == 1) {
-        temp = {
-          ...cumDate,
-          cum_year: cum_year - 1,
-          cum_month: 12,
-          cum_day: 31,
-        };
-      } else {
-        temp = {
-          ...cumDate,
-          cum_day: cum_day - 1,
-        };
-      }
-    } else {
-      if (cumDate.cum_day == 1) {
-        temp = {
-          ...cumDate,
-          cum_month: cum_month - 1,
-          cum_day: arr[cum_month - 2],
-        };
-      } else {
-        temp = {
-          ...cumDate,
-          cum_day: cum_day - 1,
-        };
-      }
-    }
-    setCumDate(temp);
-    var list = document.getElementById("list");
+  // let endpoint1 = 0;
+  // let endpoint2 = 0;
 
-    //put input data into list
-    for (var i = 0; i < list.childNodes.length; i++) {
-      if (list.childNodes[i].childNodes.length === 7) {
-        //if multiple choice
-        list.childNodes[i].childNodes[1].checked = returnMultiple(questions[i], 0, temp);
-        list.childNodes[i].childNodes[3].checked = returnMultiple(questions[i], 1, temp);
-        list.childNodes[i].childNodes[5].checked = returnMultiple(questions[i], 2, temp);
-      }
-      if (list.childNodes[i].childNodes.length === 5) {
-        //if boolean choice
-        list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp);
-        list.childNodes[i].childNodes[3].checked = returnBoolean(questions[i], 1, temp);
-      }
-      if (list.childNodes[i].childNodes.length === 2) {
-        //if text choice
-        if (returnText(questions[i], temp) === undefined) {
-          list.childNodes[i].childNodes[1].value = "";
-        } else {
-          list.childNodes[i].childNodes[1].value = returnText(questions[i], temp);
-        }
-      }
-    }
-  };
-
-  //going to next day
-  const clickNext = () => {
-    var arr = [31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    var temp = {};
-    if (cumDate.cum_month == 12) {
-      if (cumDate.cum_day == arr[cumDate.cum_month - 1]) {
-        temp = {
-          ...cumDate,
-          cum_year: cum_year + 1,
-          cum_month: 1,
-          cum_day: 1,
-        };
-      } else {
-        temp = {
-          ...cumDate,
-          cum_day: cum_day + 1,
-        };
-      }
-    } else {
-      if (cumDate.cum_day == arr[cumDate.cum_month - 1]) {
-        temp = {
-          ...cumDate,
-          cum_month: cum_month + 1,
-          cum_day: 1,
-        };
-      } else {
-        temp = {
-          ...cumDate,
-          cum_day: cum_day + 1,
-        };
-      }
-    }
-    setCumDate(temp);
-    var list = document.getElementById("list");
-    for (var i = 0; i < list.childNodes.length; i++) {
-      if (list.childNodes[i].childNodes.length === 7) {
-        //if multiple choice
-        list.childNodes[i].childNodes[1].checked = returnMultiple(questions[i], 0, temp);
-        list.childNodes[i].childNodes[3].checked = returnMultiple(questions[i], 1, temp);
-        list.childNodes[i].childNodes[5].checked = returnMultiple(questions[i], 2, temp);
-      }
-      if (list.childNodes[i].childNodes.length === 5) {
-        //if boolean
-        list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp);
-        list.childNodes[i].childNodes[3].checked = returnBoolean(questions[i], 1, temp);
-      }
-      if (list.childNodes[i].childNodes.length === 2) {
-        //if text or number
-        if (returnText(questions[i], temp) === undefined) {
-          list.childNodes[i].childNodes[1].value = "";
-        } else {
-          list.childNodes[i].childNodes[1].value = returnText(questions[i], temp);
-        }
-      }
-    }
-  };
-
+  //var endPoint = 0
   function append(questions, question) {
-    var temp = questions;
-    questions.push(question);
-    setQuestions(temp);
+    setQuestions((questions) => [...questions, question]);
   }
-
   //return multiple boolean of specific date
   function returnMultiple(x, y, z) {
     if (z === undefined) {
@@ -233,31 +117,55 @@ export default function Log(props) {
         </>
       );
     }
+    // else {
+    //     endPoint = 1
+    // }
     return <></>;
   }
 
+  //useEffect1
+  useEffect(() => {
+    setQuestions((a) => []);
+    console.log("questions in useEffect1", questions);
+    setEffectCount((prevCount) => prevCount + 1);
+    console.log("effectCount", effectCount);
+  }, [effectCount2]);
+
+  //useEffect 2
   //bring question set from mysql db and put into returnee
   useEffect(() => {
-    Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
-      var z = 0;
-      for (var i in response.data) {
-        var temp = response.data[i].question_selection;
-        var temp1 = response.data[i].question_answers;
+    if (effectCount == 1) {
+      Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
+        var z = 0;
+        for (var i in response.data) {
+          var temp = response.data[i].question_selection;
+          var temp1 = response.data[i].question_answers;
 
-        append(questions, {
-          id: response.data[i].id,
-          user_id: response.data[i].user_id,
-          question: response.data[i].question,
-          question_type: response.data[i].question_type,
-          question_selection: temp,
-          question_answers: temp1,
-        });
-        //ChangeReturnee(setSome(z),z);
-        z++;
-      }
+          append(questions, {
+            id: response.data[i].id,
+            user_id: response.data[i].user_id,
+            question: response.data[i].question,
+            question_type: response.data[i].question_type,
+            question_selection: temp,
+            question_answers: temp1,
+          });
+          //ChangeReturnee(setSome(z),z);
+          z++;
+        }
+        setEffectCount((prevCount) => prevCount + 1);
+        console.log("effectCount useEffect2", effectCount);
+      });
+    }
+  }, [effectCount]);
+
+  //useEffect 3
+  useEffect(() => {
+    if (effectCount == 2) {
+      console.log("useEffect3 run");
       setReturnee(getData(0));
-    });
-  }, []);
+    }
+  }, [effectCount]);
+
   function changeQuestions(a) {
     setQuestions(a);
   }
@@ -266,15 +174,18 @@ export default function Log(props) {
   }
 
   //put answers in temp and send to db
-  function submit() {
+  async function submit() {
+    //shallow copied
     var temp = questions;
-    console.log(temp);
+
     var list = document.getElementById("list");
     for (var i = 0; i < list.childNodes.length; i++) {
       var temp1 = {
         date: "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day,
         answer: "",
       };
+
+      //multiple
       if (list.childNodes[i].childNodes.length === 7) {
         if (list.childNodes[i].childNodes[1].checked) {
           temp1.answer = list.childNodes[i].childNodes[1].value;
@@ -283,52 +194,66 @@ export default function Log(props) {
         } else if (list.childNodes[i].childNodes[5].checked) {
           temp1.answer = list.childNodes[i].childNodes[5].value;
         }
+        //boolean
       } else if (list.childNodes[i].childNodes.length === 5) {
         if (list.childNodes[i].childNodes[1].checked) {
           temp1.answer = true;
         } else if (list.childNodes[i].childNodes[3].checked) {
           temp1.answer = false;
         }
+        //text
       } else if (list.childNodes[i].childNodes.length === 2) {
         temp1.answer = list.childNodes[i].childNodes[1].value;
       }
+
+      console.log("temp1", temp1);
+      console.log("temp", temp);
+      // edit when user's question_answers submit
       for (var j = 0; j < temp[i].question_answers.length; j++) {
+        //if question_answer already exist
         if (temp[i].question_answers[j].date === "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day) {
-          temp[i].question_answers[j].answer = temp1.answer;
-        } else if (j === temp[i].question_answers.length - 1) {
-          temp[i].question_answers.push(temp1);
+          var newArray = [...temp];
+          var date = newArray[i].question_answers[j].date;
+          var answer = temp1.answer;
+          var newAns = [...temp[i].question_answers];
+          newAns.splice(j, 1, { date, answer });
+          newArray[i] = { ...temp[i], question_answers: newAns };
+          temp = newArray;
+        }
+        //if questions exist but question_answer not exist
+        else if (j === temp[i].question_answers.length - 1) {
+          var newArray = [...temp];
+          var newAns = [...temp[i].question_answers];
+          newAns.push(temp1);
+          newArray[i] = { ...temp[i], question_answers: newAns };
+          temp = newArray;
         }
       }
+      //if user made questions for the first time and qeustion_answer not exist
       if (temp[i].question_answers.length == 0) {
-        temp[i].question_answers.push(temp1);
+        var newArray = [...temp];
+        newArray[i] = { ...temp[i], question_answers: temp1 };
+        temp = newArray;
       }
     }
 
     for (var i = 0; i < temp.length; i++) {
-      Axios.put("https://diary30wooserver.web.app/api/questions", {
+      await Axios.put("https://diary30wooserver.web.app/api/questions", {
         user_id: props.profile.user_id,
         question: temp[i].question,
         //question_answers: JSON.stringify(temp[i].question_answers)
         question_answers: temp[i].question_answers,
       });
     }
+    setEffectCount2((prevCount) => prevCount + 1);
+    setEffectCount(0);
     alert("Your submission is correctly submitted on the db");
   }
 
   return (
     <div id="pageWrapper">
       <Topnav selected="log" />
-      <div id="logWrapper">
-        <button onClick={clickPre}>
-          <span className="material-icons md-18">arrow_back_ios</span>
-        </button>
-        <p>
-          {cumDate.cum_year}-{cumDate.cum_month}-{cumDate.cum_day}
-        </p>
-        <button onClick={clickNext}>
-          <span className="material-icons md-18">arrow_forward_ios</span>
-        </button>
-      </div>
+      <Cum_date_load />
       <div id="list">{returnee}</div>
       <button onClick={submit} id="submit">
         Submit
