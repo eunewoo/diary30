@@ -10,7 +10,10 @@ export default function Edit(props) {
   const navigate = useNavigate();
   const [orderTop, setorderTop] = useState(-1);
 
-  const orderArray = [];
+  const [orderArray, setorderArray] = useState([]);
+  const [endPoint, setendPoint] = useState(0);
+
+  let endpoint2 = 0
 
   //organize question in temp from list and push into ret array
   function getData() {
@@ -24,7 +27,7 @@ export default function Edit(props) {
         question: "",
         question_selection: [],
         question_type: "",
-        question_order: -99,
+        question_order: "-99",
       };
       if (list.childNodes[i].childNodes[0].childNodes[0].value === "") {
         alert("question cannot be empty!");
@@ -49,7 +52,7 @@ export default function Edit(props) {
             list.childNodes[i].childNodes[0].childNodes[7].value,
           ]);
         }
-        temp.question_order = list.childNodes[i].childNodes[2].value
+        temp.question_order = list.childNodes[i].childNodes[2].value;
         console.log('temp question', temp.question);
         console.log('temp order', temp.question_order);
         ret.push(temp);
@@ -97,22 +100,31 @@ export default function Edit(props) {
   // }
 
   //add async,await to run in order
-  async function detectChange() {
+  async function DetectChange() {
     //filter duplicate questions
     var submit = getData();
     var tempAdd = [];
-    var tempDel = [];
     //find duplicate with past questions
+
+
+
     //why check duplicate once again???
     for (var i = 0; i < submit.length; i++) {
+      const containsWord = orderArray.includes(submit[i].question_order) || orderArray.some(str => {
+        const words = str.split(' ');
+        return words.includes(submit[i].question_order);
+      });
+      console.log('orderArray for process', orderArray);
+
+        //let stringCheck = submit[i].question_order.toString()
+        console.log('submit order', submit[i].question_order);
         if (submit[i].question_order == "-1") {
             tempAdd.push(submit[i]);
         }
-        else if (orderArray.includes(submit[i].question_order)) {
-          continue
-        }
-        else {
-          tempDel.push(submit[i]);
+        else if (containsWord) {
+          const delIndex = orderArray.indexOf(submit[i].question_order);
+          orderArray.splice(delIndex, 1);
+          
         }
         
     }
@@ -171,29 +183,28 @@ export default function Edit(props) {
     // }
 
     //add filtered new questions to db
+    let newOrderTop1 = orderTop + 1
     for (var i = 0; i < tempAdd.length; i++) {
-      // console.log('post again', temp);
-      // console.log('post again i', i);
-      //console.log('orderTop1', orderTop1);
+
       console.log("post temp", tempAdd[i].question);
+      
       await Axios.post("http://localhost:3305/api/questions", {
         user_id: tempAdd[i].user_id,
         question: tempAdd[i].question,
         question_selection: tempAdd[i].question_selection,
         question_type: tempAdd[i].question_type,
-        question_order: orderTop + 1,
+        question_order: newOrderTop1,
       });
-      let newOrderTop = orderTop + 1
-      setorderTop(newOrderTop);
-      console.log('new data orderTop', orderTop);
 
-      //console.log('orderTop1', orderTop1);
-      //console.log("post end", temp[i].question);
+      newOrderTop1 += 1;
 
-      // var delayInMilliseconds = 500;
-      // setTimeout(function() {
-      // }, delayInMilliseconds);
+      // console.log('newOrderTop1', newOrderTop1);
+      // (newOrderTop1);
+
     }
+    setorderTop(newOrderTop1);
+    console.log('outside for loop newOrderTop1', newOrderTop1);
+    console.log('outside setorderTop', orderTop);
 
     // //delete part
     // for (var i = 0; i < questions.length; i++) {
@@ -217,22 +228,28 @@ export default function Edit(props) {
     //     tempDel.push(questions[i]);
     //   }
     // }
-    console.log("tempDel", tempDel);
-    for (var i = 0; i < tempDel.length; i++) {
-      
-      Axios.delete(
+    
+    console.log("left orderArray", orderArray);
+    // for (var i = 0; i < tempDel.length; i++) {
+    for (var i = 0; i < orderArray.length; i++) {
+      await Axios.delete(
         "http://localhost:3305/api/questions/" +
-          tempDel[i].user_id +
-          "&" +
-          tempDel[i].question_order
-      )
-        .then((response) => {
-          console.log("del ended");
-        })
-        .then(() => {
-          console.log("del ended");
-        });
+        props.profile.user_id +
+        "&" + 
+        orderArray[i]    
+      ).then(response => {
+        console.log("delete");
+      }).catch(error => {
+        console.log("error deleting question: " + error);
+      });
     }
+    endpoint2 = 1
+
+
+    
+      
+
+      
 
     // Axios.get("http://localhost:3305/api/questions/" + props.profile.user_id)
     //   .then((response) => {
@@ -270,7 +287,7 @@ export default function Edit(props) {
   }
 
   function postChanges(original, submit) {
-    detectChange();
+    DetectChange();
   }
 
   function ChangeReturnee(a, z) {
@@ -371,7 +388,7 @@ export default function Edit(props) {
             <button id="deleteButton" onClick={liDelete}>
               <span class="material-symbols-outlined">delete</span>
             </button>
-            <div value ={temp.question_order}></div>
+            <input type="hidden" value={questions[iterator].question_order}/>
           </li>
         </>
       );
@@ -396,7 +413,7 @@ export default function Edit(props) {
             <button id="deleteButton" onClick={liDelete}>
                 <span class="material-symbols-outlined">delete</span>
             </button>
-            <div value ={temp.question_order}></div>
+            <input type="hidden" value={questions[iterator].question_order}/>
             </li>
         </>
         );
@@ -444,7 +461,7 @@ export default function Edit(props) {
     a.appendChild(i);
 
     var j =document.createElement("div");
-    j.value = "-1";
+    j.value = -1;
     a.appendChild(j);
 
     return a;
@@ -455,43 +472,68 @@ export default function Edit(props) {
     list.appendChild(newDiv());
   }
 
+  useEffect(() => {
+    if (endpoint2 == 1) {
+    setendPoint(prev => 0);
+    }
+  }, [endpoint2]);
+
   //work only when page is first loaded
   useEffect(() => {
-    const fetchData = async () => {
-      await Axios.get(
-        "http://localhost:3305/api/questions/" + props.profile.user_id
-      ).then((response) => {
-        var z = 0;
-        
-        for (var i in response.data) {
-          var temp = response.data[i].question_selection;
+    if(endPoint == 0) { 
+      setQuestions([]);
+      setendPoint(prev => 1);
+    }
+    else if(endPoint == 1) {
+      const tempOrderArray = [];
+      const fetchData = async () => {
+        await Axios.get(
+          "http://localhost:3305/api/questions/" + props.profile.user_id
+        ).then((response) => {
+          var z = 0;
+          const sortedData = response.data.sort((a, b) => a.question_order - b.question_order);
+          console.log(sortedData);
+          
+          for (var i in sortedData) {
+            var temp = sortedData[i].question_selection;
 
-          append(questions, {
-            //id: response.data[i].id,
-            user_id: response.data[i].user_id,
-            question: response.data[i].question,
-            question_type: response.data[i].question_type,
-            question_selection: temp,
-            question_order: response.data[i].question_order,
-            //tag: "oldQ"
-          });
-          ChangeReturnee(setSome(z), z);
-          z++;
-          orderArray.push(response.data[i].question_order);
-        }
-        console.log('get orderArray', orderArray);
-        // orderTop1 = Math.max.apply(null, orderArray)
-        // console.log('max setorderTop', orderTop1);
-        let newOrderTop = Math.max.apply(null, orderArray);
-        console.log('newOrderTop', newOrderTop);
-        setorderTop(newOrderTop);
-        console.log('useEffect orderTop', orderTop);
-      });
-    };
+            append(questions, {
+              //id: response.data[i].id,
+              user_id: sortedData[i].user_id,
+              question: sortedData[i].question,
+              question_type: sortedData[i].question_type,
+              question_selection: temp,
+              question_order: sortedData[i].question_order,
+              //tag: "oldQ"
+            });
+            ChangeReturnee(setSome(z), z);
+            z++;
+            tempOrderArray.push(sortedData[i].question_order);
+            //setorderArray([...orderArray, response.data[i].question_order]);
+          }
+          let newOrderTop = -99;
+          console.log('get tempOrderArray', tempOrderArray);
+          //console.log('get orderArray', orderArray);
+          // orderTop1 = Math.max.apply(null, orderArray)
+          // console.log('max setorderTop', orderTop1);
+          if (tempOrderArray.length == 0) {
+            newOrderTop = -1
+          }
+          else {
+            newOrderTop = Math.max.apply(null, tempOrderArray);
+          }
+          console.log('newOrderTop', newOrderTop);
+          setorderTop(newOrderTop);
+          setorderArray([...tempOrderArray]);
+          console.log('useEffect orderTop', orderTop);
+        });
+      };
 
-    //reset 필요
-    fetchData();
-  }, []);
+      //reset 필요
+      fetchData();
+      setendPoint(prev => 2);
+    }
+  }, [endPoint]);
 
   return (
     <div id="editWrapper">
