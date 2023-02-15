@@ -13,7 +13,8 @@ export default function Profile(props) {
   const [email, setEmail] = useState(props.profile.email);
   const [address1, setAddress1] = useState(props.profile.address1);
   const [address2, setAddress2] = useState(props.profile.address2);
-
+  const [temp2, setTemp2] = useState({});
+  const [tempConfig, setTempConfig] = useState({});
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const imageKeyRef = useRef("imageKeyRef");
 
@@ -22,27 +23,35 @@ export default function Profile(props) {
 
     const formData = new FormData();
     formData.append("file", img);
-
+    formData.append("api_key", "672365852293431");
+    formData.append("upload_preset", "tdc1f5a8");
+    formData.append("timestamp", (Date.now() / 1000) | 0);
     console.log(formData);
 
     const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     };
+    setTemp2(formData);
+    setTempConfig(config);
 
-    Axios.post("https://diary30wooserver.web.app/img", formData, config).then((res) => {
-      //console.log('s3url', res.data.location);
+    Axios.post("https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload", formData, config).then((res) => {
+      Axios.post("https://diary30wooserver.web.app/api/users", {
+        //console.log('s3url', res.data.location);
 
-      //  setProfdata({
-      //      ...profdata,
-      //      img: res.data.location
-      //  });
-      setImg(res.data.location);
+        //  setProfdata({
+        //      ...profdata,
+        //      img: res.data.location
+        //  });
+        img: res.data.url,
+      }).then(() => {
+        setDisplayImage(res.data.url);
+        setImg(res.data.url);
+      });
     });
   };
 
   const removeImage = () => {
+    setDisplayImage("");
     setImg("");
   };
 
@@ -85,7 +94,6 @@ export default function Profile(props) {
             address1: address1,
             address2: address2,
           });
-          setDisplayImage(() => img);
           alert("Your profile has been changed");
         }
       });

@@ -20,6 +20,7 @@ export default function Register(props) {
     img: "",
   });
   // contain formData and config, later sent to cloudinary
+  const [hasFile, setHasFile] = useState(0);
   const [temp2, setTemp2] = useState({});
   const [tempConfig, setTempConfig] = useState({});
   const { user_id, password, user_name, user_email, address_f, address_l, img } = profdata;
@@ -35,6 +36,7 @@ export default function Register(props) {
       header: { "Content-Type": "multipart/form-data" },
     };
     //
+    setHasFile(1);
     setTemp2(formData);
     setTempConfig(config);
   };
@@ -87,12 +89,12 @@ export default function Register(props) {
   //   });
   // };
 
-  function setImg(url) {
-    setProfdata({
-      ...profdata,
-      img: url,
-    });
-  }
+  // function setImg(url) {
+  //   setProfdata({
+  //     ...profdata,
+  //     img: url,
+  //   });
+  // }
 
   const isRegister = () => {
     switch ("") {
@@ -134,7 +136,25 @@ export default function Register(props) {
                 }
               }
               if (temp === 1) {
-                Axios.post("https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload", temp2, tempConfig).then((res) => {
+                if (hasFile == 1) {
+                  Axios.post("https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload", temp2, tempConfig).then((res) => {
+                    Axios.post("https://diary30wooserver.web.app/api/users", {
+                      user_id: profdata.user_id,
+                      password: hashutil(user_id, user_email, password),
+                      name: profdata.user_name,
+                      email: profdata.user_email,
+                      address1: profdata.address_f,
+                      address2: profdata.address_l,
+                      img: res.data.url,
+                    }).then(() => {
+                      setDisplayImage(res.data.url);
+                      console.log("displayImage", displayImage);
+                      alert("Success Register!");
+                      document.location.href = "http://localhost:3000";
+                    });
+                  });
+                }
+                if (hasFile == 0) {
                   Axios.post("https://diary30wooserver.web.app/api/users", {
                     user_id: profdata.user_id,
                     password: hashutil(user_id, user_email, password),
@@ -142,13 +162,14 @@ export default function Register(props) {
                     email: profdata.user_email,
                     address1: profdata.address_f,
                     address2: profdata.address_l,
-                    img: res.data.url,
-                  }).then((res) => {
-                    setDisplayImage(res.data.url);
+                    img: profdata.img,
+                  }).then(() => {
+                    console.log("displayImage", displayImage);
+                    setDisplayImage(profdata.img);
                     alert("Success Register!");
                     document.location.href = "http://localhost:3000";
                   });
-                });
+                }
               } else if (temp === 0) {
                 alert("Invalid Register!");
               }
@@ -157,6 +178,7 @@ export default function Register(props) {
         }
     }
   };
+
   // to login with "Enter key"
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
