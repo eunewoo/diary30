@@ -23,9 +23,7 @@ export default function Login(props) {
   };
 
   const setLoginId = () => {
-    Axios.get(
-      "https://diary30wooserver.web.app/api/users/" + login_id + ""
-    ).then((response) => {
+    Axios.get("https://diary30wooserver.web.app/api/users/" + login_id + "").then((response) => {
       if (response.data.length === 0) {
         alert("Your id is not found on DB");
       } else {
@@ -33,15 +31,9 @@ export default function Login(props) {
         console.log("db password", response.data[0].password);
         //console.log('db email', response.data[0].user_email);
         //console.log('hashutil',  hashutil(login_id, response.data[0].user_email, password));
-        console.log(
-          "hashutil",
-          hashutil(login_id, response.data[0].user_email, password)
-        );
+        console.log("hashutil", hashutil(login_id, response.data[0].user_email, password));
 
-        if (
-          response.data[0].password ==
-          hashutil(login_id, response.data[0].user_email, password)
-        ) {
+        if (response.data[0].password == hashutil(login_id, response.data[0].user_email, password)) {
           alert("Login Success!");
           props.ChangeProfile({
             password: password,
@@ -88,13 +80,7 @@ export default function Login(props) {
             <ul>
               <li>
                 <div>
-                  <input
-                    id="inputId"
-                    placeholder="DIARY ID"
-                    type="text"
-                    onChange={setId}
-                    autoComplete="off"
-                  />
+                  <input id="inputId" placeholder="DIARY ID" type="text" onChange={setId} autoComplete="off" />
                 </div>
                 <br />
               </li>
@@ -102,13 +88,7 @@ export default function Login(props) {
             <ul>
               <li>
                 <div>
-                  <input
-                    id="inputPw"
-                    placeholder="PASSWORD"
-                    type="password"
-                    onChange={setPwd}
-                    autoComplete="off"
-                  />
+                  <input id="inputPw" placeholder="PASSWORD" type="password" onChange={setPwd} autoComplete="off" />
                 </div>
               </li>
             </ul>
@@ -118,9 +98,7 @@ export default function Login(props) {
                 <span class="material-symbols-outlined">login</span>
               </button>
               <Link to="/register">
-                <button id="registerButton">
-                  Don't have an account? Registe here ↗️
-                </button>
+                <button id="registerButton">Don't have an account? Registe here ↗️</button>
               </Link>
             </div>
           </nav>
