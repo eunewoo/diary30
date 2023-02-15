@@ -4,7 +4,7 @@ import Axios from "axios";
 import { hashutil } from "./hashutil.mjs";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { DisplayImageAtom } from "../model/states";
+import { DisplayImageAtom, makeFormData } from "../model/states";
 
 export default function Register(props) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
@@ -26,15 +26,7 @@ export default function Register(props) {
   const { user_id, password, user_name, user_email, address_f, address_l, img } = profdata;
 
   const onDrop = async (e) => {
-    const files = e.target.files[0];
-    let formData = new FormData();
-    formData.append("api_key", "672365852293431");
-    formData.append("upload_preset", "tdc1f5a8");
-    formData.append("timestamp", (Date.now() / 1000) | 0);
-    formData.append(`file`, files);
-    const config = {
-      header: { "Content-Type": "multipart/form-data" },
-    };
+    const { formData, config } = makeFormData(e);
     //
     setHasFile(1);
     setTemp2(formData);
@@ -61,40 +53,6 @@ export default function Register(props) {
       [name]: value,
     });
   };
-
-  // const setImage = (e) => {
-  //   //post image on db
-  //   const img = e.target.files[0];
-
-  //   const formData = new FormData();
-  //   formData.append("file", img);
-
-  //   const config = {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //   };
-
-  //   Axios.post(
-  //     "https://diary30wooserver.web.app/api/users",
-  //     formData,
-  //     config
-  //   ).then((res) => {
-  //     //console.log('s3url', res.data.location);
-
-  //     setProfdata({
-  //       ...profdata,
-  //       img: res.data.location,
-  //     });
-  //   });
-  // };
-
-  // function setImg(url) {
-  //   setProfdata({
-  //     ...profdata,
-  //     img: url,
-  //   });
-  // }
 
   const isRegister = () => {
     switch ("") {

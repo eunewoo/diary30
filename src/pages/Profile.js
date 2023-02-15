@@ -5,7 +5,7 @@ import { hashutil } from "./hashutil.mjs";
 import { useRef } from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { DisplayImageAtom } from "../model/states";
+import { DisplayImageAtom, makeFormData } from "../model/states";
 
 export default function Profile(props) {
   const [img, setImg] = useState(props.profile.img);
@@ -19,29 +19,12 @@ export default function Profile(props) {
   const imageKeyRef = useRef("imageKeyRef");
 
   const setImage = (e) => {
-    const img = e.target.files[0];
-
-    const formData = new FormData();
-    formData.append("file", img);
-    formData.append("api_key", "672365852293431");
-    formData.append("upload_preset", "tdc1f5a8");
-    formData.append("timestamp", (Date.now() / 1000) | 0);
-    console.log(formData);
-
-    const config = {
-      headers: { "Content-Type": "multipart/form-data" },
-    };
+    const { formData, config } = makeFormData(e);
     setTemp2(formData);
     setTempConfig(config);
 
     Axios.post("https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload", formData, config).then((res) => {
       Axios.post("https://diary30wooserver.web.app/api/users", {
-        //console.log('s3url', res.data.location);
-
-        //  setProfdata({
-        //      ...profdata,
-        //      img: res.data.location
-        //  });
         img: res.data.url,
       }).then(() => {
         setDisplayImage(res.data.url);
