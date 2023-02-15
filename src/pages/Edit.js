@@ -1,26 +1,28 @@
 import Topnav from "./nav";
-import { useState, useEffect, timeout, delay } from "react";
+import { useState, useEffect} from "react";
 import React, { Link } from "react-router-dom";
 import Axios from "axios";
-import { useNavigate } from "react-router";
 
 export default function Edit(props) {
   const [questions, setQuestions] = useState([]);
   const [returnee, setreturnee] = useState([]);
-  const navigate = useNavigate();
+  //set to provide new question's question_order higher than first loaded questions
   const [orderTop, setorderTop] = useState(-1);
-
   const [orderArray, setorderArray] = useState([]);
+  //set endpoint to controll useEffect sequence 
+  //when first load, reload page after clicking save button
   const [endPoint, setendPoint] = useState(0);
 
+  //Set this to run reloaded type useEffect after saved function finished
   let endpoint2 = 0
 
   //organize question in temp from list and push into ret array
+  //It ran when save button is clicked
   function getData() {
+    //list that only contains question boxes that showing on Front page
     var list = document.getElementById("list");
     var ret = [];
-    
-
+  
     for (var i = 0; i < list.childNodes.length; i++) {
       var temp = {
         user_id: props.profile.user_id,
@@ -32,8 +34,6 @@ export default function Edit(props) {
       if (list.childNodes[i].childNodes[0].childNodes[0].value === "") {
         alert("question cannot be empty!");
       } else {
-        //console.log('temp.question', list.childNodes[i].childNodes[0].childNodes[0].value);
-        //console.log('temp.question_type', list.childNodes[i].childNodes[0].childNodes[1].value);
 
         temp.question = list.childNodes[i].childNodes[0].childNodes[0].value;
         temp.question_type =
@@ -53,140 +53,38 @@ export default function Edit(props) {
           ]);
         }
         temp.question_order = list.childNodes[i].childNodes[2].value;
-        console.log('temp question', temp.question);
-        console.log('temp order', temp.question_order);
         ret.push(temp);
       }
     }
     return ret;
   }
 
-  // //remove index element in arr
-  // function remove(arr, index) {
-  //     var a = arr.slice(0,index);
-  //     var b = arr.slice(index, -1);
-  //     var ret = [];
-  //     for (var i = 0; i < a.length; i++) {
-  //         ret.push(a[i])
-  //     }
-  //     for (var i = 0; i < b.length; i++) {
-  //         ret.push(b[i])
-  //     }
-  //     console.log(ret);
-  //     return ret;
-  // }
-
-  // //find duplicate among new questions
-  // //validate same type of question and remove the duplicate question set
-  // function validate() {
-  //     var data = getData();
-
-  //     for (var i = 0; i < data.length; i++) {
-  //         for (var j = 0; j < data.length; j++) {
-  //             if (i !== j) {
-  //                 if (data[i].question === data[j].question &&
-  //                     data[i].question_type === data[j].question_type &&
-  //                     data[i].question_selection[0] === data[j].question_selection[0] &&
-  //                     data[i].question_selection[1] === data[j].question_selection[1] &&
-  //                     data[i].question_selection[2] === data[j].question_selection[2]) {
-  //                         data = remove(data, j);
-  //                         alert("Question cannot be duplicate. Duplicate answers are not submitted");
-  //                         j = 0;
-  //                     }
-  //             }
-  //         }
-  //     }
-  //     return data;
-  // }
-
   //add async,await to run in order
   async function DetectChange() {
     //filter duplicate questions
     var submit = getData();
     var tempAdd = [];
-    //find duplicate with past questions
 
-
-
-    //why check duplicate once again???
     for (var i = 0; i < submit.length; i++) {
       const containsWord = orderArray.includes(submit[i].question_order) || orderArray.some(str => {
         const words = str.split(' ');
         return words.includes(submit[i].question_order);
       });
-      console.log('orderArray for process', orderArray);
-
-        //let stringCheck = submit[i].question_order.toString()
-        console.log('submit order', submit[i].question_order);
+        //New adding questions
         if (submit[i].question_order == "-1") {
             tempAdd.push(submit[i]);
         }
+        //Delete from orderArray which still remain in showing front end page
+        //Which means not being deleted by trash icon
         else if (containsWord) {
           const delIndex = orderArray.indexOf(submit[i].question_order);
-          orderArray.splice(delIndex, 1);
-          
+          orderArray.splice(delIndex, 1);  
         }
-        
     }
-
-    
-
-
-    // for (var i = 0; i < submit.length; i++) {
-    //   let duplicate = false;
-    //   for (var j = 0; j < questions.length; j++) {
-    //     // if (
-    //     //   questions[j].question === submit[i].question &&
-    //     //   questions[j].question_selection[0] ===
-    //     //     submit[i].question_selection[0] &&
-    //     //   questions[j].question_selection[1] ===
-    //     //     submit[i].question_selection[1] &&
-    //     //   questions[j].question_selection[2] ===
-    //     //     submit[i].question_selection[2] &&
-    //     //   questions[j].question_type === submit[i].question_type
-    //     // ) {
-    //     //   duplicate = true;
-    //     //   break;
-    //     // }
-    //     //multiple choice duplicate check
-    //     if (
-    //       questions[j].question_type == "multiple choice" &&
-    //       submit[i].question_type == "multiple choice"
-    //     ) {
-    //       if (
-    //         questions[j].question == submit[i].question &&
-    //         questions[j].question_selection[0] ==
-    //           submit[i].question_selection[0] &&
-    //         questions[j].question_selection[1] ==
-    //           submit[i].question_selection[1] &&
-    //         questions[j].question_selection[2] ==
-    //           submit[i].question_selection[2]
-    //       ) {
-    //         //alert("Duplicated qeustions will not be added!");
-    //         duplicate = true;
-    //         break;
-    //       }
-    //     } else {
-    //       if (
-    //         questions[j].question_type == submit[i].question_type &&
-    //         questions[j].question == submit[i].question
-    //       ) {
-    //         //alert("Duplicated qeustions will not be added!");
-    //         duplicate = true;
-    //         break;
-    //       }
-    //     }
-    //   }
-    //   if (duplicate === false) {
-    //     tempAdd.push(submit[i]);
-    //   }
-    // }
-
-    //add filtered new questions to db
+    //Add new questions to DB
+    //New quetions' order is set higher than highest existing questions' highest question_order
     let newOrderTop1 = orderTop + 1
     for (var i = 0; i < tempAdd.length; i++) {
-
-      console.log("post temp", tempAdd[i].question);
       
       await Axios.post("http://localhost:3305/api/questions", {
         user_id: tempAdd[i].user_id,
@@ -198,39 +96,10 @@ export default function Edit(props) {
 
       newOrderTop1 += 1;
 
-      // console.log('newOrderTop1', newOrderTop1);
-      // (newOrderTop1);
-
     }
     setorderTop(newOrderTop1);
-    console.log('outside for loop newOrderTop1', newOrderTop1);
-    console.log('outside setorderTop', orderTop);
 
-    // //delete part
-    // for (var i = 0; i < questions.length; i++) {
-    //   var duplicate = false;
-    //   for (var j = 0; j < submit.length; j++) {
-    //     if (
-    //       questions[i].question === submit[j].question &&
-    //       questions[i].question_selection[0] ===
-    //         submit[j].question_selection[0] &&
-    //       questions[i].question_selection[1] ===
-    //         submit[j].question_selection[1] &&
-    //       questions[i].question_selection[2] ===
-    //         submit[j].question_selection[2] &&
-    //       questions[i].question_type === submit[j].question_type
-    //     ) {
-    //       duplicate = true;
-    //       break;
-    //     }
-    //   }
-    //   if (duplicate === false) {
-    //     tempDel.push(questions[i]);
-    //   }
-    // }
-    
-    console.log("left orderArray", orderArray);
-    // for (var i = 0; i < tempDel.length; i++) {
+    //Delete questions by question_order that remains in orderArray
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
         "http://localhost:3305/api/questions/" +
@@ -244,38 +113,7 @@ export default function Edit(props) {
       });
     }
     endpoint2 = 1
-
-
-    
-      
-
-      
-
-    // Axios.get("http://localhost:3305/api/questions/" + props.profile.user_id)
-    //   .then((response) => {
-    //     console.log("detect change get response", response);
-    //     var z = 0;
-    //     for (var i in response.data) {
-    //       //var temp = JSON.parse(response.data[i].question_selection);
-    //       //var temp1 = JSON.parse(response.data[i].question_answers);
-    //       var temp = response.data[i].question_selection;
-    //       var temp1 = response.data[i].question_answers;
-
-    //       append(questions, {
-    //         id: response.data[i].id,
-    //         user_id: response.data[i].user_id,
-    //         question: response.data[i].question,
-    //         question_type: response.data[i].question_type,
-    //         question_selection: temp,
-    //         question_answers: temp1,
-    //         question_order: response.data[i].question_order,
-    //       });
-    //     }
-    //     //alert("Your change has been changed")
-    //   })
-    //   .then(() => {
-    //     alert("Your change has been changed");
-    //   });
+    alert("Saved button complete!");
   }
 
   function changeQuestions(a) {
@@ -286,12 +124,11 @@ export default function Edit(props) {
     setQuestions(a);
   }
 
-  function postChanges(original, submit) {
+  function postChanges() {
     DetectChange();
   }
 
   function ChangeReturnee(a, z) {
-    //
     var temp = returnee;
     temp[z] = a;
     setreturnee([...temp]);
@@ -324,22 +161,16 @@ export default function Edit(props) {
   }
 
   function addSelection(e) {
-    console.log(e.target.value);
     if (e.target.value == "multiple choice") {
-      console.log(e.target.parentElement.childNodes.length);
       if (e.target.parentElement.childNodes.length == 2) {
         var div = e.target.parentElement;
-        console.log(div);
         div.appendChild(returnSelection());
         div.appendChild(returnSelection());
         div.appendChild(returnSelection());
-        console.log(e.target.parentElement.childNodes);
       }
     } else if (e.target.parentElement.childNodes.length == 5) {
       var div = e.target.parentElement;
-      console.log(div);
       for (var i = 2; i < 5; i++) {
-        console.log(e.target.parentElement.childNodes[2]);
         e.target.parentElement.childNodes[2].remove();
       }
     }
@@ -349,10 +180,10 @@ export default function Edit(props) {
     e.target.parentElement.parentElement.remove();
   }
 
-  //adding question
+  //convert and showing questions in array questions to front page
   function setSome(iterator) {
     var temp = questions[iterator];
-    //console.log('setSome', temp);
+
     if (questions[iterator].question_type == "multiple choice") {
       return (
         <>
@@ -393,6 +224,7 @@ export default function Edit(props) {
         </>
       );
     }
+
     else {
         return (
         <>
@@ -472,18 +304,22 @@ export default function Edit(props) {
     list.appendChild(newDiv());
   }
 
+  //This run after save button click > DetectChange() finsihed
   useEffect(() => {
     if (endpoint2 == 1) {
-    setendPoint(prev => 0);
+      setendPoint(prev => 0);
     }
   }, [endpoint2]);
 
   //work only when page is first loaded
+  //Also work when page is reloaded after DetectChange() finished
   useEffect(() => {
+    //1
     if(endPoint == 0) { 
       setQuestions([]);
       setendPoint(prev => 1);
     }
+    //2
     else if(endPoint == 1) {
       const tempOrderArray = [];
       const fetchData = async () => {
@@ -492,7 +328,6 @@ export default function Edit(props) {
         ).then((response) => {
           var z = 0;
           const sortedData = response.data.sort((a, b) => a.question_order - b.question_order);
-          console.log(sortedData);
           
           for (var i in sortedData) {
             var temp = sortedData[i].question_selection;
@@ -512,25 +347,20 @@ export default function Edit(props) {
             //setorderArray([...orderArray, response.data[i].question_order]);
           }
           let newOrderTop = -99;
-          console.log('get tempOrderArray', tempOrderArray);
-          //console.log('get orderArray', orderArray);
-          // orderTop1 = Math.max.apply(null, orderArray)
-          // console.log('max setorderTop', orderTop1);
+
           if (tempOrderArray.length == 0) {
             newOrderTop = -1
           }
           else {
             newOrderTop = Math.max.apply(null, tempOrderArray);
           }
-          console.log('newOrderTop', newOrderTop);
           setorderTop(newOrderTop);
           setorderArray([...tempOrderArray]);
-          console.log('useEffect orderTop', orderTop);
         });
       };
 
-      //reset 필요
       fetchData();
+      //lock this useEffect function
       setendPoint(prev => 2);
     }
   }, [endPoint]);
