@@ -141,10 +141,10 @@ export default function Register(props) {
                     Axios.post("https://diary30wooserver.web.app/api/users", {
                       user_id: profdata.user_id,
                       password: hashutil(user_id, user_email, password),
-                      name: profdata.user_name,
-                      email: profdata.user_email,
-                      address1: profdata.address_f,
-                      address2: profdata.address_l,
+                      user_name: profdata.user_name,
+                      user_email: profdata.user_email,
+                      address_f: profdata.address_f,
+                      address_l: profdata.address_l,
                       img: res.data.url,
                     }).then(() => {
                       setDisplayImage(res.data.url);
@@ -158,10 +158,10 @@ export default function Register(props) {
                   Axios.post("https://diary30wooserver.web.app/api/users", {
                     user_id: profdata.user_id,
                     password: hashutil(user_id, user_email, password),
-                    name: profdata.user_name,
-                    email: profdata.user_email,
-                    address1: profdata.address_f,
-                    address2: profdata.address_l,
+                    user_name: profdata.user_name,
+                    user_email: profdata.user_email,
+                    address_f: profdata.address_f,
+                    address_l: profdata.address_l,
                     img: profdata.img,
                   }).then(() => {
                     console.log("displayImage", displayImage);
