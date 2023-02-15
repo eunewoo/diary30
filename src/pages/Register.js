@@ -19,7 +19,7 @@ export default function Register(props) {
     address_l: "",
     img: "",
   });
-
+  // contain formData and config, later sent to cloudinary
   const [temp2, setTemp2] = useState({});
   const [tempConfig, setTempConfig] = useState({});
   const { user_id, password, user_name, user_email, address_f, address_l, img } = profdata;
@@ -34,11 +34,12 @@ export default function Register(props) {
     const config = {
       header: { "Content-Type": "multipart/form-data" },
     };
-
+    //
     setTemp2(formData);
     setTempConfig(config);
   };
 
+  //push the input values to db * exept "pw"
   const setTextid = (e) => {
     const { name, value } = e.target;
 
@@ -48,6 +49,7 @@ export default function Register(props) {
     });
   };
 
+  //push the input val to db * only for "pw"
   const setTextid2 = (e) => {
     const { name, value } = e.target;
     setValue(e.target.value);
@@ -141,7 +143,8 @@ export default function Register(props) {
                     address1: profdata.address_f,
                     address2: profdata.address_l,
                     img: res.data.url,
-                  }).then(() => {
+                  }).then((res) => {
+                    setDisplayImage(res.data.url);
                     alert("Success Register!");
                     document.location.href = "http://localhost:3000";
                   });
@@ -154,7 +157,7 @@ export default function Register(props) {
         }
     }
   };
-
+  // to login with "Enter key"
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
