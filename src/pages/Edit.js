@@ -86,7 +86,7 @@ export default function Edit(props) {
     let newOrderTop1 = orderTop + 1
     for (var i = 0; i < tempAdd.length; i++) {
       
-      await Axios.post("http://localhost:3305/api/questions", {
+      await Axios.post("http://diary30wooserver.web.app/questions", {
         user_id: tempAdd[i].user_id,
         question: tempAdd[i].question,
         question_selection: tempAdd[i].question_selection,
@@ -102,7 +102,7 @@ export default function Edit(props) {
     //Delete questions by question_order that remains in orderArray
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
-        "http://localhost:3305/api/questions/" +
+        "http://diary30wooserver.web.app/api/questions/" +
         props.profile.user_id +
         "&" + 
         orderArray[i]    
@@ -324,7 +324,7 @@ export default function Edit(props) {
       const tempOrderArray = [];
       const fetchData = async () => {
         await Axios.get(
-          "http://localhost:3305/api/questions/" + props.profile.user_id
+          "http://diary30wooserver.web.app/api/questions/" + props.profile.user_id
         ).then((response) => {
           var z = 0;
           const sortedData = response.data.sort((a, b) => a.question_order - b.question_order);
