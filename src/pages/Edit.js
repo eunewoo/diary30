@@ -81,12 +81,13 @@ export default function Edit(props) {
           orderArray.splice(delIndex, 1);  
         }
     }
+    
     //Add new questions to DB
     //New quetions' order is set higher than highest existing questions' highest question_order
     let newOrderTop1 = orderTop + 1
     for (var i = 0; i < tempAdd.length; i++) {
       
-      await Axios.post("http://diary30wooserver.web.app/questions", {
+      await Axios.post("https://diary30wooserver.web.app/api/questions", {
         user_id: tempAdd[i].user_id,
         question: tempAdd[i].question,
         question_selection: tempAdd[i].question_selection,
@@ -102,7 +103,7 @@ export default function Edit(props) {
     //Delete questions by question_order that remains in orderArray
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
-        "http://diary30wooserver.web.app/api/questions/" +
+        "https://diary30wooserver.web.app/api/questions/" +
         props.profile.user_id +
         "&" + 
         orderArray[i]    
@@ -324,7 +325,7 @@ export default function Edit(props) {
       const tempOrderArray = [];
       const fetchData = async () => {
         await Axios.get(
-          "http://diary30wooserver.web.app/api/questions/" + props.profile.user_id
+          "https://diary30wooserver.web.app/api/questions/" + props.profile.user_id
         ).then((response) => {
           var z = 0;
           const sortedData = response.data.sort((a, b) => a.question_order - b.question_order);

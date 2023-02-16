@@ -284,11 +284,13 @@ export default function View(props) {
     });
   }, []);
 
+  //toggle switch temporarly removed cause error of showing questions set 3times duplicated
+  //<button onClick={toggleSwitch}>Toggle</button>
+
   return (
     <div id="viewWrapper">
       <Topnav selected="view" />
       <button onClick={onDownload}>Download</button>
-      <button onClick={toggleSwitch}>Toggle</button>
       <div style={{ display: "block" }} id="chart"></div>
       <div style={{ display: "none", width: "200px", height: "200px" }} id="table">
         <Cum_date_load />
