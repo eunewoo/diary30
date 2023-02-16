@@ -141,7 +141,7 @@ export default function View(props) {
   }
 
   useEffect(() => {
-    Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
+    Axios.get("http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" + props.profile.user_id).then((response) => {
       var z = 0;
       for (var i in response.data) {
         var temp = response.data[i].question_selection;
@@ -284,7 +284,7 @@ export default function View(props) {
     });
   }, []);
 
-  //toggle switch temporarly removed cause error of showing questions set 3times duplicated
+  //toggle switch temporarly removed cause error of showing questions set 3times duplicated 
   //<button onClick={toggleSwitch}>Toggle</button>
 
   return (

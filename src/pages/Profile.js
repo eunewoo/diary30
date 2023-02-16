@@ -24,7 +24,7 @@ export default function Profile(props) {
     setTempConfig(config);
 
     Axios.post("https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload", formData, config).then((res) => {
-      Axios.post("https://diary30wooserver.web.app/api/users", {
+      Axios.post("http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users", {
         img: res.data.url,
       }).then(() => {
         setDisplayImage(res.data.url);
@@ -52,13 +52,13 @@ export default function Profile(props) {
   };
   const logout = () => {
     props.changeProfile({});
-    document.location.href = "http://diary30wooserver.web.app/";
+    document.location.href = "http://localhost:3000//";
   };
   const saveProfile = (e) => {
     //it should fetch and change
     //but for testing i will use just set function
     if (/\S+@\S+\.\S+/.test(email)) {
-      Axios.put("https://diary30wooserver.web.app/api/users", {
+      Axios.put("http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users", {
         user_id: props.profile.user_id,
         password: hashutil(props.profile.user_id, email, props.profile.password),
         user_name: name,

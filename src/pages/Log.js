@@ -135,7 +135,7 @@ export default function Log(props) {
   //bring question set from mysql db and put into returnee
   useEffect(() => {
     if (effectCount == 1) {
-      Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
+      Axios.get("http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" + props.profile.user_id).then((response) => {
         var z = 0;
         for (var i in response.data) {
           var temp = response.data[i].question_selection;
@@ -238,7 +238,7 @@ export default function Log(props) {
     }
 
     for (var i = 0; i < temp.length; i++) {
-      await Axios.put("https://diary30wooserver.web.app/api/questions", {
+      await Axios.put("http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions", {
         user_id: props.profile.user_id,
         question: temp[i].question,
         //question_answers: JSON.stringify(temp[i].question_answers)

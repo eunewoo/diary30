@@ -6,7 +6,7 @@ Reference source: [https://www.youtube.com/watch?v=98TXDLZLyNs](https://www.yout
 diary30 terminal에서 npm run build > firebase deploy
 
 backend
-[https://diary30wooserver.web.app/](https://diary30wooserver.web.app/)
+[http://127.0.0.1:5001/diary30wooserver/us-central1/app/](http://127.0.0.1:5001/diary30wooserver/us-central1/app/)
 
 Upload: at server folder terminal:  firebase deploy --only functions
 
