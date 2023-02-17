@@ -20,6 +20,7 @@ function App() {
     email: "",
     address1: "",
     address2: "",
+    user_ref: {},
   });
   const [questions, setQuestions] = useState({});
 

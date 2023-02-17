@@ -1,5 +1,5 @@
 import Topnav from "./nav";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import React, { Link } from "react-router-dom";
 import Axios from "axios";
 
@@ -9,12 +9,12 @@ export default function Edit(props) {
   //set to provide new question's question_order higher than first loaded questions
   const [orderTop, setorderTop] = useState(-1);
   const [orderArray, setorderArray] = useState([]);
-  //set endpoint to controll useEffect sequence 
+  //set endpoint to controll useEffect sequence
   //when first load, reload page after clicking save button
   const [endPoint, setendPoint] = useState(0);
 
   //Set this to run reloaded type useEffect after saved function finished
-  let endpoint2 = 0
+  let endpoint2 = 0;
 
   //organize question in temp from list and push into ret array
   //It ran when save button is clicked
@@ -22,7 +22,7 @@ export default function Edit(props) {
     //list that only contains question boxes that showing on Front page
     var list = document.getElementById("list");
     var ret = [];
-  
+
     for (var i = 0; i < list.childNodes.length; i++) {
       var temp = {
         user_id: props.profile.user_id,
@@ -34,7 +34,6 @@ export default function Edit(props) {
       if (list.childNodes[i].childNodes[0].childNodes[0].value === "") {
         alert("question cannot be empty!");
       } else {
-
         temp.question = list.childNodes[i].childNodes[0].childNodes[0].value;
         temp.question_type =
           list.childNodes[i].childNodes[0].childNodes[1].value;
@@ -66,37 +65,40 @@ export default function Edit(props) {
     var tempAdd = [];
 
     for (var i = 0; i < submit.length; i++) {
-      const containsWord = orderArray.includes(submit[i].question_order) || orderArray.some(str => {
-        const words = str.split(' ');
-        return words.includes(submit[i].question_order);
-      });
-        //New adding questions
-        if (submit[i].question_order == "-1") {
-            tempAdd.push(submit[i]);
-        }
-        //Delete from orderArray which still remain in showing front end page
-        //Which means not being deleted by trash icon
-        else if (containsWord) {
-          const delIndex = orderArray.indexOf(submit[i].question_order);
-          orderArray.splice(delIndex, 1);  
-        }
+      const containsWord =
+        orderArray.includes(submit[i].question_order) ||
+        orderArray.some((str) => {
+          const words = str.split(" ");
+          return words.includes(submit[i].question_order);
+        });
+      //New adding questions
+      if (submit[i].question_order == "-1") {
+        tempAdd.push(submit[i]);
+      }
+      //Delete from orderArray which still remain in showing front end page
+      //Which means not being deleted by trash icon
+      else if (containsWord) {
+        const delIndex = orderArray.indexOf(submit[i].question_order);
+        orderArray.splice(delIndex, 1);
+      }
     }
-    
+
     //Add new questions to DB
     //New quetions' order is set higher than highest existing questions' highest question_order
-    let newOrderTop1 = orderTop + 1
+    let newOrderTop1 = orderTop + 1;
     for (var i = 0; i < tempAdd.length; i++) {
-      
-      await Axios.post("http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions", {
-        user_id: tempAdd[i].user_id,
-        question: tempAdd[i].question,
-        question_selection: tempAdd[i].question_selection,
-        question_type: tempAdd[i].question_type,
-        question_order: newOrderTop1,
-      });
+      await Axios.post(
+        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions",
+        {
+          user_id: props.profile.user_ref,
+          question: tempAdd[i].question,
+          question_selection: tempAdd[i].question_selection,
+          question_type: tempAdd[i].question_type,
+          question_order: newOrderTop1,
+        }
+      );
 
       newOrderTop1 += 1;
-
     }
     setorderTop(newOrderTop1);
 
@@ -104,16 +106,18 @@ export default function Edit(props) {
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
         "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
-        props.profile.user_id +
-        "&" + 
-        orderArray[i]    
-      ).then(response => {
-        console.log("delete");
-      }).catch(error => {
-        console.log("error deleting question: " + error);
-      });
+          props.profile.user_ref +
+          "&" +
+          orderArray[i]
+      )
+        .then((response) => {
+          console.log("delete");
+        })
+        .catch((error) => {
+          console.log("error deleting question: " + error);
+        });
     }
-    endpoint2 = 1
+    endpoint2 = 1;
     alert("Saved button complete!");
   }
 
@@ -220,36 +224,34 @@ export default function Edit(props) {
             <button id="deleteButton" onClick={liDelete}>
               <span class="material-symbols-outlined">delete</span>
             </button>
-            <input type="hidden" value={questions[iterator].question_order}/>
+            <input type="hidden" value={questions[iterator].question_order} />
           </li>
         </>
       );
-    }
-
-    else {
-        return (
+    } else {
+      return (
         <>
-            <li>
+          <li>
             <div>
-                <input type="text" defaultValue={questions[iterator].question} />
-                <select
+              <input type="text" defaultValue={questions[iterator].question} />
+              <select
                 name="options"
                 onChange={addSelection}
                 defaultValue={questions[iterator].question_type}
-                >
+              >
                 <option value="number">number</option>
                 <option value="boolean">boolean</option>
                 <option value="multiple choice">multiple choice</option>
                 <option value="text">text</option>
-                </select>
+              </select>
             </div>
             <button id="deleteButton" onClick={liDelete}>
-                <span class="material-symbols-outlined">delete</span>
+              <span class="material-symbols-outlined">delete</span>
             </button>
-            <input type="hidden" value={questions[iterator].question_order}/>
-            </li>
+            <input type="hidden" value={questions[iterator].question_order} />
+          </li>
         </>
-        );
+      );
     }
   }
 
@@ -293,7 +295,7 @@ export default function Edit(props) {
     a.appendChild(b);
     a.appendChild(i);
 
-    var j =document.createElement("div");
+    var j = document.createElement("div");
     j.value = -1;
     a.appendChild(j);
 
@@ -308,7 +310,7 @@ export default function Edit(props) {
   //This run after save button click > DetectChange() finsihed
   useEffect(() => {
     if (endpoint2 == 1) {
-      setendPoint(prev => 0);
+      setendPoint((prev) => 0);
     }
   }, [endpoint2]);
 
@@ -316,20 +318,24 @@ export default function Edit(props) {
   //Also work when page is reloaded after DetectChange() finished
   useEffect(() => {
     //1
-    if(endPoint == 0) { 
+    if (endPoint == 0) {
       setQuestions([]);
-      setendPoint(prev => 1);
+      setendPoint((prev) => 1);
     }
     //2
-    else if(endPoint == 1) {
+    else if (endPoint == 1) {
       const tempOrderArray = [];
       const fetchData = async () => {
+        console.log("get user_ref", typeof props.profile.user_ref);
         await Axios.get(
-          "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" + props.profile.user_id
+          "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
+            props.profile.user_ref
         ).then((response) => {
           var z = 0;
-          const sortedData = response.data.sort((a, b) => a.question_order - b.question_order);
-          
+          const sortedData = response.data.sort(
+            (a, b) => a.question_order - b.question_order
+          );
+
           for (var i in sortedData) {
             var temp = sortedData[i].question_selection;
 
@@ -350,9 +356,8 @@ export default function Edit(props) {
           let newOrderTop = -99;
 
           if (tempOrderArray.length == 0) {
-            newOrderTop = -1
-          }
-          else {
+            newOrderTop = -1;
+          } else {
             newOrderTop = Math.max.apply(null, tempOrderArray);
           }
           setorderTop(newOrderTop);
@@ -362,7 +367,7 @@ export default function Edit(props) {
 
       fetchData();
       //lock this useEffect function
-      setendPoint(prev => 2);
+      setendPoint((prev) => 2);
     }
   }, [endPoint]);
 
