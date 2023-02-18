@@ -137,7 +137,7 @@ export default function Log(props) {
   //useEffect0 - check authentication before rendering
   useEffect(() => {
     if (props.profile.user_id == "") {
-      alert("Redirection not allowed!  Please log in again");
+      alert("not a valid path - please log in first. \n(note: redirection(F5) is not allowed) ");
       navigate("/");
     }
   }, []);
