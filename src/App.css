@@ -144,7 +144,7 @@ button:hover {
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
-
+  margin-top: 40px;
   display: flex;
   justify-content: space-between;
 }
@@ -191,7 +191,7 @@ button:hover {
   text-align: right;
 }
 
-#logWrapper > p {
+#logWrapper > div > p {
   font-size: 20px;
   font-weight: bold;
 }
@@ -881,12 +881,12 @@ button:hover {
   #viewWrapper > button:nth-child(2) {
     left: 50%;
     top: 90px;
-    transform: translateX(-120px);
+    transform: translateX(5px);
   }
   #viewWrapper > button:nth-child(3) {
     left: 50%;
     top: 90px;
-    transform: translateX(30px);
+    transform: translateX(-95px);
   }
 }
 
