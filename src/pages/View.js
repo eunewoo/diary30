@@ -116,11 +116,11 @@ export default function View(props) {
         </>
       );
     } else if (x.question_type === "number") {
-      return <input type="number" value={returnText(x)} />;
+      return <input type="number" value={returnText(x)} disabled={true} />;
     } else {
       return (
         <>
-          <input type="text" value={returnText(x)}></input>
+          <input type="text" value={returnText(x)} disabled={true}></input>
         </>
       );
     }
@@ -294,9 +294,6 @@ export default function View(props) {
       }
     });
   }, []);
-
-  //toggle switch temporarly removed cause error of showing questions set 3times duplicated
-  //temporarly came back on for testing
 
   return (
     <div id="viewWrapper">
