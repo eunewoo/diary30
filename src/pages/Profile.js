@@ -1,11 +1,12 @@
 import Axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Topnav from "./nav";
 import { hashutil } from "./hashutil.mjs";
 import { useRef } from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
 import { DisplayImageAtom, makeFormData } from "../model/states";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile(props) {
   const [img, setImg] = useState(props.profile.img);
@@ -17,7 +18,7 @@ export default function Profile(props) {
   const [tempConfig, setTempConfig] = useState({});
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const imageKeyRef = useRef("imageKeyRef");
-
+  const navigate = useNavigate();
   const setImage = (e) => {
     const { formData, config } = makeFormData(e);
     setTemp2(formData);
@@ -84,6 +85,14 @@ export default function Profile(props) {
       alert("Your email is not valid!\nYour profile has not been changed");
     }
   };
+
+  //useEffect0 - check authentication before rendering
+  useEffect(() => {
+    if (props.profile.user_id == "") {
+      alert("Redirection not allowed!  Please log in again");
+      navigate("/");
+    }
+  }, []);
 
   return (
     <div id="profileWrapper">

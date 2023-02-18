@@ -1,13 +1,17 @@
 import Topnav from "./nav";
 import { useState, useEffect } from "react";
 import Chart from "chart.js/auto";
-import React, { Link } from "react-router-dom";
+import React, { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Cum_date_load from "../model/Cum_date_load";
 import { cumDateState, questionsState, returneeState } from "../model/states.js";
 import { useRecoilState } from "recoil";
 
 export default function View(props) {
+  const [returnee, setReturnee] = useRecoilState(returneeState);
+  const [questions, setQuestions] = useRecoilState(questionsState);
+  const [cumDate, setCumDate] = useRecoilState(cumDateState);
+
   const [userdata, setUserdata] = useState({
     date: [],
     question: [],
@@ -16,7 +20,7 @@ export default function View(props) {
   var datas = [];
   var charts = [];
   const { date, question, question_value } = userdata;
-
+  const navigate = useNavigate();
   //download file into json file
   function download(content, fileName, contentType) {
     const a = document.createElement("a");
@@ -37,11 +41,6 @@ export default function View(props) {
       b.style.display = "none";
     }
   }
-
-  const [returnee, setReturnee] = useRecoilState(returneeState);
-  const [questions, setQuestions] = useRecoilState(questionsState);
-
-  const [cumDate, setCumDate] = useRecoilState(cumDateState);
 
   function onDownload() {
     download(JSON.stringify(questions), "yourfile.json", "text/plain");
@@ -139,6 +138,14 @@ export default function View(props) {
     }
     return <></>;
   }
+
+  //useEffect0 - check authentication before rendering
+  useEffect(() => {
+    if (props.profile.user_id == "") {
+      alert("Redirection not allowed!  Please log in again");
+      navigate("/");
+    }
+  }, []);
 
   useEffect(() => {
     Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
@@ -285,12 +292,13 @@ export default function View(props) {
   }, []);
 
   //toggle switch temporarly removed cause error of showing questions set 3times duplicated
-  //<button onClick={toggleSwitch}>Toggle</button>
+  //temporarly came back on for testing
 
   return (
     <div id="viewWrapper">
       <Topnav selected="view" />
       <button onClick={onDownload}>Download</button>
+      <button onClick={toggleSwitch}>Toggle</button>
       <div style={{ display: "block" }} id="chart"></div>
       <div style={{ display: "none", width: "200px", height: "200px" }} id="table">
         <Cum_date_load />

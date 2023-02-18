@@ -1,7 +1,7 @@
 import Topnav from "./nav.js";
 import Axios from "axios";
 import { useState, useEffect } from "react";
-import React, { Link } from "react-router-dom";
+import React, { Link, useNavigate } from "react-router-dom";
 import Cum_date_load from "../model/Cum_date_load.js";
 import { useRecoilState } from "recoil";
 import { cumDateState, questionsSelector, questionsState, returneeState } from "../model/states.js";
@@ -11,7 +11,7 @@ export default function Log(props) {
   const [questions, setQuestions] = useRecoilState(questionsSelector);
 
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
-
+  const navigate = useNavigate();
   const [effectCount, setEffectCount] = useState(0);
   const [effectCount2, setEffectCount2] = useState(0);
 
@@ -28,10 +28,10 @@ export default function Log(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      console.log("x.question_answers[i].date", x.question_answers[i].date);
-      console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
-      console.log("x.question_answers[i].answer", x.question_answers[i].answer);
-      console.log(x.question_selection[y][0]);
+      // console.log("x.question_answers[i].date", x.question_answers[i].date);
+      // console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
+      // console.log("x.question_answers[i].answer", x.question_answers[i].answer);
+      // console.log(x.question_selection[y][0]);
 
       if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
         if (x.question_answers[i].answer === x.question_selection[y][0]) {
@@ -122,13 +122,32 @@ export default function Log(props) {
     // }
     return <></>;
   }
+  //test for edit using .map
+  // useEffect(() => {
+  //   Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((res) => {
+  //     setQuestions(res.data);
+  //     console.log("testQuestions", questions);
+  //     //put optional chaning
+  //     // questions.map((question, i) => {
+  //     //   returnInput(question[i]);
+  //     // });
+  //   });
+  // }, []);
+
+  //useEffect0 - check authentication before rendering
+  useEffect(() => {
+    if (props.profile.user_id == "") {
+      alert("Redirection not allowed!  Please log in again");
+      navigate("/");
+    }
+  }, []);
 
   //useEffect1
   useEffect(() => {
     setQuestions((a) => []);
-    console.log("questions in useEffect1", questions);
+    console.log("useEffect1 reset questions", questions);
     setEffectCount((prevCount) => prevCount + 1);
-    console.log("effectCount", effectCount);
+    console.log("useEffect1 effectCount", effectCount);
   }, [effectCount2]);
 
   //useEffect 2
@@ -152,6 +171,7 @@ export default function Log(props) {
           //ChangeReturnee(setSome(z),z);
           z++;
         }
+        console.log("useEffect2 questions get", questions);
         setEffectCount((prevCount) => prevCount + 1);
         console.log("effectCount useEffect2", effectCount);
       });
@@ -163,6 +183,7 @@ export default function Log(props) {
     if (effectCount == 2) {
       console.log("useEffect3 run");
       setReturnee(getData(0));
+      console.log("useEffect3 done", questions);
     }
   }, [effectCount]);
 
@@ -245,6 +266,7 @@ export default function Log(props) {
         question_answers: temp[i].question_answers,
       });
     }
+    //rerender right after submit question_answer
     setEffectCount2((prevCount) => prevCount + 1);
     setEffectCount(0);
     alert("Your submission is correctly submitted on the db");
