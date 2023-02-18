@@ -224,6 +224,8 @@ button:hover {
 
 #list > div > input {
   border-radius: 3px;
+  margin-left: 6px;
+  margin-right: 2px;
 }
 
 #list > div:nth-child(8) > input[type="text"] {
