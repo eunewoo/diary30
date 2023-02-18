@@ -11,7 +11,7 @@ export default function View(props) {
   const [returnee, setReturnee] = useRecoilState(returneeState);
   const [questions, setQuestions] = useRecoilState(questionsState);
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
-
+  const [viewState, setViewState] = useState("Questions");
   const [userdata, setUserdata] = useState({
     date: [],
     question: [],
@@ -31,14 +31,16 @@ export default function View(props) {
   }
 
   function toggleSwitch() {
-    var a = document.getElementById("chart");
-    var b = document.getElementById("table");
-    if (a.style.display === "block") {
-      a.style.display = "none";
-      b.style.display = "block";
+    var chart = document.getElementById("chart");
+    var questions = document.getElementById("table");
+    if (chart.style.display === "block") {
+      setViewState("Charts");
+      chart.style.display = "none";
+      questions.style.display = "block";
     } else {
-      a.style.display = "block";
-      b.style.display = "none";
+      setViewState("Questions");
+      chart.style.display = "block";
+      questions.style.display = "none";
     }
   }
 
@@ -298,7 +300,7 @@ export default function View(props) {
     <div id="viewWrapper">
       <Topnav selected="view" />
       <button onClick={onDownload}>Download</button>
-      <button onClick={toggleSwitch}>Toggle</button>
+      <button onClick={toggleSwitch}>{viewState}</button>
       <div style={{ display: "block" }} id="chart"></div>
       <div style={{ display: "none", width: "200px", height: "200px" }} id="table">
         <Cum_date_load />
