@@ -150,6 +150,8 @@ export default function View(props) {
   }, []);
 
   useEffect(() => {
+    //reset questions before get data
+    setQuestions([]);
     Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
       var z = 0;
       for (var i in response.data) {
