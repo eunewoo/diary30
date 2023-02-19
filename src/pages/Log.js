@@ -4,7 +4,12 @@ import { useState, useEffect } from "react";
 import React, { Link, useNavigate } from "react-router-dom";
 import Cum_date_load from "../model/Cum_date_load.js";
 import { useRecoilState } from "recoil";
-import { cumDateState, questionsSelector, questionsState, returneeState } from "../model/states.js";
+import {
+  cumDateState,
+  questionsSelector,
+  questionsState,
+  returneeState,
+} from "../model/states.js";
 
 export default function Log(props) {
   const [returnee, setReturnee] = useRecoilState(returneeState);
@@ -33,7 +38,10 @@ export default function Log(props) {
       // console.log("x.question_answers[i].answer", x.question_answers[i].answer);
       // console.log(x.question_selection[y][0]);
 
-      if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ==
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         if (x.question_answers[i].answer === x.question_selection[y][0]) {
           return true;
         }
@@ -48,7 +56,10 @@ export default function Log(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      if (x.question_answers[i].date === "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ===
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         if (x.question_answers[i].answer === true && y == 0) {
           return true;
         } else if (x.question_answers[i].answer === false && y == 1) {
@@ -65,7 +76,10 @@ export default function Log(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ==
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         return x.question_answers[i].answer;
       }
     }
@@ -76,20 +90,45 @@ export default function Log(props) {
     if (x.question_type === "multiple choice") {
       return (
         <>
-          <input type="radio" name={x.question} value={x.question_selection[0]} defaultChecked={returnMultiple(x, 0)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={x.question_selection[0]}
+            defaultChecked={returnMultiple(x, 0)}
+          ></input>
           <label>{x.question_selection[0]}</label>
-          <input type="radio" name={x.question} value={x.question_selection[1]} defaultChecked={returnMultiple(x, 1)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={x.question_selection[1]}
+            defaultChecked={returnMultiple(x, 1)}
+          ></input>
           <label>{x.question_selection[1]}</label>
-          <input type="radio" name={x.question} value={x.question_selection[2]} defaultChecked={returnMultiple(x, 2)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={x.question_selection[2]}
+            defaultChecked={returnMultiple(x, 2)}
+          ></input>
           <label>{x.question_selection[2]}</label>
         </>
       );
     } else if (x.question_type === "boolean") {
       return (
         <>
-          <input type="radio" name={x.question} value={true} defaultChecked={returnBoolean(x, 0)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={true}
+            defaultChecked={returnBoolean(x, 0)}
+          ></input>
           <label>True</label>
-          <input type="radio" name={x.question} value={false} defaultChecked={returnBoolean(x, 1)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={false}
+            defaultChecked={returnBoolean(x, 1)}
+          ></input>
           <label>False</label>
         </>
       );
@@ -137,7 +176,9 @@ export default function Log(props) {
   //useEffect0 - check authentication before rendering
   useEffect(() => {
     if (props.profile.user_id == "") {
-      alert("not a valid path - please log in first. \n(note: redirection(F5) is not allowed) ");
+      alert(
+        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+      );
       navigate("/");
     }
   }, []);
@@ -154,7 +195,10 @@ export default function Log(props) {
   //bring question set from mysql db and put into returnee
   useEffect(() => {
     if (effectCount == 1) {
-      Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
+      Axios.get(
+        "https://diary30wooserver.web.app/api/questions/" +
+          props.profile.user_id
+      ).then((response) => {
         var z = 0;
         for (var i in response.data) {
           var temp = response.data[i].question_selection;
@@ -202,7 +246,13 @@ export default function Log(props) {
     var list = document.getElementById("list");
     for (var i = 0; i < list.childNodes.length; i++) {
       var temp1 = {
-        date: "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day,
+        date:
+          "" +
+          cumDate.cum_year +
+          "-" +
+          cumDate.cum_month +
+          "-" +
+          cumDate.cum_day,
         answer: "",
       };
 
@@ -232,7 +282,15 @@ export default function Log(props) {
       // edit when user's question_answers submit
       for (var j = 0; j < temp[i].question_answers.length; j++) {
         //if question_answer already exist
-        if (temp[i].question_answers[j].date === "" + cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day) {
+        if (
+          temp[i].question_answers[j].date ===
+          "" +
+            cumDate.cum_year +
+            "-" +
+            cumDate.cum_month +
+            "-" +
+            cumDate.cum_day
+        ) {
           var newArray = [...temp];
           var date = newArray[i].question_answers[j].date;
           var answer = temp1.answer;

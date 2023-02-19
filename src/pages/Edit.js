@@ -35,11 +35,21 @@ export default function Edit(props) {
         alert("question cannot be empty!");
       } else {
         temp.question = list.childNodes[i].childNodes[0].childNodes[0].value;
-        temp.question_type = list.childNodes[i].childNodes[0].childNodes[1].value;
-        if (list.childNodes[i].childNodes[0].childNodes[1].value === "multiple choice") {
-          temp.question_selection.push([list.childNodes[i].childNodes[0].childNodes[3].value]);
-          temp.question_selection.push([list.childNodes[i].childNodes[0].childNodes[5].value]);
-          temp.question_selection.push([list.childNodes[i].childNodes[0].childNodes[7].value]);
+        temp.question_type =
+          list.childNodes[i].childNodes[0].childNodes[1].value;
+        if (
+          list.childNodes[i].childNodes[0].childNodes[1].value ===
+          "multiple choice"
+        ) {
+          temp.question_selection.push([
+            list.childNodes[i].childNodes[0].childNodes[3].value,
+          ]);
+          temp.question_selection.push([
+            list.childNodes[i].childNodes[0].childNodes[5].value,
+          ]);
+          temp.question_selection.push([
+            list.childNodes[i].childNodes[0].childNodes[7].value,
+          ]);
         }
         temp.question_order = list.childNodes[i].childNodes[2].value;
         ret.push(temp);
@@ -91,7 +101,12 @@ export default function Edit(props) {
 
     //Delete questions by question_order that remains in orderArray
     for (var i = 0; i < orderArray.length; i++) {
-      await Axios.delete("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id + "&" + orderArray[i])
+      await Axios.delete(
+        "https://diary30wooserver.web.app/api/questions/" +
+          props.profile.user_id +
+          "&" +
+          orderArray[i]
+      )
         .then((response) => {
           console.log("delete");
         })
@@ -177,18 +192,31 @@ export default function Edit(props) {
           <li>
             <div>
               <input type="text" defaultValue={questions[iterator].question} />
-              <select name="options" defaultValue={questions[iterator].question_type} onChange={addSelection}>
+              <select
+                name="options"
+                defaultValue={questions[iterator].question_type}
+                onChange={addSelection}
+              >
                 <option value="number">number</option>
                 <option value="boolean">boolean</option>
                 <option value="multiple choice">multiple choice</option>
                 <option value="text">text</option>
               </select>
               <input type="radio" disabled="TRUE" checked="TRUE"></input>
-              <input type="text" defaultValue={temp.question_selection[0]}></input>
+              <input
+                type="text"
+                defaultValue={temp.question_selection[0]}
+              ></input>
               <input type="radio" disabled="TRUE" checked="TRUE"></input>
-              <input type="text" defaultValue={temp.question_selection[1]}></input>
+              <input
+                type="text"
+                defaultValue={temp.question_selection[1]}
+              ></input>
               <input type="radio" disabled="TRUE" checked="TRUE"></input>
-              <input type="text" defaultValue={temp.question_selection[2]}></input>
+              <input
+                type="text"
+                defaultValue={temp.question_selection[2]}
+              ></input>
             </div>
             <button id="deleteButton" onClick={liDelete}>
               <span class="material-symbols-outlined">delete</span>
@@ -203,7 +231,11 @@ export default function Edit(props) {
           <li>
             <div>
               <input type="text" defaultValue={questions[iterator].question} />
-              <select name="options" onChange={addSelection} defaultValue={questions[iterator].question_type}>
+              <select
+                name="options"
+                onChange={addSelection}
+                defaultValue={questions[iterator].question_type}
+              >
                 <option value="number">number</option>
                 <option value="boolean">boolean</option>
                 <option value="multiple choice">multiple choice</option>
@@ -275,7 +307,9 @@ export default function Edit(props) {
   //useEffect0 - check authentication before rendering
   useEffect(() => {
     if (props.profile.user_id == "") {
-      alert("not a valid path - please log in first. \n(note: redirection(F5) is not allowed) ");
+      alert(
+        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+      );
       navigate("/");
     }
   }, []);
@@ -299,9 +333,14 @@ export default function Edit(props) {
     else if (endPoint == 1) {
       const tempOrderArray = [];
       const fetchData = async () => {
-        await Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
+        await Axios.get(
+          "https://diary30wooserver.web.app/api/questions/" +
+            props.profile.user_id
+        ).then((response) => {
           var z = 0;
-          const sortedData = response.data.sort((a, b) => a.question_order - b.question_order);
+          const sortedData = response.data.sort(
+            (a, b) => a.question_order - b.question_order
+          );
 
           for (var i in sortedData) {
             var temp = sortedData[i].question_selection;

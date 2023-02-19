@@ -4,7 +4,11 @@ import Chart from "chart.js/auto";
 import React, { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Cum_date_load from "../model/Cum_date_load";
-import { cumDateState, questionsState, returneeState } from "../model/states.js";
+import {
+  cumDateState,
+  questionsState,
+  returneeState,
+} from "../model/states.js";
 import { useRecoilState } from "recoil";
 
 export default function View(props) {
@@ -58,7 +62,10 @@ export default function View(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ==
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         if (x.question_answers[i].answer === x.question_selection[y]) {
           return true;
         }
@@ -72,7 +79,10 @@ export default function View(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      if (x.question_answers[i].date === "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ===
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         if (x.question_answers[i].answer === true && y == 0) {
           return true;
         } else if (x.question_answers[i].answer === false && y == 1) {
@@ -88,7 +98,10 @@ export default function View(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ==
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         return x.question_answers[i].answer;
       }
     }
@@ -98,20 +111,50 @@ export default function View(props) {
     if (x.question_type === "multiple choice") {
       return (
         <>
-          <input type="radio" name={x.question} value={x.question_selection[0]} disabled={true} defaultChecked={returnMultiple(x, 0)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={x.question_selection[0]}
+            disabled={true}
+            defaultChecked={returnMultiple(x, 0)}
+          ></input>
           <label>{x.question_selection[0]}</label>
-          <input type="radio" name={x.question} value={x.question_selection[1]} disabled={true} defaultChecked={returnMultiple(x, 1)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={x.question_selection[1]}
+            disabled={true}
+            defaultChecked={returnMultiple(x, 1)}
+          ></input>
           <label>{x.question_selection[1]}</label>
-          <input type="radio" name={x.question} value={x.question_selection[2]} disabled={true} defaultChecked={returnMultiple(x, 2)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={x.question_selection[2]}
+            disabled={true}
+            defaultChecked={returnMultiple(x, 2)}
+          ></input>
           <label>{x.question_selection[2]}</label>
         </>
       );
     } else if (x.question_type === "boolean") {
       return (
         <>
-          <input type="radio" name={x.question} value={true} disabled={true} defaultChecked={returnBoolean(x, 0)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={true}
+            disabled={true}
+            defaultChecked={returnBoolean(x, 0)}
+          ></input>
           <label>True</label>
-          <input type="radio" name={x.question} value={false} disabled={true} defaultChecked={returnBoolean(x, 1)}></input>
+          <input
+            type="radio"
+            name={x.question}
+            value={false}
+            disabled={true}
+            defaultChecked={returnBoolean(x, 1)}
+          ></input>
           <label>False</label>
         </>
       );
@@ -144,7 +187,9 @@ export default function View(props) {
   //useEffect0 - check authentication before rendering
   useEffect(() => {
     if (props.profile.user_id == "") {
-      alert("not a valid path - please log in first. \n(note: redirection(F5) is not allowed) ");
+      alert(
+        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+      );
       navigate("/");
     }
   }, []);
@@ -152,7 +197,9 @@ export default function View(props) {
   useEffect(() => {
     //reset questions before get data
     setQuestions([]);
-    Axios.get("https://diary30wooserver.web.app/api/questions/" + props.profile.user_id).then((response) => {
+    Axios.get(
+      "https://diary30wooserver.web.app/api/questions/" + props.profile.user_id
+    ).then((response) => {
       var z = 0;
       for (var i in response.data) {
         var temp = response.data[i].question_selection;
@@ -284,7 +331,9 @@ export default function View(props) {
           canvas.appendChild(title);
           for (var j = 0; j < temp1.length; j++) {
             var q = document.createElement("div");
-            q.append(document.createTextNode(temp1[j].date + " - " + temp1[j].answer));
+            q.append(
+              document.createTextNode(temp1[j].date + " - " + temp1[j].answer)
+            );
             canvas.appendChild(q);
           }
           document.getElementById("chart").appendChild(canvas);
@@ -301,7 +350,10 @@ export default function View(props) {
       <button onClick={onDownload}>Download</button>
       <button onClick={toggleSwitch}>{viewState}</button>
       <div style={{ display: "block" }} id="chart"></div>
-      <div style={{ display: "none", width: "200px", height: "200px" }} id="table">
+      <div
+        style={{ display: "none", width: "200px", height: "200px" }}
+        id="table"
+      >
         <Cum_date_load />
         <div id="list">{returnee}</div>
       </div>

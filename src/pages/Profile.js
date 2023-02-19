@@ -24,7 +24,11 @@ export default function Profile(props) {
     setTemp2(formData);
     setTempConfig(config);
 
-    Axios.post("https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload", formData, config).then((res) => {
+    Axios.post(
+      "https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload",
+      formData,
+      config
+    ).then((res) => {
       Axios.post("https://diary30wooserver.web.app/api/users", {
         img: res.data.url,
       }).then(() => {
@@ -61,7 +65,11 @@ export default function Profile(props) {
     if (/\S+@\S+\.\S+/.test(email)) {
       Axios.put("https://diary30wooserver.web.app/api/users", {
         user_id: props.profile.user_id,
-        password: hashutil(props.profile.user_id, email, props.profile.password),
+        password: hashutil(
+          props.profile.user_id,
+          email,
+          props.profile.password
+        ),
         user_name: name,
         user_email: email,
         address_f: address1,
@@ -89,7 +97,9 @@ export default function Profile(props) {
   //useEffect0 - check authentication before rendering
   useEffect(() => {
     if (props.profile.user_id == "") {
-      alert("not a valid path - please log in first. \n(note: redirection(F5) is not allowed) ");
+      alert(
+        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+      );
       navigate("/");
     }
   }, []);
@@ -103,18 +113,36 @@ export default function Profile(props) {
           <p id="profileContentTitle">Profile Photo</p>
           <div id="profileUserInfo">
             <img key={imageKeyRef} src={displayImage} alt="profile" />
-            <button id="profileImageSelector" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            <button
+              id="profileImageSelector"
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            >
               Choose new Image
             </button>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">
                       Modal title
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -123,7 +151,11 @@ export default function Profile(props) {
                     <input type="file" onChange={setImage} />
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
                       Close
                     </button>
                     <button type="button" class="btn btn-primary">
@@ -134,7 +166,11 @@ export default function Profile(props) {
               </div>
             </div>
 
-            <button id="profileImageRemover" type="button" onClick={removeImage}>
+            <button
+              id="profileImageRemover"
+              type="button"
+              onClick={removeImage}
+            >
               Remove image
             </button>
           </div>
@@ -143,18 +179,38 @@ export default function Profile(props) {
           <label id="profileContentTitle" htmlFor="name">
             Name
           </label>
-          <input type="text" id="name" defaultValue={props.profile.name} onChange={setUsername}></input>
+          <input
+            type="text"
+            id="name"
+            defaultValue={props.profile.name}
+            onChange={setUsername}
+          ></input>
         </div>
         <div id="profileContent">
           <label id="profileContentTitle" htmlFor="email">
             Email
           </label>
-          <input type="email" id="email" defaultValue={props.profile.email} onChange={setEmailAddress}></input>
+          <input
+            type="email"
+            id="email"
+            defaultValue={props.profile.email}
+            onChange={setEmailAddress}
+          ></input>
         </div>
         <div id="profileContent">
           <label id="profileContentTitle">Address</label>
-          <input type="text" id="address1" defaultValue={props.profile.address1} onChange={setAddress1f}></input>
-          <input type="text" id="address2" defaultValue={props.profile.address2} onChange={setAddress2f}></input>
+          <input
+            type="text"
+            id="address1"
+            defaultValue={props.profile.address1}
+            onChange={setAddress1f}
+          ></input>
+          <input
+            type="text"
+            id="address2"
+            defaultValue={props.profile.address2}
+            onChange={setAddress2f}
+          ></input>
         </div>
         <div id="profileButtonWrapper">
           <button id="profileSubmit" type="button" onClick={saveProfile}>
