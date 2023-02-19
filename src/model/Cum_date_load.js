@@ -47,21 +47,44 @@ export default function Cum_date_load(props) {
     for (var i = 0; i < list.childNodes.length; i++) {
       if (list.childNodes[i].childNodes.length === 7) {
         //if multiple choice
-        list.childNodes[i].childNodes[1].checked = returnMultiple(questions[i], 0, temp);
-        list.childNodes[i].childNodes[3].checked = returnMultiple(questions[i], 1, temp);
-        list.childNodes[i].childNodes[5].checked = returnMultiple(questions[i], 2, temp);
+        list.childNodes[i].childNodes[1].checked = returnMultiple(
+          questions[i],
+          0,
+          temp
+        );
+        list.childNodes[i].childNodes[3].checked = returnMultiple(
+          questions[i],
+          1,
+          temp
+        );
+        list.childNodes[i].childNodes[5].checked = returnMultiple(
+          questions[i],
+          2,
+          temp
+        );
       }
       if (list.childNodes[i].childNodes.length === 5) {
         //if boolean choice
-        list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp);
-        list.childNodes[i].childNodes[3].checked = returnBoolean(questions[i], 1, temp);
+        list.childNodes[i].childNodes[1].checked = returnBoolean(
+          questions[i],
+          0,
+          temp
+        );
+        list.childNodes[i].childNodes[3].checked = returnBoolean(
+          questions[i],
+          1,
+          temp
+        );
       }
       if (list.childNodes[i].childNodes.length === 2) {
         //if text choice
         if (returnText(questions[i], temp) === undefined) {
           list.childNodes[i].childNodes[1].value = "";
         } else {
-          list.childNodes[i].childNodes[1].value = returnText(questions[i], temp);
+          list.childNodes[i].childNodes[1].value = returnText(
+            questions[i],
+            temp
+          );
         }
       }
     }
@@ -104,21 +127,44 @@ export default function Cum_date_load(props) {
     for (var i = 0; i < list.childNodes.length; i++) {
       if (list.childNodes[i].childNodes.length === 7) {
         //if multiple choice
-        list.childNodes[i].childNodes[1].checked = returnMultiple(questions[i], 0, temp);
-        list.childNodes[i].childNodes[3].checked = returnMultiple(questions[i], 1, temp);
-        list.childNodes[i].childNodes[5].checked = returnMultiple(questions[i], 2, temp);
+        list.childNodes[i].childNodes[1].checked = returnMultiple(
+          questions[i],
+          0,
+          temp
+        );
+        list.childNodes[i].childNodes[3].checked = returnMultiple(
+          questions[i],
+          1,
+          temp
+        );
+        list.childNodes[i].childNodes[5].checked = returnMultiple(
+          questions[i],
+          2,
+          temp
+        );
       }
       if (list.childNodes[i].childNodes.length === 5) {
         //if boolean
-        list.childNodes[i].childNodes[1].checked = returnBoolean(questions[i], 0, temp);
-        list.childNodes[i].childNodes[3].checked = returnBoolean(questions[i], 1, temp);
+        list.childNodes[i].childNodes[1].checked = returnBoolean(
+          questions[i],
+          0,
+          temp
+        );
+        list.childNodes[i].childNodes[3].checked = returnBoolean(
+          questions[i],
+          1,
+          temp
+        );
       }
       if (list.childNodes[i].childNodes.length === 2) {
         //if text or number
         if (returnText(questions[i], temp) === undefined) {
           list.childNodes[i].childNodes[1].value = "";
         } else {
-          list.childNodes[i].childNodes[1].value = returnText(questions[i], temp);
+          list.childNodes[i].childNodes[1].value = returnText(
+            questions[i],
+            temp
+          );
         }
       }
     }
@@ -135,7 +181,10 @@ export default function Cum_date_load(props) {
       console.log("x.question_answers[i].answer", x.question_answers[i].answer);
       console.log(x.question_selection[y][0]);
 
-      if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ==
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         if (x.question_answers[i].answer === x.question_selection[y][0]) {
           return true;
         }
@@ -150,7 +199,10 @@ export default function Cum_date_load(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      if (x.question_answers[i].date === "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ===
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         if (x.question_answers[i].answer === true && y == 0) {
           return true;
         } else if (x.question_answers[i].answer === false && y == 1) {
@@ -167,7 +219,10 @@ export default function Cum_date_load(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      if (x.question_answers[i].date == "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day) {
+      if (
+        x.question_answers[i].date ==
+        "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
+      ) {
         return x.question_answers[i].answer;
       }
     }
