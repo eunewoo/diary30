@@ -132,7 +132,7 @@ export default function Edit(props) {
       await DetectChange();
     } finally {
       setIsLoading(false);
-      setEndPoint2(1);
+      setEndPoint2((prev) => 1);
       // console.log("endpoint2:", endPoint2);
     }
   }
@@ -373,7 +373,6 @@ export default function Edit(props) {
 
           for (var i in sortedData) {
             var temp = sortedData[i].question_selection;
-
             append(questions, {
               //id: response.data[i].id,
               user_id: sortedData[i].user_id,
