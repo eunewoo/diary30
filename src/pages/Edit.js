@@ -12,6 +12,7 @@ export default function Edit(props) {
   //set endpoint to controll useEffect sequence
   //when first load, reload page after clicking save button
   const [endPoint, setendPoint] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   //Set this to run reloaded type useEffect after saved function finished
   let endpoint2 = 0;
@@ -87,16 +88,13 @@ export default function Edit(props) {
     //New quetions' order is set higher than highest existing questions' highest question_order
     let newOrderTop1 = orderTop + 1;
     for (var i = 0; i < tempAdd.length; i++) {
-      await Axios.post(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions",
-        {
-          user_id: props.profile.user_ref,
-          question: tempAdd[i].question,
-          question_selection: tempAdd[i].question_selection,
-          question_type: tempAdd[i].question_type,
-          question_order: newOrderTop1,
-        }
-      );
+      await Axios.post("https://diary30wooserver.web.app/api/questions", {
+        user_id: tempAdd[i].user_id,
+        question: tempAdd[i].question,
+        question_selection: tempAdd[i].question_selection,
+        question_type: tempAdd[i].question_type,
+        question_order: newOrderTop1,
+      });
 
       newOrderTop1 += 1;
     }
@@ -105,8 +103,8 @@ export default function Edit(props) {
     //Delete questions by question_order that remains in orderArray
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
-          props.profile.user_ref +
+        "https://diary30wooserver.web.app/api/questions/" +
+          props.profile.user_id +
           "&" +
           orderArray[i]
       )
@@ -129,8 +127,13 @@ export default function Edit(props) {
     setQuestions(a);
   }
 
-  function postChanges() {
-    DetectChange();
+  async function postChanges() {
+    // try {
+    //   setIsLoading(true);
+    await DetectChange();
+    // } finally {
+    //   setIsLoading(false);
+    // }
   }
 
   function ChangeReturnee(a, z) {
@@ -194,7 +197,11 @@ export default function Edit(props) {
         <>
           <li>
             <div>
-              <input type="text" defaultValue={questions[iterator].question} />
+              <input
+                type="text"
+                defaultValue={questions[iterator].question}
+                disabled={true}
+              />
               <select
                 name="options"
                 defaultValue={questions[iterator].question_type}
@@ -209,16 +216,19 @@ export default function Edit(props) {
               <input
                 type="text"
                 defaultValue={temp.question_selection[0]}
+                disabled={true}
               ></input>
               <input type="radio" disabled="TRUE" checked="TRUE"></input>
               <input
                 type="text"
                 defaultValue={temp.question_selection[1]}
+                disabled={true}
               ></input>
               <input type="radio" disabled="TRUE" checked="TRUE"></input>
               <input
                 type="text"
                 defaultValue={temp.question_selection[2]}
+                disabled={true}
               ></input>
             </div>
             <button id="deleteButton" onClick={liDelete}>
@@ -233,16 +243,28 @@ export default function Edit(props) {
         <>
           <li>
             <div>
-              <input type="text" defaultValue={questions[iterator].question} />
+              <input
+                type="text"
+                defaultValue={questions[iterator].question}
+                disabled={true}
+              />
               <select
                 name="options"
                 onChange={addSelection}
                 defaultValue={questions[iterator].question_type}
               >
-                <option value="number">number</option>
-                <option value="boolean">boolean</option>
-                <option value="multiple choice">multiple choice</option>
-                <option value="text">text</option>
+                <option value="number" disabled={true}>
+                  number
+                </option>
+                <option value="boolean" disabled={true}>
+                  boolean
+                </option>
+                <option value="multiple choice" disabled={true}>
+                  multiple choice
+                </option>
+                <option value="text" disabled={true}>
+                  text
+                </option>
               </select>
             </div>
             <button id="deleteButton" onClick={liDelete}>
@@ -336,13 +358,11 @@ export default function Edit(props) {
     else if (endPoint == 1) {
       const tempOrderArray = [];
       const fetchData = async () => {
-        console.log("get user_ref", typeof props.profile.user_ref);
         await Axios.get(
-          "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
-            props.profile.user_ref
+          "https://diary30wooserver.web.app/api/questions/" +
+            props.profile.user_id
         ).then((response) => {
           var z = 0;
-
           const sortedData = response.data.sort(
             (a, b) => a.question_order - b.question_order
           );

@@ -82,7 +82,7 @@ export default function Register(props) {
     };
 
     Axios.post(
-      "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users",
+      "https://diary30wooserver.web.app/api/users",
       formData,
       config
     ).then((res) => {
@@ -135,29 +135,26 @@ export default function Register(props) {
         } else {
           let temp = 0;
           if (temp1 === 0) {
-            Axios.get(
-              "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users"
-            ).then((response) => {
-              for (var i in response.data) {
-                if (response.data[i].user_id == user_id) {
-                  break;
-                } else if (
-                  i == response.data.length - 1 &&
-                  response.data[i].user_id != user_id
-                ) {
-                  temp = 1;
+            Axios.get("https://diary30wooserver.web.app/api/users").then(
+              (response) => {
+                for (var i in response.data) {
+                  if (response.data[i].user_id == user_id) {
+                    break;
+                  } else if (
+                    i == response.data.length - 1 &&
+                    response.data[i].user_id != user_id
+                  ) {
+                    temp = 1;
+                  }
                 }
-              }
-              if (temp === 1) {
-                if (hasFile == 1) {
-                  Axios.post(
-                    "https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload",
-                    temp2,
-                    tempConfig
-                  ).then((res) => {
+                if (temp === 1) {
+                  if (hasFile == 1) {
                     Axios.post(
-                      "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users",
-                      {
+                      "https://api.cloudinary.com/v1_1/dl1bnuva1/image/upload",
+                      temp2,
+                      tempConfig
+                    ).then((res) => {
+                      Axios.post("https://diary30wooserver.web.app/api/users", {
                         user_id: profdata.user_id,
                         password: hashutil(user_id, user_email, password),
                         user_name: profdata.user_name,
@@ -165,19 +162,16 @@ export default function Register(props) {
                         address_f: profdata.address_f,
                         address_l: profdata.address_l,
                         img: res.data.url,
-                      }
-                    ).then(() => {
-                      setDisplayImage(res.data.url);
-                      console.log("displayImage", displayImage);
-                      alert("Success Register!");
-                      document.location.href = "http://localhost:3000/";
+                      }).then(() => {
+                        setDisplayImage(res.data.url);
+                        console.log("displayImage", displayImage);
+                        alert("Success Register!");
+                        document.location.href = "http://localhost:3000/";
+                      });
                     });
-                  });
-                }
-                if (hasFile == 0) {
-                  Axios.post(
-                    "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users",
-                    {
+                  }
+                  if (hasFile == 0) {
+                    Axios.post("https://diary30wooserver.web.app/api/users", {
                       user_id: profdata.user_id,
                       password: hashutil(user_id, user_email, password),
                       user_name: profdata.user_name,
@@ -185,18 +179,18 @@ export default function Register(props) {
                       address_f: profdata.address_f,
                       address_l: profdata.address_l,
                       img: profdata.img,
-                    }
-                  ).then(() => {
-                    console.log("displayImage", displayImage);
-                    setDisplayImage(profdata.img);
-                    alert("Success Register!");
-                    document.location.href = "http://localhost:3000/";
-                  });
+                    }).then(() => {
+                      console.log("displayImage", displayImage);
+                      setDisplayImage(profdata.img);
+                      alert("Success Register!");
+                      document.location.href = "http://localhost:3000/";
+                    });
+                  }
+                } else if (temp === 0) {
+                  alert("Invalid Register!");
                 }
-              } else if (temp === 0) {
-                alert("Invalid Register!");
               }
-            });
+            );
           }
         }
     }
