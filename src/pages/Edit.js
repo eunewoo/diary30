@@ -89,7 +89,7 @@ export default function Edit(props) {
     let newOrderTop1 = orderTop + 1;
     for (var i = 0; i < tempAdd.length; i++) {
       await Axios.post("https://diary30wooserver.web.app/api/questions", {
-        user_id: tempAdd[i].user_id,
+        user_id: props.profile.user_ref,
         question: tempAdd[i].question,
         question_selection: tempAdd[i].question_selection,
         question_type: tempAdd[i].question_type,
@@ -104,7 +104,7 @@ export default function Edit(props) {
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
         "https://diary30wooserver.web.app/api/questions/" +
-          props.profile.user_id +
+          props.profile.user_ref +
           "&" +
           orderArray[i]
       )
@@ -354,13 +354,14 @@ export default function Edit(props) {
       setQuestions([]);
       setendPoint((prev) => 1);
     }
+
     //2
     else if (endPoint == 1) {
       const tempOrderArray = [];
       const fetchData = async () => {
         await Axios.get(
           "https://diary30wooserver.web.app/api/questions/" +
-            props.profile.user_id
+            props.profile.user_ref
         ).then((response) => {
           var z = 0;
           const sortedData = response.data.sort(
@@ -414,7 +415,7 @@ export default function Edit(props) {
         </div>
         <ul id="list">{returnee}</ul>
       </inner>
-      <button onClick={postChanges} id="editSubmit">
+      <button onClick={postChanges} id="editSubmit" disabled={true}>
         Save
       </button>
     </div>
