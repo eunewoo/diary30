@@ -11,11 +11,11 @@ export default function Edit(props) {
   const [orderArray, setorderArray] = useState([]);
   //set endpoint to controll useEffect sequence
   //when first load, reload page after clicking save button
-  const [endPoint, setendPoint] = useState(0);
+  const [endPoint, setEndPoint] = useState(0);
+  const [endPoint2, setEndPoint2] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   //Set this to run reloaded type useEffect after saved function finished
-  let endpoint2 = 0;
 
   //organize question in temp from list and push into ret array
   //It ran when save button is clicked
@@ -115,8 +115,7 @@ export default function Edit(props) {
           console.log("error deleting question: " + error);
         });
     }
-    endpoint2 = 1;
-    alert("Saved button complete!");
+    alert("Qustions have saved");
   }
 
   function changeQuestions(a) {
@@ -128,12 +127,14 @@ export default function Edit(props) {
   }
 
   async function postChanges() {
-    // try {
-    //   setIsLoading(true);
-    await DetectChange();
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    try {
+      setIsLoading(true);
+      await DetectChange();
+    } finally {
+      setIsLoading(false);
+      setEndPoint2(1);
+      // console.log("endpoint2:", endPoint2);
+    }
   }
 
   function ChangeReturnee(a, z) {
@@ -341,18 +342,20 @@ export default function Edit(props) {
 
   //This run after save button click > DetectChange() finsihed
   useEffect(() => {
-    if (endpoint2 == 1) {
-      setendPoint((prev) => 0);
+    if (endPoint2 == 1) {
+      setEndPoint((prev) => 0);
+      console.log("lets go for 1");
     }
-  }, [endpoint2]);
+  }, [endPoint2]);
 
   //work only when page is first loaded
   //Also work when page is reloaded after DetectChange() finished
   useEffect(() => {
     //1
+    console.log("lets go for 2");
     if (endPoint == 0) {
       setQuestions([]);
-      setendPoint((prev) => 1);
+      setEndPoint((prev) => 1);
     }
 
     //2
@@ -382,6 +385,7 @@ export default function Edit(props) {
             });
             ChangeReturnee(setSome(z), z);
             z++;
+            console.log("lets go for 3");
             tempOrderArray.push(sortedData[i].question_order);
             //setorderArray([...orderArray, response.data[i].question_order]);
           }
@@ -399,7 +403,7 @@ export default function Edit(props) {
 
       fetchData();
       //lock this useEffect function
-      setendPoint((prev) => 2);
+      setEndPoint((prev) => 2);
     }
   }, [endPoint]);
 
@@ -415,7 +419,7 @@ export default function Edit(props) {
         </div>
         <ul id="list">{returnee}</ul>
       </inner>
-      <button onClick={postChanges} id="editSubmit" disabled={true}>
+      <button onClick={postChanges} id="editSubmit" disabled={isLoading}>
         Save
       </button>
     </div>
