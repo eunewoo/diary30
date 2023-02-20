@@ -29,15 +29,8 @@ export default function Profile(props) {
       formData,
       config
     ).then((res) => {
-      Axios.post(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users",
-        {
-          img: res.data.url,
-        }
-      ).then(() => {
-        setDisplayImage(res.data.url);
-        setImg(res.data.url);
-      });
+      setDisplayImage(res.data.url);
+      setImg(res.data.url);
     });
   };
 
