@@ -9,11 +9,6 @@ import {
   questionsState,
   returneeState,
 } from "../model/states.js";
-import {
-  cumDateState,
-  questionsState,
-  returneeState,
-} from "../model/states.js";
 import { useRecoilState } from "recoil";
 
 export default function View(props) {
@@ -351,12 +346,12 @@ export default function View(props) {
   }, []);
 
   //toggle switch temporarly removed cause error of showing questions set 3times duplicated
-  //
+  //<button onClick={toggleSwitch}>Toggle</button>
 
   return (
     <div id="viewWrapper">
       <Topnav selected="view" />
-      <button onClick={toggleSwitch}>Toggle</button>
+
       <button onClick={onDownload}>Download</button>
       <button onClick={toggleSwitch}>{viewState}</button>
       <div style={{ display: "block" }} id="chart"></div>

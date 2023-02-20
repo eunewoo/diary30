@@ -24,21 +24,19 @@ export default function Register(props) {
   const [temp2, setTemp2] = useState({});
   const [tempConfig, setTempConfig] = useState({});
   const {
-   
     user_id,
-   
+
     password,
-   
+
     user_name,
-   
+
     user_email,
-   
+
     address_f,
-   
+
     address_l,
-   
+
     img,
- ,
   } = profdata;
 
   const onDrop = async (e) => {
@@ -234,17 +232,11 @@ export default function Register(props) {
                 <div>
                   <p>Set your ID : </p>
                   <input
-                   
                     id="user_id"
-                   
                     name="user_id"
-                   
                     value={user_id}
-                   
                     type="text"
-                   
                     onChange={setTextid}
-                 
                   />
                 </div>
               </li>
@@ -252,20 +244,13 @@ export default function Register(props) {
                 <div>
                   <p>Set your password : </p>
                   <label class={`input-label ${value ? "has-value" : ""}`}>
-                    
                     At least 8chars, uppercase + lowercase + number{" "}
-                 {" "}
                   </label>
                   <input
-                   
                     name="password"
-                   
                     defaultValue={password}
-                   
                     type="password"
-                   
                     onChange={setTextid2}
-                 
                   />
                 </div>
               </li>
@@ -273,15 +258,10 @@ export default function Register(props) {
                 <div>
                   <p>Set your name : </p>
                   <input
-                   
                     name="user_name"
-                   
                     value={user_name}
-                   
                     type="text"
-                   
                     onChange={setTextid}
-                 
                   />
                 </div>
               </li>
@@ -289,15 +269,10 @@ export default function Register(props) {
                 <div>
                   <p>Set your email : </p>
                   <input
-                   
                     name="user_email"
-                   
                     value={user_email}
-                   
                     type="text"
-                   
                     onChange={setTextid}
-                 
                   />
                 </div>
               </li>
@@ -306,28 +281,18 @@ export default function Register(props) {
                   <p>Set your address : </p>
                   <div>
                     <input
-                     
                       name="address_f"
-                     
                       value={address_f}
-                     
                       type="text"
-                     
                       onChange={setTextid}
-                   
                     />
                   </div>
                   <div>
                     <input
-                     
                       name="address_l"
-                     
                       value={address_l}
-                     
                       type="text"
-                     
                       onChange={setTextid}
-                   
                     />
                   </div>
                 </div>

@@ -127,24 +127,8 @@ export default function Profile(props) {
               data-toggle="modal"
               data-target="#exampleModal"
             >
-            <button
-              id="profileImageSelector"
-              type="button"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#exampleModal"
-            >
               Choose new Image
             </button>
-
-            <div
-              class="modal fade"
-              id="exampleModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="exampleModalLabel"
-              aria-hidden="true"
-            >
             <div
               class="modal fade"
               id="exampleModal"
@@ -160,15 +144,10 @@ export default function Profile(props) {
                       Modal title
                     </h5>
                     <button
-                     
                       type="button"
-                     
                       class="close"
-                     
                       data-dismiss="modal"
-                     
                       aria-label="Close"
-                    
                     >
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -179,13 +158,9 @@ export default function Profile(props) {
                   </div>
                   <div class="modal-footer">
                     <button
-                     
                       type="button"
-                     
                       class="btn btn-secondary"
-                     
                       data-dismiss="modal"
-                    
                     >
                       Close
                     </button>
@@ -198,13 +173,9 @@ export default function Profile(props) {
             </div>
 
             <button
-             
               id="profileImageRemover"
-             
               type="button"
-             
               onClick={removeImage}
-            
             >
               Remove image
             </button>
@@ -215,15 +186,10 @@ export default function Profile(props) {
             Name
           </label>
           <input
-           
             type="text"
-           
             id="name"
-           
             defaultValue={props.profile.name}
-           
             onChange={setUsername}
-          
           ></input>
         </div>
         <div id="profileContent">
@@ -231,40 +197,25 @@ export default function Profile(props) {
             Email
           </label>
           <input
-           
             type="email"
-           
             id="email"
-           
             defaultValue={props.profile.email}
-           
             onChange={setEmailAddress}
-          
           ></input>
         </div>
         <div id="profileContent">
           <label id="profileContentTitle">Address</label>
           <input
-           
             type="text"
-           
             id="address1"
-           
             defaultValue={props.profile.address1}
-           
             onChange={setAddress1f}
-          
           ></input>
           <input
-           
             type="text"
-           
             id="address2"
-           
             defaultValue={props.profile.address2}
-           
             onChange={setAddress2f}
-          
           ></input>
         </div>
         <div id="profileButtonWrapper">

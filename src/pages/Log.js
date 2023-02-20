@@ -10,12 +10,6 @@ import {
   questionsState,
   returneeState,
 } from "../model/states.js";
-import {
-  cumDateState,
-  questionsSelector,
-  questionsState,
-  returneeState,
-} from "../model/states.js";
 
 export default function Log(props) {
   const [returnee, setReturnee] = useRecoilState(returneeState);
