@@ -1,9 +1,14 @@
 import Topnav from "./nav";
 import { useState, useEffect } from "react";
 import Chart from "chart.js/auto";
-import React, { Link } from "react-router-dom";
+import React, { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import Cum_date_load from "../model/Cum_date_load";
+import {
+  cumDateState,
+  questionsState,
+  returneeState,
+} from "../model/states.js";
 import {
   cumDateState,
   questionsState,
@@ -12,6 +17,10 @@ import {
 import { useRecoilState } from "recoil";
 
 export default function View(props) {
+  const [returnee, setReturnee] = useRecoilState(returneeState);
+  const [questions, setQuestions] = useRecoilState(questionsState);
+  const [cumDate, setCumDate] = useRecoilState(cumDateState);
+  const [viewState, setViewState] = useState("Questions");
   const [userdata, setUserdata] = useState({
     date: [],
     question: [],
@@ -20,7 +29,7 @@ export default function View(props) {
   var datas = [];
   var charts = [];
   const { date, question, question_value } = userdata;
-
+  const navigate = useNavigate();
   //download file into json file
   function download(content, fileName, contentType) {
     const a = document.createElement("a");
@@ -31,21 +40,18 @@ export default function View(props) {
   }
 
   function toggleSwitch() {
-    var a = document.getElementById("chart");
-    var b = document.getElementById("table");
-    if (a.style.display === "block") {
-      a.style.display = "none";
-      b.style.display = "block";
+    var chart = document.getElementById("chart");
+    var questions = document.getElementById("table");
+    if (chart.style.display === "block") {
+      setViewState("Charts");
+      chart.style.display = "none";
+      questions.style.display = "block";
     } else {
-      a.style.display = "block";
-      b.style.display = "none";
+      setViewState("Questions");
+      chart.style.display = "block";
+      questions.style.display = "none";
     }
   }
-
-  const [returnee, setReturnee] = useRecoilState(returneeState);
-  const [questions, setQuestions] = useRecoilState(questionsState);
-
-  const [cumDate, setCumDate] = useRecoilState(cumDateState);
 
   function onDownload() {
     download(JSON.stringify(questions), "yourfile.json", "text/plain");
@@ -158,11 +164,11 @@ export default function View(props) {
         </>
       );
     } else if (x.question_type === "number") {
-      return <input type="number" value={returnText(x)} />;
+      return <input type="number" value={returnText(x)} disabled={true} />;
     } else {
       return (
         <>
-          <input type="text" value={returnText(x)}></input>
+          <input type="text" value={returnText(x)} disabled={true}></input>
         </>
       );
     }
@@ -183,7 +189,19 @@ export default function View(props) {
     return <></>;
   }
 
+  //useEffect0 - check authentication before rendering
   useEffect(() => {
+    if (props.profile.user_id == "") {
+      alert(
+        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+      );
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
+    //reset questions before get data
+    setQuestions([]);
     Axios.get(
       "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
         props.profile.user_ref
@@ -340,6 +358,7 @@ export default function View(props) {
       <Topnav selected="view" />
       <button onClick={toggleSwitch}>Toggle</button>
       <button onClick={onDownload}>Download</button>
+      <button onClick={toggleSwitch}>{viewState}</button>
       <div style={{ display: "block" }} id="chart"></div>
       <div
         style={{ display: "none", width: "200px", height: "200px" }}

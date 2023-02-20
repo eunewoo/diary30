@@ -1,11 +1,12 @@
 import Axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Topnav from "./nav";
 import { hashutil } from "./hashutil.mjs";
 import { useRef } from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
 import { DisplayImageAtom, makeFormData } from "../model/states";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile(props) {
   const [img, setImg] = useState(props.profile.img);
@@ -17,7 +18,7 @@ export default function Profile(props) {
   const [tempConfig, setTempConfig] = useState({});
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const imageKeyRef = useRef("imageKeyRef");
-
+  const navigate = useNavigate();
   const setImage = (e) => {
     const { formData, config } = makeFormData(e);
     setTemp2(formData);
@@ -100,6 +101,16 @@ export default function Profile(props) {
     }
   };
 
+  //useEffect0 - check authentication before rendering
+  useEffect(() => {
+    if (props.profile.user_id == "") {
+      alert(
+        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+      );
+      navigate("/");
+    }
+  }, []);
+
   return (
     <div id="profileWrapper">
       <Topnav />
@@ -109,6 +120,13 @@ export default function Profile(props) {
           <p id="profileContentTitle">Profile Photo</p>
           <div id="profileUserInfo">
             <img key={imageKeyRef} src={displayImage} alt="profile" />
+            <button
+              id="profileImageSelector"
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#exampleModal"
+            >
             <button
               id="profileImageSelector"
               type="button"
@@ -127,6 +145,14 @@ export default function Profile(props) {
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
             >
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -134,10 +160,15 @@ export default function Profile(props) {
                       Modal title
                     </h5>
                     <button
+                     
                       type="button"
+                     
                       class="close"
+                     
                       data-dismiss="modal"
+                     
                       aria-label="Close"
+                    
                     >
                       <span aria-hidden="true">&times;</span>
                     </button>
@@ -148,9 +179,13 @@ export default function Profile(props) {
                   </div>
                   <div class="modal-footer">
                     <button
+                     
                       type="button"
+                     
                       class="btn btn-secondary"
+                     
                       data-dismiss="modal"
+                    
                     >
                       Close
                     </button>
@@ -163,9 +198,13 @@ export default function Profile(props) {
             </div>
 
             <button
+             
               id="profileImageRemover"
+             
               type="button"
+             
               onClick={removeImage}
+            
             >
               Remove image
             </button>
@@ -176,10 +215,15 @@ export default function Profile(props) {
             Name
           </label>
           <input
+           
             type="text"
+           
             id="name"
+           
             defaultValue={props.profile.name}
+           
             onChange={setUsername}
+          
           ></input>
         </div>
         <div id="profileContent">
@@ -187,25 +231,40 @@ export default function Profile(props) {
             Email
           </label>
           <input
+           
             type="email"
+           
             id="email"
+           
             defaultValue={props.profile.email}
+           
             onChange={setEmailAddress}
+          
           ></input>
         </div>
         <div id="profileContent">
           <label id="profileContentTitle">Address</label>
           <input
+           
             type="text"
+           
             id="address1"
+           
             defaultValue={props.profile.address1}
+           
             onChange={setAddress1f}
+          
           ></input>
           <input
+           
             type="text"
+           
             id="address2"
+           
             defaultValue={props.profile.address2}
+           
             onChange={setAddress2f}
+          
           ></input>
         </div>
         <div id="profileButtonWrapper">

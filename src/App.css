@@ -144,7 +144,7 @@ button:hover {
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
-
+  margin-top: 40px;
   display: flex;
   justify-content: space-between;
 }
@@ -191,7 +191,7 @@ button:hover {
   text-align: right;
 }
 
-#logWrapper > p {
+#logWrapper > div > p {
   font-size: 20px;
   font-weight: bold;
 }
@@ -224,6 +224,8 @@ button:hover {
 
 #list > div > input {
   border-radius: 3px;
+  margin-left: 6px;
+  margin-right: 2px;
 }
 
 #list > div:nth-child(8) > input[type="text"] {
@@ -454,10 +456,7 @@ button:hover {
   margin-right: 20px;
 }
 
-#profileFormWrapper
-  > #profileContent
-  > #profileUserInfo
-  > #profileImageSelector {
+#profileFormWrapper > #profileContent > #profileUserInfo > #profileImageSelector {
   margin-right: 20px;
   width: 170px;
   height: 40px;
@@ -469,10 +468,7 @@ button:hover {
   cursor: pointer;
 }
 
-#profileFormWrapper
-  > #profileContent
-  > #profileUserInfo
-  > #profileImageRemover {
+#profileFormWrapper > #profileContent > #profileUserInfo > #profileImageRemover {
   transition: all 0.2s ease 0s;
   text-decoration: underline;
   background-color: rgba(0, 0, 0, 0);
@@ -746,14 +742,7 @@ button:hover {
   font-size: 7.5px;
 }
 
-#registerWrapper
-  > inner
-  > div
-  > nav
-  > ul
-  > li
-  > div
-  > label.input-label.has-value {
+#registerWrapper > inner > div > nav > ul > li > div > label.input-label.has-value {
   opacity: 0;
 }
 
@@ -761,14 +750,7 @@ button:hover {
   background-color: #aaa;
 }
 
-#registerWrapper
-  > inner
-  > div
-  > nav
-  > ul
-  > li:nth-child(6)
-  > div
-  > input[type="file"] {
+#registerWrapper > inner > div > nav > ul > li:nth-child(6) > div > input[type="file"] {
   font-size: 12px;
   height: 24px;
 }
@@ -832,7 +814,7 @@ button:hover {
   color: #fff;
   border-radius: 3px;
   display: inline;
-  width: 70px;
+  width: 90px;
   position: absolute;
   top: 100px;
   right: 110px;
@@ -899,12 +881,12 @@ button:hover {
   #viewWrapper > button:nth-child(2) {
     left: 50%;
     top: 90px;
-    transform: translateX(-120px);
+    transform: translateX(5px);
   }
   #viewWrapper > button:nth-child(3) {
     left: 50%;
     top: 90px;
-    transform: translateX(30px);
+    transform: translateX(-95px);
   }
 }
 

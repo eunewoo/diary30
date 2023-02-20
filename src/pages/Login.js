@@ -43,6 +43,7 @@ export default function Login(props) {
           response.data[0].password ==
           hashutil(login_id, response.data[0].user_email, password)
         ) {
+          alert("Login Success!");
           props.ChangeProfile({
             password: password,
             user_id: response.data[0].user_id,
@@ -55,7 +56,6 @@ export default function Login(props) {
           });
           setDisplayImage(() => response.data[0].img);
           navigate("/log");
-          alert("Login Success!");
         } else {
           alert("Unavail Login!");
         }

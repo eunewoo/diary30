@@ -233,9 +233,11 @@ export default function Cum_date_load(props) {
       <button onClick={clickPre}>
         <span className="material-icons md-18">arrow_back_ios</span>
       </button>
-      <p>
-        {cumDate.cum_year}-{cumDate.cum_month}-{cumDate.cum_day}
-      </p>
+      <div>
+        <p>
+          {cumDate.cum_year}-{cumDate.cum_month}-{cumDate.cum_day}
+        </p>
+      </div>
       <button onClick={clickNext}>
         <span className="material-icons md-18">arrow_forward_ios</span>
       </button>

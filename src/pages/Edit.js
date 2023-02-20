@@ -1,6 +1,6 @@
 import Topnav from "./nav";
-import { useState, useEffect } from "react";
-import React, { Link } from "react-router-dom";
+import { useState, useEffect  } from "react";
+import React, { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 
 export default function Edit(props) {
@@ -12,9 +12,9 @@ export default function Edit(props) {
   //set endpoint to controll useEffect sequence
   //when first load, reload page after clicking save button
   const [endPoint, setendPoint] = useState(0);
-
+  const navigate = useNavigate();
   //Set this to run reloaded type useEffect after saved function finished
-  let endpoint2 = 0;
+  let endpoint2 = 0;;
 
   //organize question in temp from list and push into ret array
   //It ran when save button is clicked
@@ -22,6 +22,7 @@ export default function Edit(props) {
     //list that only contains question boxes that showing on Front page
     var list = document.getElementById("list");
     var ret = [];
+
 
     for (var i = 0; i < list.childNodes.length; i++) {
       var temp = {
@@ -81,11 +82,28 @@ export default function Edit(props) {
         const delIndex = orderArray.indexOf(submit[i].question_order);
         orderArray.splice(delIndex, 1);
       }
+      const containsWord =
+        orderArray.includes(submit[i].question_order) ||
+        orderArray.some((str) => {
+          const words = str.split(" ");
+          return words.includes(submit[i].question_order);
+        });
+      //New adding questions
+      if (submit[i].question_order == "-1") {
+        tempAdd.push(submit[i]);
+      }
+      //Delete from orderArray which still remain in showing front end page
+      //Which means not being deleted by trash icon
+      else if (containsWord) {
+        const delIndex = orderArray.indexOf(submit[i].question_order);
+        orderArray.splice(delIndex, 1);
+      }
     }
+
 
     //Add new questions to DB
     //New quetions' order is set higher than highest existing questions' highest question_order
-    let newOrderTop1 = orderTop + 1;
+    let newOrderTop1 = orderTop + 1;;
     for (var i = 0; i < tempAdd.length; i++) {
       await Axios.post(
         "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions",
@@ -117,7 +135,7 @@ export default function Edit(props) {
           console.log("error deleting question: " + error);
         });
     }
-    endpoint2 = 1;
+    endpoint2 = 1;;
     alert("Saved button complete!");
   }
 
@@ -224,33 +242,44 @@ export default function Edit(props) {
             <button id="deleteButton" onClick={liDelete}>
               <span class="material-symbols-outlined">delete</span>
             </button>
-            <input type="hidden" value={questions[iterator].question_order} />
+            <input type="hidden" value={questions[iterator].question_order}  />
           </li>
         </>
       );
     } else {
       return (
+    } else {
+      return (
         <>
           <li>
+          <li>
             <div>
+              <input type="text" defaultValue={questions[iterator].question} />
+              <select
               <input type="text" defaultValue={questions[iterator].question} />
               <select
                 name="options"
                 onChange={addSelection}
                 defaultValue={questions[iterator].question_type}
               >
+              >
                 <option value="number">number</option>
                 <option value="boolean">boolean</option>
                 <option value="multiple choice">multiple choice</option>
                 <option value="text">text</option>
               </select>
+              </select>
             </div>
             <button id="deleteButton" onClick={liDelete}>
+              <span class="material-symbols-outlined">delete</span>
               <span class="material-symbols-outlined">delete</span>
             </button>
             <input type="hidden" value={questions[iterator].question_order} />
           </li>
+            <input type="hidden" value={questions[iterator].question_order} />
+          </li>
         </>
+      );
       );
     }
   }
@@ -295,7 +324,7 @@ export default function Edit(props) {
     a.appendChild(b);
     a.appendChild(i);
 
-    var j = document.createElement("div");
+    var j =  document.createElement("div");
     j.value = -1;
     a.appendChild(j);
 
@@ -307,10 +336,20 @@ export default function Edit(props) {
     list.appendChild(newDiv());
   }
 
+  //useEffect0 - check authentication before rendering
+  useEffect(() => {
+    if (props.profile.user_id == "") {
+      alert(
+        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+      );
+      navigate("/");
+    }
+  }, []);
+
   //This run after save button click > DetectChange() finsihed
   useEffect(() => {
     if (endpoint2 == 1) {
-      setendPoint((prev) => 0);
+      setendPoint(((prev)) => 0);
     }
   }, [endpoint2]);
 
@@ -319,11 +358,12 @@ export default function Edit(props) {
   useEffect(() => {
     //1
     if (endPoint == 0) {
+    if (endPoint == 0) {
       setQuestions([]);
-      setendPoint((prev) => 1);
+      setendPoint(((prev)) => 1);
     }
     //2
-    else if (endPoint == 1) {
+    else if  (endPoint == 1) {
       const tempOrderArray = [];
       const fetchData = async () => {
         console.log("get user_ref", typeof props.profile.user_ref);
@@ -332,6 +372,10 @@ export default function Edit(props) {
             props.profile.user_ref
         ).then((response) => {
           var z = 0;
+          const sortedData = response.data.sort(
+            (a, b) => a.question_order - b.question_order
+          );
+
           const sortedData = response.data.sort(
             (a, b) => a.question_order - b.question_order
           );
@@ -358,6 +402,8 @@ export default function Edit(props) {
           if (tempOrderArray.length == 0) {
             newOrderTop = -1;
           } else {
+            newOrderTop = -1;
+          } else {
             newOrderTop = Math.max.apply(null, tempOrderArray);
           }
           setorderTop(newOrderTop);
@@ -367,6 +413,7 @@ export default function Edit(props) {
 
       fetchData();
       //lock this useEffect function
+      setendPoint((prev) => 2);
       setendPoint((prev) => 2);
     }
   }, [endPoint]);
@@ -389,3 +436,4 @@ export default function Edit(props) {
     </div>
   );
 }
+
