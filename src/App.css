@@ -59,7 +59,7 @@ input[type="text"] {
 
 input[type="submit"]:hover,
 input[type="button"]:hover,
-button:hover {
+button:hover:not(:disabled) {
   transform: scale(1.1);
 }
 
@@ -456,7 +456,10 @@ button:hover {
   margin-right: 20px;
 }
 
-#profileFormWrapper > #profileContent > #profileUserInfo > #profileImageSelector {
+#profileFormWrapper
+  > #profileContent
+  > #profileUserInfo
+  > #profileImageSelector {
   margin-right: 20px;
   width: 170px;
   height: 40px;
@@ -468,7 +471,10 @@ button:hover {
   cursor: pointer;
 }
 
-#profileFormWrapper > #profileContent > #profileUserInfo > #profileImageRemover {
+#profileFormWrapper
+  > #profileContent
+  > #profileUserInfo
+  > #profileImageRemover {
   transition: all 0.2s ease 0s;
   text-decoration: underline;
   background-color: rgba(0, 0, 0, 0);
@@ -742,7 +748,14 @@ button:hover {
   font-size: 7.5px;
 }
 
-#registerWrapper > inner > div > nav > ul > li > div > label.input-label.has-value {
+#registerWrapper
+  > inner
+  > div
+  > nav
+  > ul
+  > li
+  > div
+  > label.input-label.has-value {
   opacity: 0;
 }
 
@@ -750,7 +763,14 @@ button:hover {
   background-color: #aaa;
 }
 
-#registerWrapper > inner > div > nav > ul > li:nth-child(6) > div > input[type="file"] {
+#registerWrapper
+  > inner
+  > div
+  > nav
+  > ul
+  > li:nth-child(6)
+  > div
+  > input[type="file"] {
   font-size: 12px;
   height: 24px;
 }

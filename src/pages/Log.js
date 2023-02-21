@@ -19,6 +19,7 @@ export default function Log(props) {
   const navigate = useNavigate();
   const [effectCount, setEffectCount] = useState(0);
   const [effectCount2, setEffectCount2] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   // let endpoint1 = 0;
   // let endpoint2 = 0;
@@ -196,7 +197,7 @@ export default function Log(props) {
   useEffect(() => {
     if (effectCount == 1) {
       Axios.get(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
+        "https://diary30wooserver.web.app/api/questions/" +
           props.profile.user_ref
       ).then((response) => {
         var z = 0;
@@ -245,6 +246,14 @@ export default function Log(props) {
     setReturnee(a);
   }
 
+  async function submitAns() {
+    try {
+      setIsLoading(true);
+      await submit();
+    } finally {
+      setIsLoading(false);
+    }
+  }
   //put answers in temp and send to db
   async function submit() {
     //shallow copied
@@ -324,15 +333,12 @@ export default function Log(props) {
     }
 
     for (var i = 0; i < temp.length; i++) {
-      await Axios.put(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions",
-        {
-          user_id: props.profile.user_ref,
-          question: temp[i].question,
-          //question_answers: JSON.stringify(temp[i].question_answers)
-          question_answers: temp[i].question_answers,
-        }
-      );
+      await Axios.put("https://diary30wooserver.web.app/api/questions", {
+        user_id: props.profile.user_ref,
+        question: temp[i].question,
+        //question_answers: JSON.stringify(temp[i].question_answers)
+        question_answers: temp[i].question_answers,
+      });
     }
     //rerender right after submit question_answer
     setEffectCount2((prevCount) => prevCount + 1);
@@ -345,7 +351,7 @@ export default function Log(props) {
       <Topnav selected="log" />
       <Cum_date_load />
       <div id="list">{returnee}</div>
-      <button onClick={submit} id="submit">
+      <button onClick={submitAns} id="submit" disabled={isLoading}>
         Submit
       </button>
     </div>

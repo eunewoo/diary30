@@ -11,10 +11,11 @@ export default function Edit(props) {
   const [orderArray, setorderArray] = useState([]);
   //set endpoint to controll useEffect sequence
   //when first load, reload page after clicking save button
-  const [endPoint, setendPoint] = useState(0);
+  const [endPoint, setEndPoint] = useState(0);
+  const [endPoint2, setEndPoint2] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   //Set this to run reloaded type useEffect after saved function finished
-  let endpoint2 = 0;
 
   //organize question in temp from list and push into ret array
   //It ran when save button is clicked
@@ -87,16 +88,13 @@ export default function Edit(props) {
     //New quetions' order is set higher than highest existing questions' highest question_order
     let newOrderTop1 = orderTop + 1;
     for (var i = 0; i < tempAdd.length; i++) {
-      await Axios.post(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions",
-        {
-          user_id: props.profile.user_ref,
-          question: tempAdd[i].question,
-          question_selection: tempAdd[i].question_selection,
-          question_type: tempAdd[i].question_type,
-          question_order: newOrderTop1,
-        }
-      );
+      await Axios.post("https://diary30wooserver.web.app/api/questions", {
+        user_id: props.profile.user_ref,
+        question: tempAdd[i].question,
+        question_selection: tempAdd[i].question_selection,
+        question_type: tempAdd[i].question_type,
+        question_order: newOrderTop1,
+      });
 
       newOrderTop1 += 1;
     }
@@ -105,7 +103,7 @@ export default function Edit(props) {
     //Delete questions by question_order that remains in orderArray
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
+        "https://diary30wooserver.web.app/api/questions/" +
           props.profile.user_ref +
           "&" +
           orderArray[i]
@@ -117,8 +115,7 @@ export default function Edit(props) {
           console.log("error deleting question: " + error);
         });
     }
-    endpoint2 = 1;
-    alert("Saved button complete!");
+    alert("Qustions have saved");
   }
 
   function changeQuestions(a) {
@@ -129,8 +126,15 @@ export default function Edit(props) {
     setQuestions(a);
   }
 
-  function postChanges() {
-    DetectChange();
+  async function postChanges() {
+    try {
+      setIsLoading(true);
+      await DetectChange();
+    } finally {
+      setIsLoading(false);
+      setEndPoint2((prev) => 1);
+      // console.log("endpoint2:", endPoint2);
+    }
   }
 
   function ChangeReturnee(a, z) {
@@ -194,7 +198,11 @@ export default function Edit(props) {
         <>
           <li>
             <div>
-              <input type="text" defaultValue={questions[iterator].question} />
+              <input
+                type="text"
+                defaultValue={questions[iterator].question}
+                disabled={true}
+              />
               <select
                 name="options"
                 defaultValue={questions[iterator].question_type}
@@ -209,16 +217,19 @@ export default function Edit(props) {
               <input
                 type="text"
                 defaultValue={temp.question_selection[0]}
+                disabled={true}
               ></input>
               <input type="radio" disabled="TRUE" checked="TRUE"></input>
               <input
                 type="text"
                 defaultValue={temp.question_selection[1]}
+                disabled={true}
               ></input>
               <input type="radio" disabled="TRUE" checked="TRUE"></input>
               <input
                 type="text"
                 defaultValue={temp.question_selection[2]}
+                disabled={true}
               ></input>
             </div>
             <button id="deleteButton" onClick={liDelete}>
@@ -233,16 +244,28 @@ export default function Edit(props) {
         <>
           <li>
             <div>
-              <input type="text" defaultValue={questions[iterator].question} />
+              <input
+                type="text"
+                defaultValue={questions[iterator].question}
+                disabled={true}
+              />
               <select
                 name="options"
                 onChange={addSelection}
                 defaultValue={questions[iterator].question_type}
               >
-                <option value="number">number</option>
-                <option value="boolean">boolean</option>
-                <option value="multiple choice">multiple choice</option>
-                <option value="text">text</option>
+                <option value="number" disabled={true}>
+                  number
+                </option>
+                <option value="boolean" disabled={true}>
+                  boolean
+                </option>
+                <option value="multiple choice" disabled={true}>
+                  multiple choice
+                </option>
+                <option value="text" disabled={true}>
+                  text
+                </option>
               </select>
             </div>
             <button id="deleteButton" onClick={liDelete}>
@@ -319,37 +342,37 @@ export default function Edit(props) {
 
   //This run after save button click > DetectChange() finsihed
   useEffect(() => {
-    if (endpoint2 == 1) {
-      setendPoint((prev) => 0);
+    if (endPoint2 == 1) {
+      setEndPoint((prev) => 0);
+      console.log("lets go for 1");
     }
-  }, [endpoint2]);
+  }, [endPoint2]);
 
   //work only when page is first loaded
   //Also work when page is reloaded after DetectChange() finished
   useEffect(() => {
     //1
+    console.log("lets go for 2");
     if (endPoint == 0) {
       setQuestions([]);
-      setendPoint((prev) => 1);
+      setEndPoint((prev) => 1);
     }
+
     //2
     else if (endPoint == 1) {
       const tempOrderArray = [];
       const fetchData = async () => {
-        console.log("get user_ref", typeof props.profile.user_ref);
         await Axios.get(
-          "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
+          "https://diary30wooserver.web.app/api/questions/" +
             props.profile.user_ref
         ).then((response) => {
           var z = 0;
-
           const sortedData = response.data.sort(
             (a, b) => a.question_order - b.question_order
           );
 
           for (var i in sortedData) {
             var temp = sortedData[i].question_selection;
-
             append(questions, {
               //id: response.data[i].id,
               user_id: sortedData[i].user_id,
@@ -361,6 +384,7 @@ export default function Edit(props) {
             });
             ChangeReturnee(setSome(z), z);
             z++;
+            console.log("lets go for 3");
             tempOrderArray.push(sortedData[i].question_order);
             //setorderArray([...orderArray, response.data[i].question_order]);
           }
@@ -378,7 +402,7 @@ export default function Edit(props) {
 
       fetchData();
       //lock this useEffect function
-      setendPoint((prev) => 2);
+      setEndPoint((prev) => 2);
     }
   }, [endPoint]);
 
@@ -394,7 +418,7 @@ export default function Edit(props) {
         </div>
         <ul id="list">{returnee}</ul>
       </inner>
-      <button onClick={postChanges} id="editSubmit">
+      <button onClick={postChanges} id="editSubmit" disabled={isLoading}>
         Save
       </button>
     </div>
