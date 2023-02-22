@@ -88,13 +88,16 @@ export default function Edit(props) {
     //New quetions' order is set higher than highest existing questions' highest question_order
     let newOrderTop1 = orderTop + 1;
     for (var i = 0; i < tempAdd.length; i++) {
-      await Axios.post("https://diary30wooserver.web.app/api/questions", {
-        user_id: props.profile.user_ref,
-        question: tempAdd[i].question,
-        question_selection: tempAdd[i].question_selection,
-        question_type: tempAdd[i].question_type,
-        question_order: newOrderTop1,
-      });
+      await Axios.post(
+        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions",
+        {
+          user_id: props.profile.user_ref,
+          question: tempAdd[i].question,
+          question_selection: tempAdd[i].question_selection,
+          question_type: tempAdd[i].question_type,
+          question_order: newOrderTop1,
+        }
+      );
 
       newOrderTop1 += 1;
     }
@@ -103,7 +106,7 @@ export default function Edit(props) {
     //Delete questions by question_order that remains in orderArray
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
-        "https://diary30wooserver.web.app/api/questions/" +
+        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
           props.profile.user_ref +
           "&" +
           orderArray[i]
@@ -363,7 +366,7 @@ export default function Edit(props) {
       const tempOrderArray = [];
       const fetchData = async () => {
         await Axios.get(
-          "https://diary30wooserver.web.app/api/questions/" +
+          "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
             props.profile.user_ref
         ).then((response) => {
           var z = 0;

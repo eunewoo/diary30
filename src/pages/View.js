@@ -198,7 +198,8 @@ export default function View(props) {
     //reset questions before get data
     setQuestions([]);
     Axios.get(
-      "https://diary30wooserver.web.app/api/questions/" + props.profile.user_ref
+      "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
+        props.profile.user_ref
     ).then((response) => {
       var z = 0;
       for (var i in response.data) {
