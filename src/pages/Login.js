@@ -39,7 +39,7 @@ export default function Login(props) {
         //   "hashutil",
         //   hashutil(login_id, response.data[0].user_email, password)
         // );
-        console.log("user_ref type", response.data[0]._id);
+        //console.log("user_ref type", response.data[0]._id);
 
         if (
           response.data[0].password ==
