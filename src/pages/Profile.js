@@ -5,7 +5,11 @@ import { hashutil } from "./hashutil.mjs";
 import { useRef } from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { DisplayImageAtom, makeFormData } from "../model/states";
+import {
+  DisplayImageAtom,
+  isAuthenticated,
+  makeFormData,
+} from "../model/states";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile(props) {
@@ -93,12 +97,7 @@ export default function Profile(props) {
 
   //useEffect0 - check authentication before rendering
   useEffect(() => {
-    if (props.profile.user_id == "") {
-      alert(
-        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
-      );
-      navigate("/");
-    }
+    isAuthenticated(props, navigate);
   }, []);
 
   return (

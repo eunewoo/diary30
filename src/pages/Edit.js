@@ -2,6 +2,7 @@ import Topnav from "./nav";
 import { useState, useEffect } from "react";
 import React, { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
+import { isAuthenticated } from "../model/states";
 
 export default function Edit(props) {
   const [questions, setQuestions] = useState([]);
@@ -332,12 +333,7 @@ export default function Edit(props) {
 
   //useEffect0 - check authentication before rendering
   useEffect(() => {
-    if (props.profile.user_id == "") {
-      alert(
-        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
-      );
-      navigate("/");
-    }
+    isAuthenticated(props, navigate);
   }, []);
 
   //This run after save button click > DetectChange() finsihed

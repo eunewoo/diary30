@@ -6,6 +6,7 @@ import Cum_date_load from "../model/Cum_date_load.js";
 import { useRecoilState } from "recoil";
 import {
   cumDateState,
+  isAuthenticated,
   questionsSelector,
   questionsState,
   returneeState,
@@ -176,12 +177,7 @@ export default function Log(props) {
 
   //useEffect0 - check authentication before rendering
   useEffect(() => {
-    if (props.profile.user_id == "") {
-      alert(
-        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
-      );
-      navigate("/");
-    }
+    isAuthenticated(props, navigate);
   }, []);
 
   //useEffect1

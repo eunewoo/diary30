@@ -48,3 +48,12 @@ export const cumDateState = atom({
     cum_day: cum_date.getDate(),
   },
 });
+
+export function isAuthenticated(props, navigate) {
+  if (props.profile.user_id == "") {
+    alert(
+      "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+    );
+    navigate("/");
+  }
+}

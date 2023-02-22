@@ -6,6 +6,7 @@ import Axios from "axios";
 import Cum_date_load from "../model/Cum_date_load";
 import {
   cumDateState,
+  isAuthenticated,
   questionsState,
   returneeState,
 } from "../model/states.js";
@@ -186,12 +187,7 @@ export default function View(props) {
 
   //useEffect0 - check authentication before rendering
   useEffect(() => {
-    if (props.profile.user_id == "") {
-      alert(
-        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
-      );
-      navigate("/");
-    }
+    isAuthenticated(props, navigate);
   }, []);
 
   useEffect(() => {
