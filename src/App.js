@@ -6,7 +6,7 @@ import Login from "./pages/Login.js";
 import Register from "./pages/Register.js";
 import View from "./pages/View.js";
 import Profile from "./pages/Profile.js";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { RecoilRoot } from "recoil";
 
@@ -28,19 +28,20 @@ function App() {
     setProfile(pf);
   }
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault();
-      e.returnValue = "";
-    });
+  // alert when user try to F5 or leave the page
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", (e) => {
+  //     e.preventDefault();
+  //     e.returnValue = "";
+  //   });
 
-    return () => {
-      window.removeEventListener("beforeunload", (e) => {
-        e.preventDefault();
-        e.returnValue = "";
-      });
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", (e) => {
+  //       e.preventDefault();
+  //       e.returnValue = "";
+  //     });
+  //   };
+  // }, []);
 
   return (
     <RecoilRoot>
