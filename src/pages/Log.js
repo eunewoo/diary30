@@ -242,7 +242,7 @@ export default function Log(props) {
     setReturnee(a);
   }
 
-  async function submitAns() {
+  async function waitForSubmit() {
     try {
       setIsLoading(true);
       await submit();
@@ -347,7 +347,7 @@ export default function Log(props) {
       <Topnav selected="log" />
       <Cum_date_load />
       <div id="list">{returnee}</div>
-      <button onClick={submitAns} id="submit" disabled={isLoading}>
+      <button onClick={waitForSubmit} id="submit" disabled={isLoading}>
         Submit
       </button>
     </div>

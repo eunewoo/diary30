@@ -9,7 +9,7 @@ import { DisplayImageAtom } from "../model/states";
 
 export default function Login(props) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [login_id, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [avail, setAvail] = useState(false);
@@ -22,8 +22,16 @@ export default function Login(props) {
     setPassword(e.target.value);
   };
 
-  const setLoginId = () => {
-    Axios.get(
+  async function waitForLogin() {
+    try {
+      setIsLoading(true);
+      await setLoginId();
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  async function setLoginId() {
+    await Axios.get(
       "https://diary30wooserver.web.app/api/users/" + login_id + ""
     ).then((response) => {
       if (response.data.length === 0) {
@@ -61,7 +69,7 @@ export default function Login(props) {
         }
       }
     });
-  };
+  }
 
   // useEffect(() => {
   //   console.log("user_ref change check", props.profile.user_ref);
@@ -119,7 +127,11 @@ export default function Login(props) {
               </li>
             </ul>
             <div>
-              <button id="loginButton" onClick={setLoginId}>
+              <button
+                id="loginButton"
+                onClick={waitForLogin}
+                disabled={isLoading}
+              >
                 Login
                 <span class="material-symbols-outlined">login</span>
               </button>

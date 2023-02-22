@@ -9,7 +9,7 @@ import { DisplayImageAtom, makeFormData } from "../model/states";
 export default function Register(props) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const [value, setValue] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [profdata, setProfdata] = useState({
     user_id: "",
     password: "",
@@ -95,7 +95,16 @@ export default function Register(props) {
     });
   };
 
-  const isRegister = () => {
+  async function waitForRegister() {
+    try {
+      setIsLoading(true);
+      await isRegister();
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function isRegister() {
     switch ("") {
       case user_id:
         alert("Put id!");
@@ -135,7 +144,7 @@ export default function Register(props) {
         } else {
           let temp = 0;
           if (temp1 === 0) {
-            Axios.get("https://diary30wooserver.web.app/api/users").then(
+            await Axios.get("https://diary30wooserver.web.app/api/users").then(
               (response) => {
                 for (var i in response.data) {
                   if (response.data[i].user_id == user_id) {
@@ -194,7 +203,7 @@ export default function Register(props) {
           }
         }
     }
-  };
+  }
 
   // to login with "Enter key"
   const handleKeyDown = (event) => {
@@ -299,7 +308,11 @@ export default function Register(props) {
               </li>
             </ul>
             <div id="registerButtonWrapper">
-              <button id="registerButton" onClick={isRegister}>
+              <button
+                id="registerButton"
+                onClick={waitForRegister}
+                disabled={isLoading}
+              >
                 Register
               </button>
             </div>
