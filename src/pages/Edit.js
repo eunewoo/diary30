@@ -16,6 +16,7 @@ export default function Edit(props) {
   const [endPoint2, setEndPoint2] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
   //Set this to run reloaded type useEffect after saved function finished
 
   //organize question in temp from list and push into ret array
@@ -116,7 +117,7 @@ export default function Edit(props) {
           console.log("error deleting question: " + error);
         });
     }
-    alert("Qustions have saved");
+    alert("Qustions have saved, moving to log page");
   }
 
   function changeQuestions(a) {
@@ -127,13 +128,15 @@ export default function Edit(props) {
     setQuestions(a);
   }
 
-  async function postChanges() {
+  async function waitForSave() {
     try {
       setIsLoading(true);
       await DetectChange();
     } finally {
       setIsLoading(false);
-      setEndPoint2((prev) => 1);
+      //navigate to log page to block errors
+      navigate("/log");
+      // setEndPoint2((prev) => 1);
       // console.log("endpoint2:", endPoint2);
     }
   }
@@ -414,7 +417,7 @@ export default function Edit(props) {
         </div>
         <ul id="list">{returnee}</ul>
       </inner>
-      <button onClick={postChanges} id="editSubmit" disabled={isLoading}>
+      <button onClick={waitForSave} id="editSubmit" disabled={isLoading}>
         Save
       </button>
     </div>
