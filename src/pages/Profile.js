@@ -73,6 +73,7 @@ export default function Profile(props) {
           address_f: address1,
           address_l: address2,
           img: img,
+          user_ref: props.profile.user_ref,
           //address2: address2
         }
       ).then((response) => {
