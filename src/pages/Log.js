@@ -22,13 +22,6 @@ export default function Log(props) {
   const [effectCount2, setEffectCount2] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  // let endpoint1 = 0;
-  // let endpoint2 = 0;
-
-  //var endPoint = 0
-  function append(questions, question) {
-    setQuestions((questions) => [...questions, question]);
-  }
   //return multiple boolean of specific date
   function returnMultiple(x, y, z) {
     if (z === undefined) {
@@ -146,34 +139,14 @@ export default function Log(props) {
   }
 
   //bring data of all questions using loop
-  function getData(x) {
-    if (x < questions.length) {
-      return (
-        <>
-          <div>
-            <p>{questions[x].question}</p>
-            {returnInput(questions[x])}
-          </div>
-          {getData(x + 1)}
-        </>
-      );
-    }
-    // else {
-    //     endPoint = 1
-    // }
-    return <></>;
+  function mapData() {
+    return questions?.map((question) => (
+      <div key={question.id}>
+        <p>{question.question}</p>
+        {returnInput(question)}
+      </div>
+    ));
   }
-  //test for edit using .map
-  // useEffect(() => {
-  //   Axios.get("https://diary30wooserver.web.app/" + props.profile.user_id).then((res) => {
-  //     setQuestions(res.data);
-  //     console.log("testQuestions", questions);
-  //     //put optional chaning
-  //     // questions.map((question, i) => {
-  //     //   returnInput(question[i]);
-  //     // });
-  //   });
-  // }, []);
 
   //useEffect0 - check authentication before rendering
   useEffect(() => {
@@ -196,29 +169,12 @@ export default function Log(props) {
         "https://diary30wooserver.web.app/api/questions/" +
           props.profile.user_ref
       ).then((response) => {
-        var z = 0;
         //first sort questions in their queestion_order
         const sortedData = response.data.sort(
           (a, b) => a.question_order - b.question_order
         );
         console.log("sortedData", sortedData);
-
-        for (var i in sortedData) {
-          var temp = sortedData[i].question_selection;
-
-          append(questions, {
-            //id: response.data[i].id,
-            user_id: sortedData[i].user_id,
-            question: sortedData[i].question,
-            question_type: sortedData[i].question_type,
-            question_selection: temp,
-            question_order: sortedData[i].question_order,
-            question_answers: sortedData[i].question_answers,
-            //tag: "oldQ"
-          });
-          z++;
-        }
-
+        setQuestions(sortedData);
         console.log("useEffect2 questions get", questions);
         setEffectCount((prevCount) => prevCount + 1);
       });
@@ -230,17 +186,10 @@ export default function Log(props) {
     if (effectCount == 2) {
       console.log("sortedData in questions", questions);
       console.log("useEffect3 run");
-      setReturnee(getData(0));
+      setReturnee(mapData(0));
       console.log("useEffect3 done", questions);
     }
   }, [effectCount]);
-
-  function changeQuestions(a) {
-    setQuestions(a);
-  }
-  function ChangeReturnee(a) {
-    setReturnee(a);
-  }
 
   async function waitForSubmit() {
     try {
