@@ -138,12 +138,14 @@ export default function Register(props) {
             Axios.get(
               "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users"
             ).then((response) => {
+              console.log("get response", response);
               for (var i in response.data) {
-                if (response.data[i].user_id == user_id) {
+                if (response.data[i] == user_id) {
+                  alert("Same ID already exist!");
                   break;
                 } else if (
                   i == response.data.length - 1 &&
-                  response.data[i].user_id != user_id
+                  response.data[i] != user_id
                 ) {
                   temp = 1;
                 }
@@ -194,7 +196,7 @@ export default function Register(props) {
                   });
                 }
               } else if (temp === 0) {
-                alert("Invalid Register!");
+                alert("Invalid Register");
               }
             });
           }
