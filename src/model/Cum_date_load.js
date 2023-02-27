@@ -14,22 +14,22 @@ export default function Cum_date_load(props) {
   // const [startDate, setStartDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     setIsOpen(!isOpen);
     setCalendarDate(e);
-    var temp = calenderDateToCumDate();
+    var temp = await calenderDateToCumDate(e);
     console.log("aaa", cumDate);
     loadList(temp);
   };
 
-  // convert date{} to cumData format and set cumDate
-  function calenderDateToCumDate() {
-    var temp = {};
-    temp = {
+  // convert date {} to cumData format and set cumDate
+  async function calenderDateToCumDate(e) {
+    console.log("calDate", e);
+    var temp = {
       ...cumDate,
-      cum_day: calendarDate.getDate(),
-      cum_month: (calendarDate.getMonth() + 1).toString(),
-      cum_year: calendarDate.getFullYear().toString(),
+      cum_day: e.getDate(),
+      cum_month: (e.getMonth() + 1).toString(),
+      cum_year: e.getFullYear().toString(),
     };
     setCumDate(temp);
     return temp;
@@ -40,15 +40,15 @@ export default function Cum_date_load(props) {
     setIsOpen(!isOpen);
   };
 
-  function format(date, formatStr) {
-    const day = date.cum_day;
-    const month = date.cum_month;
-    const year = date.cum_year;
-    return formatStr
-      .replace("dd", day)
-      .replace("mm", month)
-      .replace("yyyy", year);
-  }
+  // function format(date, formatStr) {
+  //   const day = date.cum_day;
+  //   const month = date.cum_month;
+  //   const year = date.cum_year;
+  //   return formatStr
+  //     .replace("dd", day)
+  //     .replace("mm", month)
+  //     .replace("yyyy", year);
+  // }
 
   // get and show question list of following day
   function loadList(temp) {
@@ -180,10 +180,10 @@ export default function Cum_date_load(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      console.log("x.question_answers[i].date", x.question_answers[i].date);
-      console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
-      console.log("x.question_answers[i].answer", x.question_answers[i].answer);
-      console.log(x.question_selection[y][0]);
+      // console.log("x.question_answers[i].date", x.question_answers[i].date);
+      // console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
+      // console.log("x.question_answers[i].answer", x.question_answers[i].answer);
+      // console.log(x.question_selection[y][0]);
 
       if (
         x.question_answers[i].date ==
@@ -238,8 +238,8 @@ export default function Cum_date_load(props) {
         <span className="material-icons md-18">arrow_back_ios</span>
       </button>
       <div>
-        <button className="example-custom-input" onClick={handleClick}>
-          {format(cumDate, "yyyy-mm-dd")}
+        <button id="calenderButton" onClick={handleClick}>
+          {cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day}
         </button>
         {isOpen && (
           <DatePicker selected={calendarDate} onChange={handleChange} inline />

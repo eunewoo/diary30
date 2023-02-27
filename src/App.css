@@ -187,11 +187,20 @@ button:hover:not(:disabled) {
   cursor: pointer;
 }
 
+#logWrapper > div > button {
+  background-color: rgb(75, 229, 196);
+  color: rgb(61, 61, 61);
+  border: 0px;
+  border-radius: 6px;
+  padding: 5px;
+  margin-bottom: 9px;
+}
+
 #logWrapper > button:nth-child(3) {
   text-align: right;
 }
 
-#logWrapper > div > p {
+#logWrapper > calen #logWrapper > div > p {
   font-size: 20px;
   font-weight: bold;
 }
