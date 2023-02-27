@@ -17,19 +17,22 @@ export default function Cum_date_load(props) {
   const handleChange = (e) => {
     setIsOpen(!isOpen);
     setCalendarDate(e);
-    calenderDateToCumDate();
+    var temp = calenderDateToCumDate();
     console.log("aaa", cumDate);
+    loadList(temp);
   };
 
+  // convert date{} to cumData format and set cumDate
   function calenderDateToCumDate() {
     var temp = {};
     temp = {
       ...cumDate,
-      cum_day: calendarDate.getDate().toString(),
+      cum_day: calendarDate.getDate(),
       cum_month: (calendarDate.getMonth() + 1).toString(),
       cum_year: calendarDate.getFullYear().toString(),
     };
     setCumDate(temp);
+    return temp;
   }
 
   const handleClick = (e) => {
@@ -47,39 +50,8 @@ export default function Cum_date_load(props) {
       .replace("yyyy", year);
   }
 
-  //going to previous day
-  const clickPre = () => {
-    var arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    var temp = {};
-    if (cumDate.cum_month == 1) {
-      if (cumDate.cum_day == 1) {
-        temp = {
-          ...cumDate,
-          cum_year: cum_year - 1,
-          cum_month: 12,
-          cum_day: 31,
-        };
-      } else {
-        temp = {
-          ...cumDate,
-          cum_day: cum_day - 1,
-        };
-      }
-    } else {
-      if (cumDate.cum_day == 1) {
-        temp = {
-          ...cumDate,
-          cum_month: cum_month - 1,
-          cum_day: arr[cum_month - 2],
-        };
-      } else {
-        temp = {
-          ...cumDate,
-          cum_day: cum_day - 1,
-        };
-      }
-    }
-    setCumDate(temp);
+  // get and show question list of following day
+  function loadList(temp) {
     var list = document.getElementById("list");
 
     //put input data into list
@@ -127,6 +99,43 @@ export default function Cum_date_load(props) {
         }
       }
     }
+  }
+
+  //going to previous day
+  const clickPre = () => {
+    var arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var temp = {};
+    if (cumDate.cum_month == 1) {
+      if (cumDate.cum_day == 1) {
+        temp = {
+          ...cumDate,
+          cum_year: cum_year - 1,
+          cum_month: 12,
+          cum_day: 31,
+        };
+      } else {
+        temp = {
+          ...cumDate,
+          cum_day: cum_day - 1,
+        };
+      }
+    } else {
+      if (cumDate.cum_day == 1) {
+        temp = {
+          ...cumDate,
+          cum_month: cum_month - 1,
+          cum_day: arr[cum_month - 2],
+        };
+      } else {
+        temp = {
+          ...cumDate,
+          cum_day: cum_day - 1,
+        };
+      }
+    }
+    setCumDate(temp);
+    // var list = document.getElementById("list");
+    loadList(temp);
   };
 
   //going to next day
@@ -162,51 +171,7 @@ export default function Cum_date_load(props) {
       }
     }
     setCumDate(temp);
-    var list = document.getElementById("list");
-    for (var i = 0; i < list.childNodes.length; i++) {
-      if (list.childNodes[i].childNodes.length === 7) {
-        //if multiple choice
-        list.childNodes[i].childNodes[1].checked = returnMultiple(
-          questions[i],
-          0,
-          temp
-        );
-        list.childNodes[i].childNodes[3].checked = returnMultiple(
-          questions[i],
-          1,
-          temp
-        );
-        list.childNodes[i].childNodes[5].checked = returnMultiple(
-          questions[i],
-          2,
-          temp
-        );
-      }
-      if (list.childNodes[i].childNodes.length === 5) {
-        //if boolean
-        list.childNodes[i].childNodes[1].checked = returnBoolean(
-          questions[i],
-          0,
-          temp
-        );
-        list.childNodes[i].childNodes[3].checked = returnBoolean(
-          questions[i],
-          1,
-          temp
-        );
-      }
-      if (list.childNodes[i].childNodes.length === 2) {
-        //if text or number
-        if (returnText(questions[i], temp) === undefined) {
-          list.childNodes[i].childNodes[1].value = "";
-        } else {
-          list.childNodes[i].childNodes[1].value = returnText(
-            questions[i],
-            temp
-          );
-        }
-      }
-    }
+    loadList(temp);
   };
 
   //return multiple boolean of specific date
