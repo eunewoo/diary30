@@ -1,12 +1,51 @@
 import React, { useState, useEffect } from "react";
 import { questionsState, cumDateState } from "./states";
 import { useRecoilState } from "recoil";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Cum_date_load(props) {
   const [questions, setQuestions] = useRecoilState(questionsState);
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
-
+  const [calendarDate, setCalendarDate] = useState(new Date());
   const { cum_year, cum_month, cum_day } = cumDate;
+  console.log("cumDate", cumDate);
+
+  // const [startDate, setStartDate] = useState(new Date());
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleChange = (e) => {
+    setIsOpen(!isOpen);
+    setCalendarDate(e);
+    calenderDateToCumDate();
+    console.log("aaa", cumDate);
+  };
+
+  function calenderDateToCumDate() {
+    var temp = {};
+    temp = {
+      ...cumDate,
+      cum_day: calendarDate.getDate().toString(),
+      cum_month: (calendarDate.getMonth() + 1).toString(),
+      cum_year: calendarDate.getFullYear().toString(),
+    };
+    setCumDate(temp);
+  }
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  };
+
+  function format(date, formatStr) {
+    const day = date.cum_day;
+    const month = date.cum_month;
+    const year = date.cum_year;
+    return formatStr
+      .replace("dd", day)
+      .replace("mm", month)
+      .replace("yyyy", year);
+  }
 
   //going to previous day
   const clickPre = () => {
@@ -234,9 +273,12 @@ export default function Cum_date_load(props) {
         <span className="material-icons md-18">arrow_back_ios</span>
       </button>
       <div>
-        <p>
-          {cumDate.cum_year}-{cumDate.cum_month}-{cumDate.cum_day}
-        </p>
+        <button className="example-custom-input" onClick={handleClick}>
+          {format(cumDate, "yyyy-mm-dd")}
+        </button>
+        {isOpen && (
+          <DatePicker selected={calendarDate} onChange={handleChange} inline />
+        )}
       </div>
       <button onClick={clickNext}>
         <span className="material-icons md-18">arrow_forward_ios</span>

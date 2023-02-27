@@ -1,11 +1,35 @@
 import { Link } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { DisplayImageAtom } from "../model/states";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Topnav({ selected }) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
+  const [startDate, setStartDate] = useState(new Date());
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleChange = (e) => {
+    setIsOpen(!isOpen);
+    setStartDate(e);
+  };
+  const handleClick = (e) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+    console.log("startDate", startDate);
+  };
   const imageKeyRef = useRef("imageKeyRef");
+
+  function format(date, formatStr) {
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear().toString();
+    return formatStr
+      .replace("dd", day)
+      .replace("MM", month)
+      .replace("yyyy", year);
+  }
 
   return (
     <div>
@@ -22,6 +46,14 @@ export default function Topnav({ selected }) {
             View Data
           </Link>
         </div>
+        <>
+          <button className="example-custom-input" onClick={handleClick}>
+            {format(startDate, "yyyy-MM-dd")}
+          </button>
+          {isOpen && (
+            <DatePicker selected={startDate} onChange={handleChange} inline />
+          )}
+        </>
         <Link id="navProfile" to="/profile">
           <img src={displayImage} alt="profile" />
         </Link>
