@@ -23,44 +23,17 @@ export default function Login(props) {
   };
 
   const setLoginId = () => {
-    Axios.get(
-      "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users/" +
-        login_id +
-        ""
-    ).then((response) => {
-      if (response.data.length === 0) {
-        alert("Your id is not found on DB");
-      } else {
-        // console.log("login_id", login_id);
-        // console.log("db password", response.data[0].password);
-        // //console.log('db email', response.data[0].user_email);
-        // //console.log('hashutil',  hashutil(login_id, response.data[0].user_email, password));
-        // console.log(
-        //   "hashutil",
-        //   hashutil(login_id, response.data[0].user_email, password)
-        // );
-        //console.log("user_ref type", response.data[0]._id);
+    Axios.post(
+      "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users/login",
+      {
+        user_id: login_id,
+        password: password,
+      }
+    ).then((res) => {
+      console.log("res.status", res.status);
 
-        if (
-          response.data[0].password ==
-          hashutil(login_id, response.data[0].user_email, password)
-        ) {
-          alert("Login Success!");
-          props.ChangeProfile({
-            password: password,
-            user_id: response.data[0].user_id,
-            profile: response.data[0].img,
-            name: response.data[0].user_name,
-            email: response.data[0].user_email,
-            address1: response.data[0].address_f,
-            address2: response.data[0].address_l,
-            user_ref: response.data[0]._id,
-          });
-          setDisplayImage(() => response.data[0].img);
-          navigate("/log");
-        } else {
-          alert("Unavail Login!");
-        }
+      if (res.status == "204") {
+        navigate("./log");
       }
     });
   };

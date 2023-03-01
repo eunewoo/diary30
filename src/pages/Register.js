@@ -68,33 +68,6 @@ export default function Register(props) {
     });
   };
 
-  const setImage = (e) => {
-    //post image on db
-    const img = e.target.files[0];
-
-    const formData = new FormData();
-    formData.append("file", img);
-
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-
-    Axios.post(
-      "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users",
-      formData,
-      config
-    ).then((res) => {
-      //console.log('s3url', res.data.location);
-
-      setProfdata({
-        ...profdata,
-        img: res.data.location,
-      });
-    });
-  };
-
   const isRegister = () => {
     switch ("") {
       case user_id:
@@ -120,11 +93,6 @@ export default function Register(props) {
         if (!/\S+@\S+\.\S+/.test(profdata.user_email)) {
           alert("Your email is not in valid form!");
           temp1 = 1;
-        } else if (
-          !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(
-            profdata.password
-          )
-        ) {
         } else if (
           !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(
             profdata.password
