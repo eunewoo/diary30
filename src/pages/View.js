@@ -335,8 +335,12 @@ export default function View(props) {
           document.getElementById("chart").appendChild(canvas);
           charts.push([]);
         }
-        setReturnee(getData(0));
       }
+      const sortedData = response.data.sort(
+        (a, b) => a.question_order - b.question_order
+      );
+      setQuestions(sortedData);
+      setReturnee(getData(0));
     });
   }, []);
 
