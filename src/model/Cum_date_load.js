@@ -28,8 +28,8 @@ export default function Cum_date_load(props) {
     var temp = {
       ...cumDate,
       cum_day: e.getDate(),
-      cum_month: (e.getMonth() + 1).toString(),
-      cum_year: e.getFullYear().toString(),
+      cum_month: e.getMonth() + 1,
+      cum_year: e.getFullYear(),
     };
     setCumDate(temp);
     return temp;
@@ -140,7 +140,7 @@ export default function Cum_date_load(props) {
 
   //going to next day
   const clickNext = () => {
-    var arr = [31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    var arr = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     var temp = {};
     if (cumDate.cum_month == 12) {
       if (cumDate.cum_day == arr[cumDate.cum_month - 1]) {
