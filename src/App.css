@@ -196,6 +196,10 @@ button:hover:not(:disabled) {
   margin-bottom: 9px;
 }
 
+#logWrapper > div > div .react-datepicker {
+  position: absolute;
+}
+
 #logWrapper > button:nth-child(3) {
   text-align: right;
 }
