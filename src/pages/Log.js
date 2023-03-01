@@ -148,49 +148,6 @@ export default function Log(props) {
     ));
   }
 
-  //useEffect0 - check authentication before rendering
-  useEffect(() => {
-    isAuthenticated(props, navigate);
-  }, []);
-
-  //useEffect1
-  useEffect(() => {
-    setQuestions((a) => []);
-    console.log("useEffect1 reset questions", questions);
-    setEffectCount((prevCount) => prevCount + 1);
-    console.log("useEffect1 effectCount", effectCount);
-  }, [effectCount2]);
-
-  //useEffect 2
-  //bring question set from mysql db and put into returnee
-  useEffect(() => {
-    if (effectCount == 1) {
-      Axios.get(
-        "https://diary30wooserver.web.app/api/questions/" +
-          props.profile.user_ref
-      ).then((response) => {
-        //first sort questions in their queestion_order
-        const sortedData = response.data.sort(
-          (a, b) => a.question_order - b.question_order
-        );
-        console.log("sortedData", sortedData);
-        setQuestions(sortedData);
-        console.log("useEffect2 questions get", questions);
-        setEffectCount((prevCount) => prevCount + 1);
-      });
-    }
-  }, [effectCount]);
-
-  //useEffect 3
-  useEffect(() => {
-    if (effectCount == 2) {
-      console.log("sortedData in questions", questions);
-      console.log("useEffect3 run");
-      setReturnee(mapData(0));
-      console.log("useEffect3 done", questions);
-    }
-  }, [effectCount]);
-
   async function waitForSubmit() {
     try {
       setIsLoading(true);
@@ -290,6 +247,49 @@ export default function Log(props) {
     setEffectCount(0);
     alert("Your submission is correctly submitted on the db");
   }
+
+  //useEffect0 - check authentication before rendering
+  useEffect(() => {
+    isAuthenticated(props, navigate);
+  }, []);
+
+  //useEffect1
+  useEffect(() => {
+    setQuestions((a) => []);
+    console.log("useEffect1 reset questions", questions);
+    setEffectCount((prevCount) => prevCount + 1);
+    console.log("useEffect1 effectCount", effectCount);
+  }, [effectCount2]);
+
+  //useEffect 2
+  //bring question set from mysql db and put into returnee
+  useEffect(() => {
+    if (effectCount == 1) {
+      Axios.get(
+        "https://diary30wooserver.web.app/api/questions/" +
+          props.profile.user_ref
+      ).then((response) => {
+        //first sort questions in their queestion_order
+        const sortedData = response.data.sort(
+          (a, b) => a.question_order - b.question_order
+        );
+        console.log("sortedData", sortedData);
+        setQuestions(sortedData);
+        console.log("useEffect2 questions get", questions);
+        setEffectCount((prevCount) => prevCount + 1);
+      });
+    }
+  }, [effectCount]);
+
+  //useEffect 3
+  useEffect(() => {
+    if (effectCount == 2) {
+      console.log("sortedData in questions", questions);
+      console.log("useEffect3 run");
+      setReturnee(mapData(0));
+      console.log("useEffect3 done", questions);
+    }
+  }, [effectCount]);
 
   return (
     <div id="pageWrapper">
