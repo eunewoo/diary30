@@ -7,20 +7,42 @@ import "react-datepicker/dist/react-datepicker.css";
 export default function Cum_date_load(props) {
   const [questions, setQuestions] = useRecoilState(questionsState);
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
+  // date form for calendar module * different to the cumDate
   const [calendarDate, setCalendarDate] = useState(new Date());
   const { cum_year, cum_month, cum_day } = cumDate;
-  console.log("cumDate", cumDate);
 
   // const [startDate, setStartDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
 
+  //when date on calendar has clicked
   const handleChange = async (e) => {
     setIsOpen(!isOpen);
     setCalendarDate(e);
     var temp = await calenderDateToCumDate(e);
-    console.log("aaa", cumDate);
     loadList(temp);
   };
+  // to check attendance(days have submitted answer)
+  function checkAttend() {
+    if (questions != []) {
+      var tempAnswers = [...questions[0].question_answers];
+      var attendedDates = [];
+      for (var i in tempAnswers) {
+        var tempDate = [tempAnswers[i].date];
+        if (tempDate[0] != undefined) {
+          attendedDates.push(new Date(formatDate(...tempDate)));
+        }
+      }
+      return attendedDates;
+    }
+  }
+  // turn "xxxx-xx-xx" to "xxxx","xx","xx" - form date that apropriate for calendar module
+  function formatDate(dateString) {
+    const dateArray = dateString.split("-");
+    const numericDateArray = dateArray.map((dateString) =>
+      parseInt(dateString)
+    );
+    return numericDateArray;
+  }
 
   // convert date {} to cumData format and set cumDate
   async function calenderDateToCumDate(e) {
@@ -35,6 +57,7 @@ export default function Cum_date_load(props) {
     return temp;
   }
 
+  //when date on log page has clicked
   const handleClick = (e) => {
     e.preventDefault();
     setIsOpen(!isOpen);
@@ -242,7 +265,12 @@ export default function Cum_date_load(props) {
           {cumDate.cum_year + "-" + cumDate.cum_month + "-" + cumDate.cum_day}
         </button>
         {isOpen && (
-          <DatePicker selected={calendarDate} onChange={handleChange} inline />
+          <DatePicker
+            selected={calendarDate}
+            onChange={handleChange}
+            inline
+            highlightDates={checkAttend()}
+          />
         )}
       </div>
       <button onClick={clickNext}>
