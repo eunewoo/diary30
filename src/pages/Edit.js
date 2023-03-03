@@ -4,6 +4,7 @@ import React, { Link, useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { isAuthenticated } from "../model/states";
 
+//edit page
 export default function Edit(props) {
   const [questions, setQuestions] = useState([]);
   const [returnee, setreturnee] = useState([]);
@@ -14,13 +15,11 @@ export default function Edit(props) {
   //when first load, reload page after clicking save button
   const [endPoint, setEndPoint] = useState(0);
   const [endPoint2, setEndPoint2] = useState(0);
+  //TRUE when save button is clicked and False when done
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  //Set this to run reloaded type useEffect after saved function finished
-
-  //organize question in temp from list and push into ret array
-  //It ran when save button is clicked
+  // get questions+answer to array nad return to returnee function
   function getData() {
     //list that only contains question boxes that showing on Front page
     var list = document.getElementById("list");
@@ -61,6 +60,7 @@ export default function Edit(props) {
     return ret;
   }
 
+  //detect question that added new and post on server
   //add async,await to run in order
   async function DetectChange() {
     //filter duplicate questions
@@ -110,24 +110,13 @@ export default function Edit(props) {
           "&" +
           orderArray[i]
       )
-        .then((response) => {
-          console.log("delete");
-        })
-        .catch((error) => {
-          console.log("error deleting question: " + error);
-        });
+        .then((response) => {})
+        .catch((error) => {});
     }
     alert("Qustions have saved, moving to log page");
   }
 
-  function changeQuestions(a) {
-    setQuestions(a);
-  }
-
-  function changereturnee(a) {
-    setQuestions(a);
-  }
-
+  // disable save button when net request/response is on work
   async function waitForSave() {
     try {
       setIsLoading(true);
@@ -137,16 +126,17 @@ export default function Edit(props) {
       //navigate to log page to block errors
       navigate("/log");
       // setEndPoint2((prev) => 1);
-      // console.log("endpoint2:", endPoint2);
     }
   }
 
+  //put questions on front view
   function ChangeReturnee(a, z) {
     var temp = returnee;
     temp[z] = a;
     setreturnee([...temp]);
   }
 
+  //should be removed after update logic on useEffect
   function append(questions, question) {
     var temp = questions;
     questions.push(question);
@@ -343,15 +333,12 @@ export default function Edit(props) {
   useEffect(() => {
     if (endPoint2 == 1) {
       setEndPoint((prev) => 0);
-      console.log("lets go for 1");
     }
   }, [endPoint2]);
 
   //work only when page is first loaded
   //Also work when page is reloaded after DetectChange() finished
   useEffect(() => {
-    //1
-    console.log("lets go for 2");
     if (endPoint == 0) {
       setQuestions([]);
       setEndPoint((prev) => 1);
@@ -383,7 +370,6 @@ export default function Edit(props) {
             });
             ChangeReturnee(setSome(z), z);
             z++;
-            console.log("lets go for 3");
             tempOrderArray.push(sortedData[i].question_order);
             //setorderArray([...orderArray, response.data[i].question_order]);
           }
