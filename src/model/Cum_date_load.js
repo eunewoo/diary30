@@ -23,13 +23,15 @@ export default function Cum_date_load(props) {
   };
   // to check attendance(days have submitted answer)
   function checkAttend() {
+    var attendedDates = [];
     if (questions != []) {
-      var tempAnswers = [...questions[0].question_answers];
-      var attendedDates = [];
-      for (var i in tempAnswers) {
-        var tempDate = [tempAnswers[i].date];
-        if (tempDate[0] != undefined) {
-          attendedDates.push(new Date(formatDate(...tempDate)));
+      for (var i in questions) {
+        var tempAnswers = [...questions[i].question_answers];
+        for (var i in tempAnswers) {
+          var tempDate = [tempAnswers[i].date];
+          if (tempDate[0] != undefined) {
+            attendedDates.push(new Date(formatDate(...tempDate)));
+          }
         }
       }
       return attendedDates;
