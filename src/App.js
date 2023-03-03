@@ -9,9 +9,10 @@ import Profile from "./pages/Profile.js";
 import React, { useState } from "react";
 
 import { RecoilRoot } from "recoil";
-
+// main function
 function App() {
   const [id, setId] = useState({});
+  //user data storage
   const [profile, setProfile] = useState({
     user_id: "",
     password: "",
@@ -23,25 +24,10 @@ function App() {
     user_ref: {},
   });
   const [questions, setQuestions] = useState({});
-
+  //set user profile to a user's prop (id,pw...)
   function ChangeProfile(pf) {
     setProfile(pf);
   }
-
-  // alert when user try to F5 or leave the page
-  // useEffect(() => {
-  //   window.addEventListener("beforeunload", (e) => {
-  //     e.preventDefault();
-  //     e.returnValue = "";
-  //   });
-
-  //   return () => {
-  //     window.removeEventListener("beforeunload", (e) => {
-  //       e.preventDefault();
-  //       e.returnValue = "";
-  //     });
-  //   };
-  // }, []);
 
   return (
     <RecoilRoot>
@@ -51,6 +37,7 @@ function App() {
             exact
             path="/"
             element={<Login ChangeProfile={ChangeProfile} />}
+            //componentized by pages + recoilstates and few function
           />
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/log" element={<Log profile={profile} />} />
