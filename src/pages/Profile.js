@@ -12,6 +12,7 @@ import {
 } from "../model/states";
 import { useNavigate } from "react-router-dom";
 
+//profile page
 export default function Profile(props) {
   const [img, setImg] = useState(props.profile.img);
   const [name, setName] = useState(props.profile.name);
@@ -23,6 +24,8 @@ export default function Profile(props) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const imageKeyRef = useRef("imageKeyRef");
   const navigate = useNavigate();
+
+  //post image on cloudinary and set profile image
   const setImage = (e) => {
     const { formData, config } = makeFormData(e);
     setTemp2(formData);
@@ -38,6 +41,7 @@ export default function Profile(props) {
     });
   };
 
+  //remove image
   const removeImage = () => {
     setDisplayImage("");
     setImg("");
@@ -55,6 +59,8 @@ export default function Profile(props) {
   const setAddress2f = (e) => {
     setAddress2(e.target.value);
   };
+
+  //log out and locate to main page
   const logout = () => {
     props.changeProfile({});
     document.location.href = "http://localhost:3000/";
