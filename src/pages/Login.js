@@ -7,6 +7,7 @@ import { hashutil } from "./hashutil.mjs";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { DisplayImageAtom } from "../model/states";
 
+//login page
 export default function Login(props) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +23,7 @@ export default function Login(props) {
     setPassword(e.target.value);
   };
 
+  //disable login button when net request on work
   async function waitForLogin() {
     try {
       setIsLoading(true);
@@ -30,6 +32,8 @@ export default function Login(props) {
       setIsLoading(false);
     }
   }
+
+  //set user profile and pass on to pages
   async function setLoginId() {
     await Axios.get(
       "https://diary30wooserver.web.app/api/users/" + login_id + ""
@@ -37,16 +41,6 @@ export default function Login(props) {
       if (response.data.length === 0) {
         alert("Your id is not found on DB");
       } else {
-        // console.log("login_id", login_id);
-        // console.log("db password", response.data[0].password);
-        // //console.log('db email', response.data[0].user_email);
-        // //console.log('hashutil',  hashutil(login_id, response.data[0].user_email, password));
-        // console.log(
-        //   "hashutil",
-        //   hashutil(login_id, response.data[0].user_email, password)
-        // );
-        console.log("user_ref type", response.data[0]._id);
-
         if (
           response.data[0].password ==
           hashutil(login_id, response.data[0].user_email, password)
@@ -71,10 +65,7 @@ export default function Login(props) {
     });
   }
 
-  // useEffect(() => {
-  //   console.log("user_ref change check", props.profile.user_ref);
-  // }, [props.profile.user_ref]);
-
+  //make it possible to login with "Enter key"
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -82,6 +73,7 @@ export default function Login(props) {
     }
   };
 
+  //make it possible to login with "Enter key"
   useEffect(() => {
     const loginForm = document.getElementById("loginWrapper");
     if (!loginForm) return;
