@@ -1,5 +1,8 @@
 import { atom, selector } from "recoil";
 
+/* a component for recoilstates and few componentized functions*/
+
+//const to set profile image
 export const DisplayImageAtom = atom({
   key: "displayImage",
   default: "",
@@ -14,23 +17,25 @@ export function makeFormData(e) {
   formData.append("api_key", "672365852293431");
   formData.append("upload_preset", "tdc1f5a8");
   formData.append("timestamp", (Date.now() / 1000) | 0);
-  console.log(formData);
-
   const config = {
     headers: { "Content-Type": "multipart/form-data" },
   };
   return { formData, config };
 }
+
+//shared between log.js and view.js
 export const returneeState = atom({
   key: "returneeState",
   default: [],
 });
 
+//shared between log.js and view.js
 export const questionsState = atom({
   key: "questionsState",
   default: [],
 });
 
+//shared between log.js and view.js
 export const questionsSelector = selector({
   key: "questionsSelector",
   get: ({ get }) => get(questionsState),
@@ -39,6 +44,7 @@ export const questionsSelector = selector({
   },
 });
 
+//shared between log.js and view.js
 const cum_date = new Date();
 export const cumDateState = atom({
   key: "cumDateState",
@@ -49,6 +55,7 @@ export const cumDateState = atom({
   },
 });
 
+//check if logged in before load page
 export function isAuthenticated(props, navigate) {
   if (props.profile.user_id == "") {
     alert(
