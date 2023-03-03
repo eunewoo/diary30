@@ -12,6 +12,7 @@ import {
 } from "../model/states.js";
 import { useRecoilState } from "recoil";
 
+//view page
 export default function View(props) {
   const [returnee, setReturnee] = useRecoilState(returneeState);
   const [questions, setQuestions] = useRecoilState(questionsState);
@@ -35,6 +36,7 @@ export default function View(props) {
     a.click();
   }
 
+  //button to switch between questions and chart
   function toggleSwitch() {
     var chart = document.getElementById("chart");
     var questions = document.getElementById("table");
@@ -54,6 +56,7 @@ export default function View(props) {
   }
   const { cum_year, cum_month, cum_day } = cumDate;
 
+  //should be removed after login update
   function append(questions, question) {
     setQuestions((questions) => [...questions, question]);
   }
@@ -343,9 +346,6 @@ export default function View(props) {
       setReturnee(getData(0));
     });
   }, []);
-
-  //toggle switch temporarly removed cause error of showing questions set 3times duplicated
-  //<button onClick={toggleSwitch}>Toggle</button>
 
   return (
     <div id="viewWrapper">
