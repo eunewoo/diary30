@@ -175,14 +175,14 @@ export default function Log(props) {
   // }, []);
 
   //useEffect0 - check authentication before rendering
-  useEffect(() => {
-    if (props.profile.user_id == "") {
-      alert(
-        "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
-      );
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (props.profile.user_id == "") {
+  //     alert(
+  //       "not a valid path - please log in first. \n(note: redirection(F5) is not allowed) "
+  //     );
+  //     navigate("/");
+  //   }
+  // }, []);
 
   //useEffect1
   useEffect(() => {
@@ -196,9 +196,27 @@ export default function Log(props) {
   //bring question set from mysql db and put into returnee
   useEffect(() => {
     if (effectCount == 1) {
+      // Axios.get(
+      //   "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
+      //     props.profile.user_ref
+      // )
+      // const sessionCookie = localStorage.getItem("session");
+      // console.log("Session cookie value:", sessionCookie);
+      // const sessionCookie = cookies.find((cookie) =>
+      //   cookie.startsWith("session=")
+      // );
+      const cookies = document.cookie.split("; ");
+      const sessionCookie = cookies.find((cookie) =>
+        cookie.startsWith("session=")
+      );
+      console.log("sessionCookie", sessionCookie);
+
       Axios.get(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
-          props.profile.user_ref
+        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/all",
+        {},
+        {
+          withCredentials: true,
+        }
       ).then((response) => {
         var z = 0;
         //first sort questions in their queestion_order

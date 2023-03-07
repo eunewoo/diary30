@@ -22,17 +22,23 @@ export default function Login(props) {
     setPassword(e.target.value);
   };
 
+  //when login is success, first save userId in req.session in server side
+  //and get user data based on req.session in every page loading.
   const setLoginId = () => {
     Axios.post(
-      "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users/login",
+      "http://localhost:5001/diary30wooserver/us-central1/app/api/users/login",
       {
         user_id: login_id,
         password: password,
+      },
+      {
+        withCredentials: true,
       }
     ).then((res) => {
       console.log("res.status", res.status);
 
-      if (res.status == "204") {
+      if (res.status == "200") {
+        //document.cookie = `session=${res.data.session}; expires=${res.data.expires}; path=/`;
         navigate("./log");
       }
     });
