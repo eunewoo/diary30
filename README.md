@@ -6,9 +6,9 @@ Reference source: [https://www.youtube.com/watch?v=98TXDLZLyNs](https://www.yout
 diary30 terminal에서 npm run build > firebase deploy
 
 backend
-[http://127.0.0.1:5001/diary30wooserver/us-central1/app/](http://127.0.0.1:5001/diary30wooserver/us-central1/app/)
+[https://diary30wooserver.web.app/](https://diary30wooserver.web.app/)
 
-Upload: at server folder terminal:  firebase deploy --only functions
+Upload: at server folder terminal: firebase deploy --only functions
 
 Mongodb Atlas
 Access code

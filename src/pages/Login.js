@@ -35,9 +35,7 @@ export default function Login(props) {
         withCredentials: true,
       }
     ).then((res) => {
-      console.log("res.status", res.status);
-
-      if (res.status == "200") {
+      if (res.status == "201") {
         //document.cookie = `session=${res.data.session}; expires=${res.data.expires}; path=/`;
         navigate("./log");
       }

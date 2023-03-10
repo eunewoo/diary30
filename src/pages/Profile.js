@@ -53,30 +53,27 @@ export default function Profile(props) {
   };
   const logout = () => {
     props.changeProfile({});
-    document.location.href = "http://localhost:3000/";
+    document.location.href = "https://diary30woo.web.app/";
   };
   const saveProfile = (e) => {
     //it should fetch and change
     //but for testing i will use just set function
     if (/\S+@\S+\.\S+/.test(email)) {
-      Axios.put(
-        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/users",
-        {
-          user_id: props.profile.user_id,
-          password: hashutil(
-            props.profile.user_id,
-            email,
-            props.profile.password
-          ),
-          user_name: name,
-          user_email: email,
-          address_f: address1,
-          address_l: address2,
-          img: img,
-          user_ref: props.profile.user_ref,
-          //address2: address2
-        }
-      ).then((response) => {
+      Axios.put("https://diary30wooserver.web.app/api/users", {
+        user_id: props.profile.user_id,
+        password: hashutil(
+          props.profile.user_id,
+          email,
+          props.profile.password
+        ),
+        user_name: name,
+        user_email: email,
+        address_f: address1,
+        address_l: address2,
+        img: img,
+        user_ref: props.profile.user_ref,
+        //address2: address2
+      }).then((response) => {
         if (response.status != 200) {
           alert("Something went wrong in communicating DB!");
         } else {
