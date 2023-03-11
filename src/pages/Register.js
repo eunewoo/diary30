@@ -175,7 +175,7 @@ export default function Register(props) {
                         setDisplayImage(res.data.url);
                         console.log("displayImage", displayImage);
                         alert("Success Register!");
-                        document.location.href = "http://localhost:3000/";
+                        document.location.href = "https://diary30woo.web.app/";
                       });
                     });
                   }
@@ -192,7 +192,7 @@ export default function Register(props) {
                       console.log("displayImage", displayImage);
                       setDisplayImage(profdata.img);
                       alert("Success Register!");
-                      document.location.href = "http://localhost:3000/";
+                      document.location.href = "https://diary30woo.web.app/";
                     });
                   }
                 } else if (temp === 0) {
