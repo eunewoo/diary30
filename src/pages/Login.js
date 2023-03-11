@@ -26,7 +26,7 @@ export default function Login(props) {
   //and get user data based on req.session in every page loading.
   const setLoginId = () => {
     Axios.post(
-      "http://localhost:5001/diary30wooserver/us-central1/app/api/users/login",
+      "https://diary30wooserver.web.app/api/users/login",
       {
         user_id: login_id,
         password: password,
@@ -36,7 +36,6 @@ export default function Login(props) {
       }
     ).then((res) => {
       if (res.status == "201") {
-        //document.cookie = `session=${res.data.session}; expires=${res.data.expires}; path=/`;
         navigate("./log");
       }
     });

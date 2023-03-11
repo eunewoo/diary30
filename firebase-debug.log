@@ -1,0 +1,25 @@
+[debug] [2023-03-11T02:39:37.885Z] ----------------------------------------------------------------------
+[debug] [2023-03-11T02:39:37.886Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2023-03-11T02:39:37.886Z] CLI Version:   11.21.0
+[debug] [2023-03-11T02:39:37.886Z] Platform:      darwin
+[debug] [2023-03-11T02:39:37.886Z] Node Version:  v16.15.0
+[debug] [2023-03-11T02:39:37.887Z] Time:          Sat Mar 11 2023 11:39:37 GMT+0900 (Japan Standard Time)
+[debug] [2023-03-11T02:39:37.887Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-11T02:39:37.918Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-11T02:39:37.918Z] > authorizing via signed-in user (ewchoi98@gmail.com)
+[debug] [2023-03-11T02:39:37.918Z] [iam] checking project diary30woo for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-03-11T02:39:37.919Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/diary30woo:testIamPermissions [none]
+[debug] [2023-03-11T02:39:37.919Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/diary30woo:testIamPermissions x-goog-quota-user=projects/diary30woo
+[debug] [2023-03-11T02:39:37.919Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/diary30woo:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-03-11T02:39:38.722Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/diary30woo:testIamPermissions 200
+[debug] [2023-03-11T02:39:38.722Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/diary30woo:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-03-11T02:39:38.723Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/diary30woo [none]
+[debug] [2023-03-11T02:39:39.129Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/diary30woo 200
+[debug] [2023-03-11T02:39:39.130Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/diary30woo {"projectId":"diary30woo","projectNumber":"416347891270","displayName":"diary30woo","name":"projects/diary30woo","resources":{"hostingSite":"diary30woo"},"state":"ACTIVE","etag":"1_cdeb93ad-ded1-43d8-bc76-2a5e4a1b339d"}
+[info] 
+[info] === Deploying to 'diary30woo'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2023-03-11T02:39:39.134Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/diary30woo/versions [none]
+[debug] [2023-03-11T02:39:39.134Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/diary30woo/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
