@@ -7,6 +7,7 @@ export default function Topnav({ selected }) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const imageKeyRef = useRef("imageKeyRef");
 
+  //navigation bar on top of pages
   return (
     <div>
       <div id="navWrapper">

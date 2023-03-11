@@ -6,6 +6,7 @@ import { hashutil } from "./hashutil.mjs";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { DisplayImageAtom, makeFormData } from "../model/states";
 
+//register page
 export default function Register(props) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const [value, setValue] = useState("");
@@ -68,33 +69,7 @@ export default function Register(props) {
     });
   };
 
-  const setImage = (e) => {
-    //post image on db
-    const img = e.target.files[0];
-
-    const formData = new FormData();
-    formData.append("file", img);
-
-    const config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    };
-
-    Axios.post(
-      "https://diary30wooserver.web.app/api/users",
-      formData,
-      config
-    ).then((res) => {
-      //console.log('s3url', res.data.location);
-
-      setProfdata({
-        ...profdata,
-        img: res.data.location,
-      });
-    });
-  };
-
+  //disable register button when register button has clicked
   async function waitForRegister() {
     try {
       setIsLoading(true);
@@ -104,6 +79,7 @@ export default function Register(props) {
     }
   }
 
+  //check rules for id,pw... and push to server
   async function isRegister() {
     switch ("") {
       case user_id:
@@ -173,7 +149,6 @@ export default function Register(props) {
                         img: res.data.url,
                       }).then(() => {
                         setDisplayImage(res.data.url);
-                        console.log("displayImage", displayImage);
                         alert("Success Register!");
                         document.location.href = "https://diary30woo.web.app/";
                       });
@@ -189,7 +164,6 @@ export default function Register(props) {
                       address_l: profdata.address_l,
                       img: profdata.img,
                     }).then(() => {
-                      console.log("displayImage", displayImage);
                       setDisplayImage(profdata.img);
                       alert("Success Register!");
                       document.location.href = "https://diary30woo.web.app/";
@@ -213,6 +187,7 @@ export default function Register(props) {
     }
   };
 
+  // to login with "Enter key"
   useEffect(() => {
     const registerForm = document.getElementById("registerWrapper");
     if (!registerForm) return;

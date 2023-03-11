@@ -12,10 +12,10 @@ import {
   returneeState,
 } from "../model/states.js";
 
+//log page
 export default function Log(props) {
   const [returnee, setReturnee] = useRecoilState(returneeState);
   const [questions, setQuestions] = useRecoilState(questionsSelector);
-
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
   const navigate = useNavigate();
   const [effectCount, setEffectCount] = useState(0);
@@ -28,11 +28,6 @@ export default function Log(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      // console.log("x.question_answers[i].date", x.question_answers[i].date);
-      // console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
-      // console.log("x.question_answers[i].answer", x.question_answers[i].answer);
-      // console.log(x.question_selection[y][0]);
-
       if (
         x.question_answers[i].date ==
         "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
@@ -148,6 +143,7 @@ export default function Log(props) {
     ));
   }
 
+  //disable submit button when net request/response is on work
   async function waitForSubmit() {
     try {
       setIsLoading(true);
@@ -195,8 +191,6 @@ export default function Log(props) {
         temp1.answer = list.childNodes[i].childNodes[1].value;
       }
 
-      console.log("temp1", temp1);
-      console.log("temp", temp);
       // edit when user's question_answers submit
       for (var j = 0; j < temp[i].question_answers.length; j++) {
         //if question_answer already exist
@@ -256,9 +250,7 @@ export default function Log(props) {
   //useEffect1
   useEffect(() => {
     setQuestions((a) => []);
-    console.log("useEffect1 reset questions", questions);
     setEffectCount((prevCount) => prevCount + 1);
-    console.log("useEffect1 effectCount", effectCount);
   }, [effectCount2]);
 
   //useEffect 2
@@ -273,9 +265,7 @@ export default function Log(props) {
         const sortedData = response.data.sort(
           (a, b) => a.question_order - b.question_order
         );
-        console.log("sortedData", sortedData);
         setQuestions(sortedData);
-        console.log("useEffect2 questions get", questions);
         setEffectCount((prevCount) => prevCount + 1);
       });
     }
@@ -284,10 +274,7 @@ export default function Log(props) {
   //useEffect 3
   useEffect(() => {
     if (effectCount == 2) {
-      console.log("sortedData in questions", questions);
-      console.log("useEffect3 run");
       setReturnee(mapData(0));
-      console.log("useEffect3 done", questions);
     }
   }, [effectCount]);
 

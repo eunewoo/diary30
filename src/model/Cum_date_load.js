@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+// component to control date(time), hand it over to log.js and view.js
 export default function Cum_date_load(props) {
   const [questions, setQuestions] = useRecoilState(questionsState);
   const [cumDate, setCumDate] = useRecoilState(cumDateState);
@@ -23,13 +24,15 @@ export default function Cum_date_load(props) {
   };
   // to check attendance(days have submitted answer)
   function checkAttend() {
+    var attendedDates = [];
     if (questions != []) {
-      var tempAnswers = [...questions[0].question_answers];
-      var attendedDates = [];
-      for (var i in tempAnswers) {
-        var tempDate = [tempAnswers[i].date];
-        if (tempDate[0] != undefined) {
-          attendedDates.push(new Date(formatDate(...tempDate)));
+      for (var i in questions) {
+        var tempAnswers = [...questions[i].question_answers];
+        for (var i in tempAnswers) {
+          var tempDate = [tempAnswers[i].date];
+          if (tempDate[0] != undefined) {
+            attendedDates.push(new Date(formatDate(...tempDate)));
+          }
         }
       }
       return attendedDates;
@@ -46,7 +49,6 @@ export default function Cum_date_load(props) {
 
   // convert date {} to cumData format and set cumDate
   async function calenderDateToCumDate(e) {
-    console.log("calDate", e);
     var temp = {
       ...cumDate,
       cum_day: e.getDate(),
@@ -62,16 +64,6 @@ export default function Cum_date_load(props) {
     e.preventDefault();
     setIsOpen(!isOpen);
   };
-
-  // function format(date, formatStr) {
-  //   const day = date.cum_day;
-  //   const month = date.cum_month;
-  //   const year = date.cum_year;
-  //   return formatStr
-  //     .replace("dd", day)
-  //     .replace("mm", month)
-  //     .replace("yyyy", year);
-  // }
 
   // get and show question list of following day
   function loadList(temp) {
@@ -203,11 +195,6 @@ export default function Cum_date_load(props) {
       z = cumDate;
     }
     for (var i = 0; i < x.question_answers.length; i++) {
-      // console.log("x.question_answers[i].date", x.question_answers[i].date);
-      // console.log("" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day);
-      // console.log("x.question_answers[i].answer", x.question_answers[i].answer);
-      // console.log(x.question_selection[y][0]);
-
       if (
         x.question_answers[i].date ==
         "" + z.cum_year + "-" + z.cum_month + "-" + z.cum_day
