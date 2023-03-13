@@ -4,10 +4,10 @@ import React, { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { hashutil } from "./hashutil.mjs";
 
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { DisplayImageAtom } from "../model/states";
 
-//login page
+// Login page
 export default function Login(props) {
   const [displayImage, setDisplayImage] = useRecoilState(DisplayImageAtom);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function Login(props) {
     setPassword(e.target.value);
   };
 
-  //disable login button when net request on work
+  // Disable login button when net request is on process
   async function waitForLogin() {
     try {
       setIsLoading(true);
@@ -33,7 +33,7 @@ export default function Login(props) {
     }
   }
 
-  //set user profile and pass on to pages
+  // Set user profile and pass on to pages
   async function setLoginId() {
     await Axios.get(
       "https://diary30wooserver.web.app/api/users/" + login_id + ""
@@ -59,13 +59,13 @@ export default function Login(props) {
           setDisplayImage(() => response.data[0].img);
           navigate("/log");
         } else {
-          alert("Unavail Login!");
+          alert("ID or PWD is wrong!");
         }
       }
     });
   }
 
-  //make it possible to login with "Enter key"
+  // Make it possible to login with "Enter key"
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
@@ -73,7 +73,7 @@ export default function Login(props) {
     }
   };
 
-  //make it possible to login with "Enter key"
+  // Add the "Enter key" method
   useEffect(() => {
     const loginForm = document.getElementById("loginWrapper");
     if (!loginForm) return;

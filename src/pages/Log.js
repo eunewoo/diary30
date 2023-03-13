@@ -8,7 +8,6 @@ import {
   cumDateState,
   isAuthenticated,
   questionsSelector,
-  questionsState,
   returneeState,
 } from "../model/states.js";
 
@@ -22,7 +21,7 @@ export default function Log(props) {
   const [effectCount2, setEffectCount2] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  //return multiple boolean of specific date
+  // Return multiple boolean of specific date
   function returnMultiple(x, y, z) {
     if (z === undefined) {
       z = cumDate;
@@ -133,7 +132,7 @@ export default function Log(props) {
     }
   }
 
-  //bring data of all questions using loop
+  // Bring data of all questions using loop
   function mapData() {
     return questions?.map((question) => (
       <div key={question.id}>
@@ -143,7 +142,7 @@ export default function Log(props) {
     ));
   }
 
-  //disable submit button when net request/response is on work
+  // Disable submit button when net request/response is on process
   async function waitForSubmit() {
     try {
       setIsLoading(true);
@@ -152,7 +151,7 @@ export default function Log(props) {
       setIsLoading(false);
     }
   }
-  //put answers in temp and send to db
+  // Put answers in temp and send to db
   async function submit() {
     //shallow copied
     var temp = questions;
@@ -170,7 +169,7 @@ export default function Log(props) {
         answer: "",
       };
 
-      //multiple
+      // Multiple type Q
       if (list.childNodes[i].childNodes.length === 7) {
         if (list.childNodes[i].childNodes[1].checked) {
           temp1.answer = list.childNodes[i].childNodes[1].value;
@@ -179,21 +178,20 @@ export default function Log(props) {
         } else if (list.childNodes[i].childNodes[5].checked) {
           temp1.answer = list.childNodes[i].childNodes[5].value;
         }
-        //boolean
+        // Boolean type Q
       } else if (list.childNodes[i].childNodes.length === 5) {
         if (list.childNodes[i].childNodes[1].checked) {
           temp1.answer = true;
         } else if (list.childNodes[i].childNodes[3].checked) {
           temp1.answer = false;
         }
-        //text
+        // Text type Q
       } else if (list.childNodes[i].childNodes.length === 2) {
         temp1.answer = list.childNodes[i].childNodes[1].value;
       }
 
       // edit when user's question_answers submit
       for (var j = 0; j < temp[i].question_answers.length; j++) {
-        //if question_answer already exist
         if (
           temp[i].question_answers[j].date ===
           "" +
@@ -203,6 +201,7 @@ export default function Log(props) {
             "-" +
             cumDate.cum_day
         ) {
+          //deep copy
           var newArray = [...temp];
           var date = newArray[i].question_answers[j].date;
           var answer = temp1.answer;
@@ -232,7 +231,6 @@ export default function Log(props) {
       await Axios.put("https://diary30wooserver.web.app/api/questions", {
         user_id: props.profile.user_ref,
         question: temp[i].question,
-        //question_answers: JSON.stringify(temp[i].question_answers)
         question_answers: temp[i].question_answers,
       });
     }
@@ -242,19 +240,19 @@ export default function Log(props) {
     alert("Your submission is correctly submitted on the db");
   }
 
-  //useEffect0 - check authentication before rendering
+  // useEffect0 - check whether logged in before rendering
   useEffect(() => {
     isAuthenticated(props, navigate);
   }, []);
 
-  //useEffect1
+  // useEffect1
   useEffect(() => {
     setQuestions((a) => []);
     setEffectCount((prevCount) => prevCount + 1);
   }, [effectCount2]);
 
   //useEffect 2
-  //bring question set from mysql db and put into returnee
+  //bring all question set from mongodb and put into questions array
   useEffect(() => {
     if (effectCount == 1) {
       Axios.get(
