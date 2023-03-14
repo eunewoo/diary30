@@ -69,7 +69,7 @@ export default function Register(props) {
     });
   };
 
-  //disable register button when register button has clicked
+  //disable register button while register button is in process
   async function waitForRegister() {
     try {
       setIsLoading(true);
@@ -110,11 +110,6 @@ export default function Register(props) {
             profdata.password
           )
         ) {
-        } else if (
-          !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(
-            profdata.password
-          )
-        ) {
           alert("Your password is not in valid form!");
           temp1 = 1;
         } else {
@@ -122,12 +117,13 @@ export default function Register(props) {
           if (temp1 === 0) {
             await Axios.get("https://diary30wooserver.web.app/api/users").then(
               (response) => {
+                console.log("response.data :", response.data);
                 for (var i in response.data) {
-                  if (response.data[i].user_id == user_id) {
+                  if (response.data[i] == user_id) {
                     break;
                   } else if (
                     i == response.data.length - 1 &&
-                    response.data[i].user_id != user_id
+                    response.data[i] != user_id
                   ) {
                     temp = 1;
                   }
@@ -166,11 +162,11 @@ export default function Register(props) {
                     }).then(() => {
                       setDisplayImage(profdata.img);
                       alert("Success Register!");
-                      document.location.href = "https://diary30woo.web.app/";
+                      //document.location.href = "https://diary30woo.web.app/";
                     });
                   }
                 } else if (temp === 0) {
-                  alert("Invalid Register!");
+                  alert("Same ID already exist!");
                 }
               }
             );

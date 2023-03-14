@@ -55,7 +55,8 @@ export const cumDateState = atom({
   },
 });
 
-//check if logged in before load page
+// Check if logged in before load page
+// Send to main login page when not logged in
 export function isAuthenticated(props, navigate) {
   if (props.profile.user_id == "") {
     alert(

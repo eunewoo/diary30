@@ -10,6 +10,8 @@ export default function Edit(props) {
   const [returnee, setreturnee] = useState([]);
   //set to provide new question's question_order higher than first loaded questions
   const [orderTop, setorderTop] = useState(-1);
+  // This is set to detect deleted question box in front end side
+  // and send request the server for real deletion in backend side
   const [orderArray, setorderArray] = useState([]);
   //set endpoint to controll useEffect sequence
   //when first load, reload page after clicking save button
@@ -19,7 +21,7 @@ export default function Edit(props) {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // get questions+answer to array nad return to returnee function
+  // get questions+answer to array and return to returnee function
   function getData() {
     //list that only contains question boxes that showing on Front page
     var list = document.getElementById("list");
@@ -360,21 +362,20 @@ export default function Edit(props) {
           for (var i in sortedData) {
             var temp = sortedData[i].question_selection;
             append(questions, {
-              //id: response.data[i].id,
               user_id: sortedData[i].user_id,
               question: sortedData[i].question,
               question_type: sortedData[i].question_type,
               question_selection: temp,
               question_order: sortedData[i].question_order,
-              //tag: "oldQ"
             });
             ChangeReturnee(setSome(z), z);
             z++;
             tempOrderArray.push(sortedData[i].question_order);
-            //setorderArray([...orderArray, response.data[i].question_order]);
           }
           let newOrderTop = -99;
 
+          // Set the highest question_order as newOrderTop
+          // To set new question's question_order larger than that
           if (tempOrderArray.length == 0) {
             newOrderTop = -1;
           } else {
