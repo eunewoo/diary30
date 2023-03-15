@@ -117,7 +117,6 @@ export default function Register(props) {
           if (temp1 === 0) {
             await Axios.get("https://diary30wooserver.web.app/api/users").then(
               (response) => {
-                console.log("response.data :", response.data);
                 for (var i in response.data) {
                   if (response.data[i] == user_id) {
                     break;
@@ -162,7 +161,7 @@ export default function Register(props) {
                     }).then(() => {
                       setDisplayImage(profdata.img);
                       alert("Success Register!");
-                      //document.location.href = "https://diary30woo.web.app/";
+                      document.location.href = "https://diary30woo.web.app/";
                     });
                   }
                 } else if (temp === 0) {

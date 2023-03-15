@@ -15,10 +15,6 @@ var highbit = function (value) {
 // password. Pass in the 3 strings and the hash is generated
 // and returned.
 export function hashutil(id, email, password) {
-  console.log("|" + id + "|");
-  console.log("|" + email + "|");
-  console.log("|" + password + "|");
-
   const passhash = sha256(id + email + password);
 
   let passouthash = "";
