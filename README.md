@@ -1,15 +1,32 @@
-**Firebase Deploy**
+# diary30server
+Really short-time video of running project <a>https://youtu.be/75wfVbNT7XA</a>.
 
-Front
-Reference source: [https://www.youtube.com/watch?v=98TXDLZLyNs](https://www.youtube.com/watch?v=98TXDLZLyNs)
+Summary: Client side of diary30 project and clouded in Firebase. Images are stored in Cloudinary.
 
-diary30 terminal에서 npm run build > firebase deploy
+Language use: React.js
 
-backend
-[https://diary30wooserver.web.app/](https://diary30wooserver.web.app/)
+# Running manual
 
-Upload: at server folder terminal: firebase deploy --only functions
+Go to <a>https://diary30woo.web.app/</a> (Deployed client side version)
 
-Mongodb Atlas
-Access code
-mongodb://eunewoo:mongoconquer98@ac-0vyijen-shard-00-00.kciyq16.mongodb.net:27017,[ac-0vyijen-shard-00-01.kciyq16.mongodb.net:27017](http://ac-0vyijen-shard-00-01.kciyq16.mongodb.net:27017/),[ac-0vyijen-shard-00-02.kciyq16.mongodb.net:27017/?ssl=true&replicaSet=atlas-9pxc0l-shard-0&authSource=admin&retryWrites=true&w=majority](http://ac-0vyijen-shard-00-02.kciyq16.mongodb.net:27017/?ssl=true&replicaSet=atlas-9pxc0l-shard-0&authSource=admin&retryWrites=true&w=majority)
+1. Login with sample user
+
+ID: sample123
+
+PWD: Sample123
+
+2. Go to register and make your own ID
+
+# Code explanation
+- Recent completed and deployed version is in "main" branch 
+
+# Timeline
+2022.9 - 2022.12 : Start project as CSE316(Software Engineering) Final project with two other members
+
+2022.12 - 2023.3 : Develop project with Deploy, Change logic, Catch bug, Collect user data, Componentize, add Calender on client side during winter break
+
+# Setup Tutorial
+
+
+
+
