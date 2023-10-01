@@ -11,7 +11,7 @@ Go to <a>https://diary30woo.web.app/</a> (Deployed client side version)
 
 1. Login with sample user
 
-ID: sample123
+ID: Sample123
 
 PWD: Sample123
 
