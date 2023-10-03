@@ -228,11 +228,14 @@ export default function Log(props) {
     }
 
     for (var i = 0; i < temp.length; i++) {
-      await Axios.put("https://diary30wooserver.web.app/api/questions", {
-        user_id: props.profile.user_ref,
-        question: temp[i].question,
-        question_answers: temp[i].question_answers,
-      });
+      await Axios.put(
+        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions",
+        {
+          user_id: props.profile.user_ref,
+          question: temp[i].question,
+          question_answers: temp[i].question_answers,
+        }
+      );
     }
     //rerender right after submit question_answer
     setEffectCount2((prevCount) => prevCount + 1);
@@ -256,7 +259,7 @@ export default function Log(props) {
   useEffect(() => {
     if (effectCount == 1) {
       Axios.get(
-        "https://diary30wooserver.web.app/api/questions/" +
+        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
           props.profile.user_ref
       ).then((response) => {
         //first sort questions in their queestion_order

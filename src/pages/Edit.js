@@ -107,7 +107,7 @@ export default function Edit(props) {
     //Delete questions by question_order that remains in orderArray
     for (var i = 0; i < orderArray.length; i++) {
       await Axios.delete(
-        "https://diary30wooserver.web.app/api/questions/" +
+        "http://127.0.0.1:5001/diary30wooserver/us-central1/app/api/questions/" +
           props.profile.user_ref +
           "&" +
           orderArray[i]
@@ -350,40 +350,39 @@ export default function Edit(props) {
     else if (endPoint == 1) {
       const tempOrderArray = [];
       const fetchData = async () => {
-        await Axios.get(
-          "https://diary30wooserver.web.app/api/questions/" +
-            props.profile.user_ref
-        ).then((response) => {
-          var z = 0;
-          const sortedData = response.data.sort(
-            (a, b) => a.question_order - b.question_order
-          );
+        await Axios.get("/api/questions/" + props.profile.user_ref).then(
+          (response) => {
+            var z = 0;
+            const sortedData = response.data.sort(
+              (a, b) => a.question_order - b.question_order
+            );
 
-          for (var i in sortedData) {
-            var temp = sortedData[i].question_selection;
-            append(questions, {
-              user_id: sortedData[i].user_id,
-              question: sortedData[i].question,
-              question_type: sortedData[i].question_type,
-              question_selection: temp,
-              question_order: sortedData[i].question_order,
-            });
-            ChangeReturnee(setSome(z), z);
-            z++;
-            tempOrderArray.push(sortedData[i].question_order);
-          }
-          let newOrderTop = -99;
+            for (var i in sortedData) {
+              var temp = sortedData[i].question_selection;
+              append(questions, {
+                user_id: sortedData[i].user_id,
+                question: sortedData[i].question,
+                question_type: sortedData[i].question_type,
+                question_selection: temp,
+                question_order: sortedData[i].question_order,
+              });
+              ChangeReturnee(setSome(z), z);
+              z++;
+              tempOrderArray.push(sortedData[i].question_order);
+            }
+            let newOrderTop = -99;
 
-          // Set the highest question_order as newOrderTop
-          // To set new question's question_order larger than that
-          if (tempOrderArray.length == 0) {
-            newOrderTop = -1;
-          } else {
-            newOrderTop = Math.max.apply(null, tempOrderArray);
+            // Set the highest question_order as newOrderTop
+            // To set new question's question_order larger than that
+            if (tempOrderArray.length == 0) {
+              newOrderTop = -1;
+            } else {
+              newOrderTop = Math.max.apply(null, tempOrderArray);
+            }
+            setorderTop(newOrderTop);
+            setorderArray([...tempOrderArray]);
           }
-          setorderTop(newOrderTop);
-          setorderArray([...tempOrderArray]);
-        });
+        );
       };
 
       fetchData();
